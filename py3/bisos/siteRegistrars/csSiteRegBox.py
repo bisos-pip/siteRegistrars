@@ -39,7 +39,7 @@
 #+end_org """
 import typing
 csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['csSiteRegBox'], }
-csInfo['version'] = '202401171236'
+csInfo['version'] = '202401192758'
 csInfo['status']  = 'inUse'
 csInfo['panel'] = 'csSiteRegBox-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
@@ -226,6 +226,14 @@ def examples_csu(
     cps = collections.OrderedDict() ; cps['boxName'] = "NOTYET"
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
+    cmndName = "givenUniqBoxIdFindBoxNu" ; cmndArgs = "" ;
+    cps = collections.OrderedDict() ;  cps['uniqBoxId'] = thisUniqBoxId
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
+    cmndName = "roPerf_givenUniqBoxIdFindBoxNu" ; cmndArgs = "" ;
+    cps = collections.OrderedDict() ;  cps['uniqBoxId'] = thisUniqBoxId
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
     if sectionTitle == 'default':
         cs.examples.menuChapter('*Place Holders*')
 
@@ -242,7 +250,7 @@ def examples_csu(
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Perform Only CmndSvcs" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _CmndSvcs_: |]]  Command Services Section  [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Perform Only CmndSvcs_: |]]  Command Services Section  [[elisp:(org-shifttab)][<)]] E|
 #+end_org """
 ####+END:
 
@@ -334,15 +342,14 @@ class perf_boxNuUpdateWithUniqBoxId(cs.Cmnd):
 
         return cmndOutcome.set(opResults=result,)
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxNuGetNext" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxNuGetNext" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxNuGetNext>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxNuGetNext>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class perf_boxNuGetNext(cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
@@ -355,7 +362,7 @@ class perf_boxNuGetNext(cs.Cmnd):
             return b_io.eh.badOutcome(cmndOutcome)
 ####+END:
         if self.cmndDocStr(""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Result: Last existing boxNu + 1. Starts at 1000
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Outcome: Last existing boxNu + 1. Starts at 1000.
         #+end_org """): return(cmndOutcome)
 
         lastBoxNu: int = 1000
@@ -456,12 +463,13 @@ class perf_givenUniqBoxIdFindBoxNuBase(cs.Cmnd):
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxesRepoPull" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxesRepoPull>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxesRepoPull>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class perf_boxesRepoPull(cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
@@ -526,14 +534,15 @@ class perf_boxesRepoPush(cs.Cmnd):
         return cmndOutcome.set(opResults=result,)
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxAddAndPush" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxAddAndPush" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxAddAndPush>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxAddAndPush>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class perf_boxAddAndPush(cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
@@ -567,14 +576,15 @@ class perf_boxAddAndPush(cs.Cmnd):
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "runningInChromeOsContainer" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "runningInChromeOsContainer" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<runningInChromeOsContainer>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<runningInChromeOsContainer>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class runningInChromeOsContainer(cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
@@ -786,12 +796,12 @@ class boxNameToBoxNu(cs.Cmnd):
         )
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "roPyInvoker_" :ro "noCli"  :extent "verify" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "givenUniqBoxIdFindBoxNu" :ro "py"  :extent "verify" :comment "" :parsMand "uniqBoxId" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<roPyInvoker_>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<givenUniqBoxIdFindBoxNu>>  =verify= parsMand=uniqBoxId ro=py   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class roPyInvoker_(cs.Cmnd):
-    cmndParamsMandatory = [ ]
+class givenUniqBoxIdFindBoxNu(cs.Cmnd):
+    cmndParamsMandatory = [ 'uniqBoxId', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
     rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
@@ -800,11 +810,15 @@ class roPyInvoker_(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
+             uniqBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
+             roSapPath: typing.Optional[str]=None,  # RO pyInv Sap Path
     ) -> b.op.Outcome:
 
-        callParamsDict = {}
+        callParamsDict = {'uniqBoxId': uniqBoxId, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
+        # Remotely invoke this same command and return cmndOutcome
+        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
 ####+END:
         self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Example of using built-in features of an CMND in an ICM.
@@ -813,18 +827,12 @@ class roPyInvoker_(cs.Cmnd):
         # roPath
         roSapPath = "/bisos/var/cs/ro/sap/csExamples.cs/localhost/rpyc/default"
 
-        # b_io.pr(f"{self.__class__.__name__} is constrained with noRo and can only run locally.")
-
-        b_io.pr(f"{self.__class__.__name__} now pyInvokes a remote command at {roSapPath}")
-
-        # MB-2024-jan -- Works -- Was: NOTYET, We should get back a outcome, but we are not.
-        roPyExPerformer().cmnd(
+        roPerf_givenUniqBoxIdFindBoxNu().cmnd(
             rtInv=rtInv,
             cmndOutcome=cmndOutcome,
             roSapPath=roSapPath,
+            uniqBoxId=uniqBoxId
         )
-
-        b_io.pr(f"{self.__class__.__name__} After remote execution.")
 
         b_io.pr(f"{self.__class__.__name__} RESULT= {cmndOutcome.results}")
 
@@ -833,7 +841,73 @@ class roPyInvoker_(cs.Cmnd):
 
 
 # VALUABLE CODE HERE
-####+BEGINNOT: b:py3:cs:cmnd/classHead :cmndName "roPerf_" :ro "py"  :extent "verify" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "roPerf_givenUniqBoxIdFindBoxNu" :ro "py"  :extent "verify" :comment "" :parsMand "uniqBoxId" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<roPerf_givenUniqBoxIdFindBoxNu>>  =verify= parsMand=uniqBoxId ro=py   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class roPerf_givenUniqBoxIdFindBoxNu(cs.Cmnd):
+    cmndParamsMandatory = [ 'uniqBoxId', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             uniqBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
+             roSapPath: typing.Optional[str]=None,  # RO pyInv Sap Path
+    ) -> b.op.Outcome:
+
+        callParamsDict = {'uniqBoxId': uniqBoxId, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        # Remotely invoke this same command and return cmndOutcome
+        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  RO Performer: Given uniqBoxId, outcome box info.
+        #+end_org """)
+
+        # Invoker runs this and returns outcome.
+        if roSapPath:
+            sapBaseFps = b.pattern.sameInstance(cs.ro.SapBase_FPs, roSapPath=roSapPath)
+            portNu = sapBaseFps.fps_getParam('perfPortNu')
+            cmndKwArgs = self.cmndCallTimeKwArgs()
+            cmndKwArgs.update({'rtInv': rtInv})
+            cmndKwArgs.update({'cmndOutcome': cmndOutcome})
+            print(f"PyRO at {roSapPath} with {cmndKwArgs}")
+            rpycInvResult = cs.rpyc.csInvoke(
+                portNu.parValueGet(),
+                self.__class__,
+                **cmndKwArgs,
+            )
+            return rpycInvResult
+
+        if (boxNuBase := perf_givenUniqBoxIdFindBoxNuBase().cmnd(
+                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
+                uniqBoxId=uniqBoxId,
+        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+
+        boxNu = boxNuBase.name
+
+        # NOTYET, also boxName
+
+        cmndOutcome.set(
+            #opError=b.op.OpError.Success,
+            opError=None,
+            opResults=(f"{self.__class__.__name__} {boxNu}"),
+        )
+
+        b_io.pr(f"{self.__class__.__name__} Returning: {cmndOutcome.error} {cmndOutcome.results}")
+
+        return cmndOutcome
+
+
+
+
+####+BEGINNOT: b:py3:cs:cmnd/classHead :cmndName "roPerf_givenUniqBoxIdFindBoxNu" :ro "py"  :extent "verify" :comment "" :parsMand "uniqBoxId" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc- _OVERWRITE_   [[elisp:(outline-show-subtree+toggle)][||]] <<roPyExPerformer>>parsMand= parsOpt= argsMin=0 argsMax=0 ro=py pyInv=
 #+end_org """

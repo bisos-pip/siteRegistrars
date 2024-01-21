@@ -1,12 +1,12 @@
 ====================
-bisos.registrars Library
+unisos.marme Library
 ====================
 
 .. contents::
    :depth: 3
 ..
 
-
+CS Services for implementation of Site Regsitrars.
 
 Support
 =======
@@ -29,4 +29,4 @@ Example Usage
 
 ::
 
-   from  bisos import marmee
+   from  unisos import icm
