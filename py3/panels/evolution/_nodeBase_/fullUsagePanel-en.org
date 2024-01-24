@@ -43,6 +43,9 @@
 * +
 * TODO [#A] Complete box to equivalent of bash.
 DEADLINE: <2024-01-22 Mon> SCHEDULED: <2024-01-21 Sun>
+** TODO Create invSite.py and perfSite.py
+** TODO Create csSite.py and csInvSite.py
+** TODO Better menuItems library
 * TODO [#A] Use exsisting code to register new machines.
 SCHEDULED: <2024-01-21 Sun>
 * TODO [#A] Rebuild raw-bisos with siteRegistrars. Setup site registrars

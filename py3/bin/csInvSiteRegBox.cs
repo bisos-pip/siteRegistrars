@@ -176,7 +176,6 @@ class examples(cs.Cmnd):
         #cs.examples.menuChapter('=Misc=  *Facilities*')
 
         invSiteRegBox.examples_csu(sectionTitle="default")
-        perfSiteRegBox.examples_csu(sectionTitle="default")
 
         # b.ignore(ro.__doc__, fpCls.__doc__, clsMethod_csu.__doc__)  # We are not using these modules, but they are auto imported.
 
