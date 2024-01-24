@@ -167,20 +167,32 @@ def examples_csu(
     cps = collections.OrderedDict() ;
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
-    cmndName = "perf_boxNuUpdateWithUniqBoxId" ; cmndArgs = "" ;
+    cmndName = "perf_boxCreate" ; cmndArgs = "" ;
     cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu ; cps['uniqBoxId'] = thisUniqBoxId
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
-    cmndName = "perf_boxNuGetNext" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    cmndName = "perf_givenUniqBoxIdFindBoxNuBase" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;  cps['uniqBoxId'] = thisUniqBoxId
+    cmndName = "perf_boxRead" ; cmndArgs = "" ;
+    cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     cmndName = "perf_boxUpdate" ; cmndArgs = "" ;
     cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu ; cps['boxName'] = thisBoxName
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
+    cmndName = "perf_boxDelete" ; cmndArgs = "" ;
+    cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
+    cmndName = "perf_boxFind" ; cmndArgs = "" ;
+    cps = collections.OrderedDict() ;  cps['uniqBoxId'] = thisUniqBoxId
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
+    cmndName = "perf_boxesList" ; cmndArgs = "" ;
+    cps = collections.OrderedDict()
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
+    cmndName = "perf_boxNuGetNext" ; cmndArgs = "" ;
+    cps = collections.OrderedDict() ;
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     cmndName = "perf_boxesRepoPush" ; cmndArgs = "" ;
@@ -188,6 +200,14 @@ def examples_csu(
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     cmndName = "perf_boxesRepoPull" ; cmndArgs = "" ;
+    cps = collections.OrderedDict() ;
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
+    cmndName = "perf_lock" ; cmndArgs = "" ;
+    cps = collections.OrderedDict() ;
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
+    cmndName = "perf_unlock" ; cmndArgs = "" ;
     cps = collections.OrderedDict() ;
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
@@ -215,6 +235,10 @@ def examples_csu(
 
     cmndName = "ro_boxFind" ; cmndArgs = "" ;
     cps = collections.OrderedDict() ; cps['perfName'] = perfName ; cps['uniqBoxId'] = thisUniqBoxId
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
+    cmndName = "ro_boxesList" ; cmndArgs = "" ;
+    cps = collections.OrderedDict()
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     if sectionTitle == 'default':
@@ -562,6 +586,57 @@ class perf_boxFind(cs.Cmnd):
             return(b_io.eh.badOutcome(cmndOutcome.set(opResults=boxBaseDir,)))
 
         return cmndOutcome.set(opResults=boxBaseDir,)
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxesList" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxesList>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class perf_boxesList(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
+
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+####+END:
+        if self.cmndDocStr(""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  result: List of all boxes
+        #+end_org """): return(cmndOutcome)
+
+        boxesList: typing.Optional[list] = []
+
+        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
+                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
+        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+
+        parNamesList = boxFpNamesList()
+
+        relevantPaths = []
+        for each in siteBoxesBase.iterdir():
+            if each.name.isnumeric():
+                relevantPaths.append(each)
+
+        relevantPaths = sorted(relevantPaths)
+
+        for each in relevantPaths:
+            if (eachBox := perf_boxRead().cmnd(
+                    rtInv=cs.RtInvoker.new_py(),
+                    cmndOutcome=cmndOutcome,
+                    boxNu=each,
+            ).results) is None : return(b_io.eh.badOutcome(cmndOutcome))
+            boxesList.append(eachBox)
+
+        return cmndOutcome.set(opResults=boxesList,)
+
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxNuGetNext" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
@@ -1021,6 +1096,37 @@ class ro_boxFind(cs.Cmnd):
                 cmndOutcome=cmndOutcome,
                 uniqBoxId=uniqBoxId,
                 boxName=boxName,
+            )
+        )
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_boxesList" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_boxesList>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class ro_boxesList(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
+
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+        #+end_org """): return(cmndOutcome)
+
+        return(
+            perf_boxesList().cmnd(
+                rtInv=cs.RtInvoker.new_py(),
+                cmndOutcome=cmndOutcome,
             )
         )
 

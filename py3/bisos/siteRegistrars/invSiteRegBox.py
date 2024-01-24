@@ -132,7 +132,7 @@ def commonParamsSpecify(
 
     csParams.parDictAdd(
         parName='boxName',
-        parDescription="Box Name, based on Box Number",
+        parDescription="Box Name",
         parDataType=None,
         parDefault=None,
         parChoices=["any"],
@@ -218,7 +218,7 @@ def examples_csu(
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     cmndName = "reg_boxUpdate" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['uniqBoxId'] = thisUniqBoxId
+    cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu ; cps['uniqBoxId'] = thisUniqBoxId
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     cmndName = "reg_boxDelete" ; cmndArgs = "" ;
@@ -232,6 +232,11 @@ def examples_csu(
     cmndName = "reg_boxFind" ; cmndArgs = "" ;
     cps = collections.OrderedDict() ;  cps['uniqBoxId'] = thisUniqBoxId
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
+    cmndName = "reg_boxesList" ; cmndArgs = "" ;
+    cps = collections.OrderedDict()
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Support Functions" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
@@ -588,6 +593,43 @@ class reg_boxFind(cs.Cmnd):
         )
 
         return cmndOutcome
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_boxesList" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_boxesList>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class reg_boxesList(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
+
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+        #+end_org """): return(cmndOutcome)
+
+        cmndClass = perfSiteRegBox.ro_boxesList
+        cmndKwArgs = self.cmndCallTimeKwArgs()
+
+        rpycInvResult =  cs.ro.roInvokeCmndAtSap(
+            roSiteRegistrarSapPath,
+            rtInv,
+            cmndOutcome,
+            cmndClass,
+            ** cmndKwArgs,
+        )
+
+        return cmndOutcome
+
 
 ####+BEGIN: b:py3:cs:framework/endOfFile :basedOn "classification"
 """ #+begin_org

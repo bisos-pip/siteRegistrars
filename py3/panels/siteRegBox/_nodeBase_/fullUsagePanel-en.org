@@ -54,12 +54,49 @@
 ####+BEGIN: blee:panel:icm:bash:intro :outLevel 1 :sep nil :folding? nil :label "Bash" :icmName "siteBoxAssign.sh" :comment "Old Model" :afterComment "To be absorbed"
 * [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Bash/ :: [[elisp:(lsip-local-run-command "siteBoxAssign.sh -i examples")][siteBoxAssign.sh]]  [[elisp:(lsip-local-run-command "siteBoxAssign.sh -i visit")][visit]]  [[elisp:(lsip-local-run-command "siteBoxAssign.sh -i describe")][describe]] *|*  =Old Model= *|*  To be absorbed [[elisp:(org-shifttab)][<)]] E|
 ####+END:
-####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "CS Introduction" :anchor "" :extraInfo ""
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "CS Performer Introduction" :anchor "" :extraInfo ""
 * /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
-* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _CS Introduction_: |]]    [[elisp:(org-shifttab)][<)]] E|
+* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _CS Performer Introduction_: |]]    [[elisp:(org-shifttab)][<)]] E|
 ####+END
 ####+BEGIN: blee:panel:icm:py:intro :outLevel 1 :sep nil :folding? nil :label "PyCS" :icmName "csSiteRegBox.cs" :comment "RO Service Invoke/Perform" :afterComment ""
 * [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /PyCS/ :: [[elisp:(lsip-local-run-command "csSiteRegBox.cs -i examples")][csSiteRegBox.cs]]  [[elisp:(lsip-local-run-command "csSiteRegBox.cs -i visit")][visit]]  [[elisp:(lsip-local-run-command "csSiteRegBox.cs -i describe")][describe]] *|*  =RO Service Invoke/Perform= *|*   [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "CS Invoker Introduction" :anchor "" :extraInfo ""
+* /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
+* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _CS Invoker Introduction_: |]]    [[elisp:(org-shifttab)][<)]] E|
+####+END
+####+BEGIN: blee:panel:icm:py:intro :outLevel 1 :sep nil :folding? nil :label "PyCS" :icmName "csInvSiteRegBox.cs" :comment "RO Service Invoke/Perform" :afterComment ""
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /PyCS/ :: [[elisp:(lsip-local-run-command "csInvSiteRegBox.cs -i examples")][csInvSiteRegBox.cs]]  [[elisp:(lsip-local-run-command "csInvSiteRegBox.cs -i visit")][visit]]  [[elisp:(lsip-local-run-command "csInvSiteRegBox.cs -i describe")][describe]] *|*  =RO Service Invoke/Perform= *|*   [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "Performer Configuration and Startup" :anchor "" :extraInfo ""
+* /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
+* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _Performer Configuration and Startup_: |]]    [[elisp:(org-shifttab)][<)]] E|
+####+END
+####+BEGIN: blee:panel:icm:py:cmnd :outLevel 1 :sep nil :folding? nil :label "Perf" :icmName "csSiteRegBox.cs -v 30  -i reg_sapCreate" :comment "Create Service Access Point" :afterComment ""
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Perf/ :: [[elisp:(lsip-local-run-command "csSiteRegBox.cs -v 30  -i reg_sapCreate")][csSiteRegBox.cs -v 30  -i reg_sapCreate]] *|*  =Create Service Access Point= *|*    [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:panel:icm:py:cmnd :outLevel 1 :sep nil :folding? nil :label "Perf" :icmName "csRo-manage.cs --perfName=siteRegistrar --rosmu=csSiteRegBox.cs  -i ro_fps list" :comment "" :afterComment ""
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Perf/ :: [[elisp:(lsip-local-run-command "csRo-manage.cs --perfName=siteRegistrar --rosmu=csSiteRegBox.cs  -i ro_fps list")][csRo-manage.cs --perfName=siteRegistrar --rosmu=csSiteRegBox.cs  -i ro_fps list]] *|*  == *|*    [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:panel:icm:py:cmnd :outLevel 1 :sep nil :folding? nil :label "Perf" :icmName "csSiteRegBox.cs --perfName=siteRegistrar -i csPerformer  &" :comment "Start rpyc CS Service (in Background)" :afterComment ""
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Perf/ :: [[elisp:(lsip-local-run-command "csSiteRegBox.cs --perfName=siteRegistrar -i csPerformer  &")][csSiteRegBox.cs --perfName=siteRegistrar -i csPerformer  &]] *|*  =Start rpyc CS Service (in Background)= *|*    [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "Performer Execution" :anchor "" :extraInfo ""
+* /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
+* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _Performer Execution_: |]]    [[elisp:(org-shifttab)][<)]] E|
+####+END
+####+BEGIN: blee:panel:icm:py:cmnd :outLevel 1 :sep nil :folding? nil :label "Direct" :icmName "csSiteRegBox.cs -v 30 -i perf_boxesList" :comment "Can take some time to run" :afterComment "Be patient"
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Direct/ :: [[elisp:(lsip-local-run-command "csSiteRegBox.cs -v 30 -i perf_boxesList")][csSiteRegBox.cs -v 30 -i perf_boxesList]] *|*  =Can take some time to run= *|*  Be patient  [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "Invoker Configuration and Execution" :anchor "" :extraInfo ""
+* /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
+* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _Invoker Configuration and Execution_: |]]    [[elisp:(org-shifttab)][<)]] E|
+####+END
+####+BEGIN: blee:panel:icm:py:cmnd :outLevel 1 :sep nil :folding? nil :label "Inv" :icmName "csInvSiteRegBox.cs -v 30 -i reg_boxesList" :comment "Can take some time to run" :afterComment "Be patient"
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Inv/ :: [[elisp:(lsip-local-run-command "csInvSiteRegBox.cs -v 30 -i reg_boxesList")][csInvSiteRegBox.cs -v 30 -i reg_boxesList]] *|*  =Can take some time to run= *|*  Be patient  [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:panel:icm:py:cmnd :outLevel 1 :sep nil :folding? nil :label "Inv" :icmName "echo csInvSiteRegBox.cs -v 30 --boxNu=1014  -i reg_boxRead" :comment "Specify boxNu" :afterComment ""
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Inv/ :: [[elisp:(lsip-local-run-command "echo csInvSiteRegBox.cs -v 30 --boxNu=1014  -i reg_boxRead")][echo csInvSiteRegBox.cs -v 30 --boxNu=1014  -i reg_boxRead]] *|*  =Specify boxNu= *|*    [[elisp:(org-shifttab)][<)]] E|
 ####+END:
 ####+BEGIN: blee:bxPanel:separator :outLevel 1
 * /[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]/
