@@ -38,6 +38,8 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 import typing
+
+from bisos import siteRegistrars
 csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['csSiteRegBox'], }
 csInfo['version'] = '202401192758'
 csInfo['status']  = 'inUse'
@@ -318,9 +320,32 @@ class perf_siteBoxesBaseObtain(cs.Cmnd):
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Outcome: Boxes base directory. NOTYET, should become configurable
         #+end_org """): return(cmndOutcome)
 
-        siteBoxesBase = pathlib.Path("/bxo/r3/iso/pmb_clusterNeda-boxes/boxes") # Result
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegBox.cs -i perf_siteBoxesBaseObtain
+#+end_src
+#+RESULTS:
+:
+: /tmp/boxesBase
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        perfName = invSiteRegBox.perfNameGet()
+
+        if perfName == 'siteRegistrar':
+            siteBoxesBase = pathlib.Path("/bxo/r3/iso/pmb_clusterNeda-boxes/boxes") # Result
+
+        elif perfName == 'exampleRegistrar':
+            roSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath(perfName)  # static method
+            sapBaseFps = b.pattern.sameInstance(cs.ro.SapBase_FPs, roSapPath=roSapPath)
+            rosmuControl = sapBaseFps.fps_getParam('rosmuControl')
+            siteBoxesBase = pathlib.Path(rosmuControl.parValueGet())
+
+        else:
+            siteBoxesBase = pathlib.Path("Problem")
 
         return cmndOutcome.set(opResults=siteBoxesBase,)
+
 
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxCreate" :comment "" :extent "verify" :ro "noCli" :parsMand "boxNu uniqBoxId" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv ""
@@ -407,6 +432,16 @@ class perf_boxRead(cs.Cmnd):
         if self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Given boxNu, uniqBoxId and optionally boxName, update the info if missing. Report if inconsistent.
         #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegBox.cs --boxNu=1002 -i perf_boxRead
+#+end_src
+#+RESULTS:
+:
+: ['1002', '4c4c4544-0051-3210-804e-b5c04f334b31', 'box1002']
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
 
 
         boxInfo: typing.Optional[list] = None
@@ -557,6 +592,19 @@ class perf_boxFind(cs.Cmnd):
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  result: boxBaseDir corresponding to uniqBoxId
         #+end_org """): return(cmndOutcome)
 
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegBox.cs --boxName="box1003" -i perf_boxFind
+#+end_src
+#+RESULTS:
+:
+: /bxo/r3/iso/pmb_clusterNeda-boxes/boxes/1003
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+
+
+
         boxBaseDir: typing.Optional[pathlib.Path] = None
 
         if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
@@ -611,6 +659,16 @@ class perf_boxesList(cs.Cmnd):
         if self.cmndDocStr(""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  result: List of all boxes
         #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegBox.cs -i perf_boxesList
+#+end_src
+#+RESULTS:
+:
+:
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
 
         boxesList: typing.Optional[list] = []
 
