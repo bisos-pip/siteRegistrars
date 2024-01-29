@@ -149,14 +149,17 @@ def examples_csu(
     # def cpsInit(): return collections.OrderedDict()
     # def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
 
+    cmndOutcome = b.op.Outcome()
+
     if (thisUniqBoxId := invSiteRegBox.thisBoxUUID().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
+            rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
     ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
 
-    if (thisBoxPath := perf_givenUniqBoxIdFindBoxNuBase().cmnd(
+    if (thisBoxPath := perf_boxFind().cmnd(
             rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
             uniqBoxId=thisUniqBoxId,
     ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
+
     thisBoxNu = thisBoxPath.name
     thisBoxName = f"box{thisBoxNu}"
 
@@ -326,13 +329,28 @@ class perf_siteBoxesBaseObtain(cs.Cmnd):
 #+end_src
 #+RESULTS:
 :
-: /tmp/boxesBase
+: /bxo/r3/iso/pmb_clusterNeda-boxes/boxes
         #+end_org """)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csInvSiteRegBox.cs -i perf_siteBoxesBaseObtain
+#+end_src
+#+RESULTS:
+:
+: /bxo/r3/iso/pmb_clusterNeda-boxes/boxes
+        #+end_org """)
+
         if self.justCaptureP(): return cmndOutcome
 
         perfName = invSiteRegBox.perfNameGet()
 
         if perfName == 'siteRegistrar':
+            # NOTYET
+            # selectedSite = usgAcct.UsgAcctBposNamed.read('sites/selected')
+            # siteBoxesBpoBase = siteBoxes.bpoBase()
+            # boxesBase = siteBoxesBpoBase.join('boxes')
+            #
             siteBoxesBase = pathlib.Path("/bxo/r3/iso/pmb_clusterNeda-boxes/boxes") # Result
 
         elif perfName == 'exampleRegistrar':
@@ -342,7 +360,7 @@ class perf_siteBoxesBaseObtain(cs.Cmnd):
             siteBoxesBase = pathlib.Path(rosmuControl.parValueGet())
 
         else:
-            siteBoxesBase = pathlib.Path("Problem")
+            siteBoxesBase = pathlib.Path(f"Problem: perfName={perfName} --- missing roSap Perhaps?")
 
         return cmndOutcome.set(opResults=siteBoxesBase,)
 
@@ -598,12 +616,10 @@ class perf_boxFind(cs.Cmnd):
 #+end_src
 #+RESULTS:
 :
-: /bxo/r3/iso/pmb_clusterNeda-boxes/boxes/1003
+: Cmnd -- No Results
         #+end_org """)
+
         if self.justCaptureP(): return cmndOutcome
-
-
-
 
         boxBaseDir: typing.Optional[pathlib.Path] = None
 
@@ -738,51 +754,6 @@ class perf_boxNuGetNext(cs.Cmnd):
         nextBoxNu = lastBoxNu + 1
 
         return cmndOutcome.set(opResults=nextBoxNu,)
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_givenUniqBoxIdFindBoxNuBase" :comment "" :extent "verify" :ro "noCli" :parsMand "uniqBoxId" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_givenUniqBoxIdFindBoxNuBase>>  =verify= parsMand=uniqBoxId ro=noCli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class perf_givenUniqBoxIdFindBoxNuBase(cs.Cmnd):
-    cmndParamsMandatory = [ 'uniqBoxId', ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             uniqBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
-    ) -> b.op.Outcome:
-
-        callParamsDict = {'uniqBoxId': uniqBoxId, }
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
-####+END:
-        if self.cmndDocStr(""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  result: boxBaseDir corresponding to uniqBoxId
-        #+end_org """): return(cmndOutcome)
-
-        boxBaseDir: typing.Optional[pathlib.Path] = None
-
-        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
-
-        parNamesList = boxFpNamesList()
-
-        for each in siteBoxesBase.iterdir():
-            if each.name.isnumeric():
-                boxFpsDict = b.fp.parsGetAsDictValue(parNamesList, each,)
-                stored_uniqBoxId = boxFpsDict['uniqueBoxId']
-                if stored_uniqBoxId == uniqBoxId:
-                    boxBaseDir = each
-                    break
-
-        return cmndOutcome.set(opResults=boxBaseDir,)
-
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxesRepoPull" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org

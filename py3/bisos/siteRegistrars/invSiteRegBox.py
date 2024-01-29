@@ -191,14 +191,17 @@ def examples_csu(
     # def cpsInit(): return collections.OrderedDict()
     # def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
 
+    cmndOutcome = b.op.Outcome()
+
     if (thisUniqBoxId := thisBoxUUID().cmnd(
                 rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
     ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
 
-    if (thisBoxPath := perfSiteRegBox.perf_givenUniqBoxIdFindBoxNuBase().cmnd(
+    if (thisBoxPath := perfSiteRegBox.perf_boxFind().cmnd(
             rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
             uniqBoxId=thisUniqBoxId,
     ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
+
     thisBoxNu = thisBoxPath.name
     thisBoxName = f"box{thisBoxNu}"
 
@@ -277,7 +280,6 @@ SCHEDULED: <2024-01-24 Wed>
         return  'exampleRegistrar'
 
     if roSiteRegistrarSapPath.exists():
-        print(roSiteRegistrarSapPath)
         return  'siteRegistrar'
 
     return ''

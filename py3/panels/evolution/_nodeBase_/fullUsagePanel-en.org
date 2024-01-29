@@ -41,6 +41,22 @@
 * [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _Current Revision  plans_: |]]    [[elisp:(org-shifttab)][<)]] E|
 ####+END
 * +
+* =========== Github Repos Create  Begin } ==================
+* DONE bxGenesis/start/raw-bisos.sh          CREATED::bxGenesis/start
+* DONE Create bso-genesis-site  bso-genesis-siteRegBox  bso-genesis-siteRegContainer CREATED
+* DONE Build bisos.sites -- CREATED  Sets up /bisos/sites and ~/bpos//site /bisos/var/sites/xx
+* DONE Build bisos.usgAcct CREATED -- Obtains ~/bpos/sites/selected
+* =========== Github Repos Create  End }  ===================
+* TODO adoptingByStar doc also in startHere of github/mohsen
+* TODO For exampleRegistrar, use rosmuSel to specify /tmp/exampleRegistrar//roSap/. Seems to have been in design
+* TODO absorb previous engineering/genesis with adoptByStar
+* TODO Add support for siteRegBoxParams -- Where you read params from base like with reSapManager
+* TODO Locate sites from ~/bpos/sites/selected
+* TODO In siteBpos have a var link to /bisos/var/sites/siteName
+* TODO Figure and complete /bisos/sites/selected/
+* TODO In bxGits/bisos Create bso-genesis-siteBoxes. Create //bxo/bso//genesis-siteBoxes with links
+* WAITING Look at exisiting siteAssignContainer for tracking base of registrars bpos
+* TODO Replecate siteAssignContainer for tracking base of registrars in python.
 * TODO [#A] Complete box to equivalent of bash.
 DEADLINE: <2024-01-22 Mon> SCHEDULED: <2024-01-21 Sun>
 ** TODO Create invSite.py and perfSite.py
