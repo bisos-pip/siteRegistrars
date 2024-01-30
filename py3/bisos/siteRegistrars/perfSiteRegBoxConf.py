@@ -9,7 +9,7 @@
 * [[elisp:(org-cycle)][| /Control Parameters Of This File/ |]] :: dblk ctrls classifications=cs-u
 #+BEGIN_SRC emacs-lisp
 (setq-local b:dblockControls t) ; (setq-local b:dblockControls nil)
-(put 'b:dblockControls 'py3:cs:Classification "cs-u") ; one of cs-mu, cs-u, cs-lib, b-lib, pyLibPure
+(put 'b:dblockControls 'py3:cs:Classification "cs-u") ; one of cs-mu, cs-u, cs-lib, bpf-lib, pyLibPure
 #+END_SRC
 #+RESULTS:
 : cs-u
@@ -18,17 +18,17 @@
 
 ####+BEGIN: b:prog:file/proclamations :outLevel 1
 """ #+begin_org
-* *[[elisp:(org-cycle)][| Proclamations |]]* :: Libre-Halaal Software --- Part Of Blee ---  Poly-COMEEGA Format.
-** This is Libre-Halaal Software. © Libre-Halaal Foundation. Subject to AGPL.
-** It is not part of Emacs. It is part of Blee.
-** Best read and edited  with Poly-COMEEGA (Polymode Colaborative Org-Mode Enhance Emacs Generalized Authorship)
+* *[[elisp:(org-cycle)][| Proclamations |]]* :: Libre-Halaal Software --- Part Of BISOS ---  Poly-COMEEGA Format.
+** This is Libre-Halaal Software. © Neda Communications, Inc. Subject to AGPL.
+** It is part of BISOS (ByStar Internet Services OS)
+** Best read and edited  with Blee in Poly-COMEEGA (Polymode Colaborative Org-Mode Enhance Emacs Generalized Authorship)
 #+end_org """
 ####+END:
 
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: NOTYET
+** This File: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/bisos/siteRegistrars/perfSiteRegBoxConf.py
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -38,10 +38,10 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['ro'], }
-csInfo['version'] = '202209130210'
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['perfSiteRegBoxConf'], }
+csInfo['version'] = '202401295255'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'ro-Panel.org'
+csInfo['panel'] = 'perfSiteRegBoxConf-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
@@ -57,8 +57,9 @@ Module description comes here.
 
 ####+BEGIN: b:prog:file/orgTopControls :outLevel 1
 """ #+begin_org
-* [[elisp:(org-cycle)][| Controls |]] :: [[elisp:(delete-other-windows)][(1)]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+* [[elisp:(org-cycle)][| Controls |]] :: [[elisp:(delete-other-windows)][(1)]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
 ** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
+
 #+end_org """
 ####+END:
 
@@ -102,7 +103,7 @@ from bisos.usgAcct import usgAcct
 
 ####+BEGIN: b:py3:cs:func/typing :funcName "examples_csu" :funcType "eType" :retType "" :deco "default" :argsList ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-T-eType  [[elisp:(outline-show-subtree+toggle)][||]] /examples_csu/ deco=default  deco=default   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-T-eType  [[elisp:(outline-show-subtree+toggle)][||]] /examples_csu/  deco=default  [[elisp:(org-cycle)][| ]]
 #+end_org """
 @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
 def examples_csu(
@@ -117,11 +118,11 @@ def examples_csu(
     def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
 
     if sectionTitle == 'default':
-        cs.examples.menuChapter('*Invoker Site Registrar Box Configuration*')
+        cs.examples.menuChapter('*Performer Site Registrar Box Configuration*')
 
     icmWrapper = ""
-    cmndName = "invSiteRegBoxConf_set"
-    cps = cpsInit() ; cps['regBoxPerfAddrs'] = "['localhost']"
+    cmndName = "perfSiteRegBoxConf_set"
+    cps = cpsInit() ; cps['regBoxesBpoId'] = '["localhost"]'
     cmndArgs = "" ;
 
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
@@ -132,44 +133,44 @@ def examples_csu(
     cs.examples.menuChapter('FileParams Access And Management*')
 
     icmWrapper = ""
-    cmndName = "invSiteRegBoxConf_fps"
+    cmndName = "perfSiteRegBoxConf_fps"
     cps = cpsInit()
     cmndArgs = "list" ;
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
 
     icmWrapper = ""
-    cmndName = "invSiteRegBoxConf_fps"
+    cmndName = "perfSiteRegBoxConf_fps"
     cps = cpsInit()
     cmndArgs = "menu" ;
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
 
 ####+BEGIN: b:py3:cs:func/args :funcName "commonParamsSpecify" :comment "Params Spec for: --aipxBase --aipxRoot" :funcType "FmWrk" :retType "Void" :deco "" :argsList "icmParams"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-A-FmWrk  [[elisp:(outline-show-subtree+toggle)][||]] /commonParamsSpecify/ deco=   [[elisp:(org-cycle)][| ]] =Params Spec for: --aipxBase --aipxRoot=   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-A-FmWrk  [[elisp:(outline-show-subtree+toggle)][||]] /commonParamsSpecify/ deco=  [[elisp:(org-cycle)][| ]] =Params Spec for: --aipxBase --aipxRoot=  [[elisp:(org-cycle)][| ]]
 #+end_org """
 def commonParamsSpecify(
     icmParams,
 ):
 ####+END:
     """
-** --regBoxPerfAddrs
+** --regBoxesBpoId
     """
 
-    RegBoxInvConf_FPs.fps_asCsParamsAdd(icmParams,)
+    RegBoxPerfConf_FPs.fps_asCsParamsAdd(icmParams,)
 
 
-####+BEGIN: bx:dblock:python:class :className "RegBoxInvConf_FPs" :superClass "b.fpCls.BaseDir" :comment "" :classType "basic"
+####+BEGIN: bx:dblock:python:class :className "RegBoxPerfConf_FPs" :superClass "b.fpCls.BaseDir" :comment "" :classType "basic"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-basic  [[elisp:(outline-show-subtree+toggle)][||]] /RegBoxInvConf_FPs/ b.fpCls.BaseDir  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-basic  [[elisp:(outline-show-subtree+toggle)][||]] /RegBoxPerfConf_FPs/ b.fpCls.BaseDir  [[elisp:(org-cycle)][| ]]
 #+end_org """
-class RegBoxInvConf_FPs(b.fpCls.BaseDir):
+class RegBoxPerfConf_FPs(b.fpCls.BaseDir):
 ####+END:
     """
 ** Abstraction of the
 """
 ####+BEGIN: b:py3:cs:method/typing :methodName "__init__" :deco "default"
     """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /__init__/ deco=default  deco=default   [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /__init__/  deco=default  [[elisp:(org-cycle)][| ]]
     #+end_org """
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def __init__(
@@ -199,21 +200,21 @@ class RegBoxInvConf_FPs(b.fpCls.BaseDir):
     ):
         """staticmethod: takes in icmParms and augments it with fileParams. returns icmParams."""
         icmParams.parDictAdd(
-            parName='regBoxPerfAddrs',
+            parName='regBoxesBpoId',
             parDescription="",
             parDataType=None,
             parDefault=None,
             parChoices=list(),
             #parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
             argparseShortOpt=None,
-            argparseLongOpt='--regBoxPerfAddrs',
+            argparseLongOpt='--regBoxesBpoId',
         )
 
         return icmParams
 
 ####+BEGIN: b:py3:cs:method/typing :methodName "fps_manifestDictBuild" :deco ""
     """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /fps_manifestDict/ deco=    [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /fps_manifestDictBuild/   [[elisp:(org-cycle)][| ]]
     #+end_org """
     def fps_manifestDictBuild(
 ####+END:
@@ -224,7 +225,7 @@ class RegBoxInvConf_FPs(b.fpCls.BaseDir):
         csParams = cs.G.icmParamDictGet()
         self._manifestDict = {}
         paramsList = [
-                'regBoxPerfAddrs',
+                'regBoxesBpoId',
         ]
         for eachParam in paramsList:
             thisCsParam = csParams.parNameFind(eachParam)   # type: ignore
@@ -236,10 +237,9 @@ class RegBoxInvConf_FPs(b.fpCls.BaseDir):
 
         return self._manifestDict
 
-
 ####+BEGIN: b:py3:cs:method/typing :methodName "fps_absBasePath" :deco "default"
     """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /fps_absBasePath/ deco=default  deco=default   [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /fps_absBasePath/  deco=default  [[elisp:(org-cycle)][| ]]
     #+end_org """
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def fps_absBasePath(
@@ -248,11 +248,9 @@ class RegBoxInvConf_FPs(b.fpCls.BaseDir):
     ):
         return typing.cast(str, self.basePath_obtain())
 
-
-
 ####+BEGIN: b:py3:cs:method/typing :methodName "basePath_obtain" :deco "default"
     """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /basePath_obtain/ deco=default  deco=default   [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /basePath_obtain/  deco=default  [[elisp:(org-cycle)][| ]]
     #+end_org """
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def basePath_obtain(
@@ -260,13 +258,13 @@ class RegBoxInvConf_FPs(b.fpCls.BaseDir):
            self,
     ) -> pathlib.Path:
 
-        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/inv.fp')
+        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/perf.fp')
         assert fpsBase.exists()
         return fpsBase
 
 ####+BEGIN: b:py3:cs:method/typing :methodName "basePath_update" :deco "default"
     """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /basePath_update/ deco=default  deco=default   [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /basePath_update/  deco=default  [[elisp:(org-cycle)][| ]]
     #+end_org """
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def basePath_update(
@@ -280,7 +278,7 @@ class RegBoxInvConf_FPs(b.fpCls.BaseDir):
 
 ####+BEGIN: b:py3:cs:method/typing :methodName "fps_baseMake" :deco "default"
     """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /fps_baseMake/ deco=default  deco=default   [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /fps_baseMake/  deco=default  [[elisp:(org-cycle)][| ]]
     #+end_org """
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def fps_baseMake(
@@ -295,18 +293,19 @@ class RegBoxInvConf_FPs(b.fpCls.BaseDir):
         #return self.fpsBaseInst
         pass
 
+
 ####+BEGIN: bx:cs:py3:section :title "CS ro_sap Cmnds"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *CS ro_sap Cmnds*  [[elisp:(org-cycle)][| ]]
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "invSiteRegBoxConf_set" :ro "noCli" :comment "" :parsMand "regBoxPerfAddrs" :parsOpt "" :argsMin 0 :argsMax 0
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perfSiteRegBoxConf_set" :ro "noCli" :comment "" :parsMand "regBoxesBpoId" :parsOpt "" :argsMin 0 :argsMax 0
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<invSiteRegBoxConf_set>>  =verify= parsMand=regBoxPerfAddrs ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perfSiteRegBoxConf_set>>  =verify= parsMand=regBoxesBpoId ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class invSiteRegBoxConf_set(cs.Cmnd):
-    cmndParamsMandatory = [ 'regBoxPerfAddrs', ]
+class perfSiteRegBoxConf_set(cs.Cmnd):
+    cmndParamsMandatory = [ 'regBoxesBpoId', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
     rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
@@ -315,30 +314,29 @@ class invSiteRegBoxConf_set(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
-             regBoxPerfAddrs: typing.Optional[str]=None,  # Cs Mandatory Param
+             regBoxesBpoId: typing.Optional[str]=None,  # Cs Mandatory Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'regBoxPerfAddrs': regBoxPerfAddrs, }
+        callParamsDict = {'regBoxesBpoId': regBoxesBpoId, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
-        regBoxPerfAddrs = csParam.mappedValue('regBoxPerfAddrs', regBoxPerfAddrs)
+        regBoxesBpoId = csParam.mappedValue('regBoxesBpoId', regBoxesBpoId)
 ####+END:
         """\
 ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Creates path for ro_sap and updates FPs
         """
 
-        confFps = b.pattern.sameInstance(RegBoxInvConf_FPs,)
+        confFps = b.pattern.sameInstance(RegBoxPerfConf_FPs,)
 
-        confFps.fps_setParam('regBoxPerfAddrs', regBoxPerfAddrs)
+        confFps.fps_setParam('regBoxesBpoId', regBoxesBpoId)
 
         return(cmndOutcome)
 
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "invSiteRegBoxConf_fps" :comment ""  :extent "noVerify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 9999 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perfSiteRegBoxConf_fps" :comment ""  :extent "noVerify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 9999 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<invSiteRegBoxConf_fps>>  =noVerify= argsMin=1 argsMax=9999 ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perfSiteRegBoxConf_fps>>  =noVerify= argsMin=1 argsMax=9999 ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class invSiteRegBoxConf_fps(cs.Cmnd):
+class perfSiteRegBoxConf_fps(cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 1, 'Max': 9999,}
@@ -361,10 +359,10 @@ class invSiteRegBoxConf_fps(cs.Cmnd):
         action = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
         actionArgs = self.cmndArgsGet("1&9999", cmndArgsSpecDict, argsList)
 
-        confFps = b.pattern.sameInstance(RegBoxInvConf_FPs,)
+        confFps = b.pattern.sameInstance(RegBoxPerfConf_FPs,)
 
         if action == "list":
-            # print(f"With fpBase={roSapPath} and cls={RegBoxInvConf_FPs} name={sapBaseFps.__class__.__name__}.")
+            # print(f"With fpBase={roSapPath} and cls={RegBoxPerfConf_FPs} name={sapBaseFps.__class__.__name__}.")
             if b.fpCls.fpParamsReveal(cmndOutcome=cmndOutcome).cmnd(
                     rtInv=rtInv,
                     cmndOutcome=cmndOutcome,
@@ -374,7 +372,7 @@ class invSiteRegBoxConf_fps(cs.Cmnd):
             ).isProblematic(): return(b_io.EH_badOutcome(cmndOutcome))
 
         elif action == "menu":
-            print(f"With fpBase={roSapPath} and cls={RegBoxInvConf_FPs} NOTYET.")
+            print(f"With fpBase={roSapPath} and cls={RegBoxPerfConf_FPs} NOTYET.")
         else:
             print(f"bad input {action}")
 
@@ -382,7 +380,7 @@ class invSiteRegBoxConf_fps(cs.Cmnd):
 
 ####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
     """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default   [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
     #+end_org """
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmndArgsSpec(self, ):
@@ -410,7 +408,7 @@ class invSiteRegBoxConf_fps(cs.Cmnd):
 
 ####+BEGIN: b:py3:cs:framework/endOfFile :basedOn "classification"
 """ #+begin_org
-* *[[elisp:(org-cycle)][| ~End-Of-Editable-Text~ |]]* :: emacs and org variables and control parameters
+* [[elisp:(org-cycle)][| *End-Of-Editable-Text* |]] :: emacs and org variables and control parameters
 #+end_org """
 
 #+STARTUP: showall
