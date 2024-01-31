@@ -28,7 +28,7 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/bisos/siteRegistrars/csSiteRegBox.py
+** This File: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/bisos/siteRegistrars/csSiteRegContainer.py
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -40,7 +40,7 @@
 import typing
 
 from bisos import siteRegistrars
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['csSiteRegBox'], }
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['csSiteRegContainer'], }
 csInfo['version'] = '202401192758'
 csInfo['status']  = 'inUse'
 csInfo['panel'] = "[[../../panels/_nodeBase_/fullUsagePanel-en.org]]"
@@ -90,8 +90,8 @@ from bisos.common import csParam
 import collections
 ####+END:
 
-from bisos.siteRegistrars import invSiteRegBox
-from bisos.siteRegistrars import perfSiteRegBoxConf
+from bisos.siteRegistrars import invSiteRegContainer
+from bisos.siteRegistrars import perfSiteRegContainerConf
 from bisos.bpo import bpo
 
 import pwd
@@ -153,7 +153,7 @@ def examples_csu(
 
     cmndOutcome = b.op.Outcome()
 
-    if (thisUniqBoxId := invSiteRegBox.thisBoxUUID().cmnd(
+    if (thisUniqBoxId := invSiteRegContainer.thisBoxUUID().cmnd(
             rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
     ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
 
@@ -291,7 +291,7 @@ def boxFpNamesList(
 ** [[elisp:(org-cycle)][| *DocStr | ]
     #+end_org """
 
-    return invSiteRegBox.boxFpNamesList()
+    return invSiteRegContainer.boxFpNamesList()
     #return [ 'boxNu', 'boxId',  'uniqueBoxId',  ]
 
 
@@ -327,7 +327,7 @@ class perf_siteBoxesBaseObtain(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs -i perf_siteBoxesBaseObtain
+  csSiteRegContainer.cs -i perf_siteBoxesBaseObtain
 #+end_src
 #+RESULTS:
 :
@@ -335,10 +335,10 @@ class perf_siteBoxesBaseObtain(cs.Cmnd):
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
 
-        perfName = invSiteRegBox.perfNameGet()
+        perfName = invSiteRegContainer.perfNameGet()
 
         if perfName == 'siteRegistrar':
-            confFps = perfSiteRegBoxConf.RegBoxPerfConf_FPs()
+            confFps = perfSiteRegContainerConf.RegContainerPerfConf_FPs()
             boxesBpoId_fp =  confFps.fps_getParam('regBoxesBpoId')
             boxesBpoPath = bpo.bpoBaseDir_obtain(boxesBpoId_fp.parValueGet())
             siteBoxesBase = pathlib.Path(boxesBpoPath).joinpath('boxes') # Result
@@ -443,7 +443,7 @@ class perf_boxRead(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs --boxNu=1002 -i perf_boxRead
+  csSiteRegContainer.cs --boxNu=1002 -i perf_boxRead
 #+end_src
 #+RESULTS:
 :
@@ -602,7 +602,7 @@ class perf_boxFind(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs --boxName="box1003" -i perf_boxFind
+  csSiteRegContainer.cs --boxName="box1003" -i perf_boxFind
 #+end_src
 #+RESULTS:
 :
@@ -668,7 +668,7 @@ class perf_boxesList(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs -i perf_boxesList
+  csSiteRegContainer.cs -i perf_boxesList
 #+end_src
 #+RESULTS:
 :

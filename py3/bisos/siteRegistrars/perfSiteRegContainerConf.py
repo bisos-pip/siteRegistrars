@@ -28,7 +28,7 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/bisos/siteRegistrars/perfSiteRegBoxConf.py
+** This File: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/bisos/siteRegistrars/perfSiteRegContainerConf.py
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -38,10 +38,10 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['perfSiteRegBoxConf'], }
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['perfSiteRegContainerConf'], }
 csInfo['version'] = '202401295255'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'perfSiteRegBoxConf-Panel.org'
+csInfo['panel'] = 'perfSiteRegContainerConf-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
@@ -118,11 +118,11 @@ def examples_csu(
     def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
 
     if sectionTitle == 'default':
-        cs.examples.menuChapter('*Performer Site Registrar Box Configuration*')
+        cs.examples.menuChapter('*Performer Site Registrar Container Configuration*')
 
     icmWrapper = ""
-    cmndName = "perfSiteRegBoxConf_set"
-    cps = cpsInit() ; cps['regBoxesBpoId'] = '["localhost"]'
+    cmndName = "perfSiteRegContainerConf_set"
+    cps = cpsInit() ; cps['regContainersBpoId'] = 'pmc_clusterNeda-containers'
     cmndArgs = "" ;
 
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
@@ -133,13 +133,13 @@ def examples_csu(
     cs.examples.menuChapter('FileParams Access And Management*')
 
     icmWrapper = ""
-    cmndName = "perfSiteRegBoxConf_fps"
+    cmndName = "perfSiteRegContainerConf_fps"
     cps = cpsInit()
     cmndArgs = "list" ;
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
 
     icmWrapper = ""
-    cmndName = "perfSiteRegBoxConf_fps"
+    cmndName = "perfSiteRegContainerConf_fps"
     cps = cpsInit()
     cmndArgs = "menu" ;
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
@@ -153,17 +153,17 @@ def commonParamsSpecify(
 ):
 ####+END:
     """
-** --regBoxesBpoId
+** --regContainersBpoId
     """
 
-    RegBoxPerfConf_FPs.fps_asCsParamsAdd(icmParams,)
+    RegContainerPerfConf_FPs.fps_asCsParamsAdd(icmParams,)
 
 
-####+BEGIN: bx:dblock:python:class :className "RegBoxPerfConf_FPs" :superClass "b.fpCls.BaseDir" :comment "" :classType "basic"
+####+BEGIN: bx:dblock:python:class :className "RegContainerPerfConf_FPs" :superClass "b.fpCls.BaseDir" :comment "" :classType "basic"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-basic  [[elisp:(outline-show-subtree+toggle)][||]] /RegBoxPerfConf_FPs/ b.fpCls.BaseDir  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-basic  [[elisp:(outline-show-subtree+toggle)][||]] /RegContainerPerfConf_FPs/ b.fpCls.BaseDir  [[elisp:(org-cycle)][| ]]
 #+end_org """
-class RegBoxPerfConf_FPs(b.fpCls.BaseDir):
+class RegContainerPerfConf_FPs(b.fpCls.BaseDir):
 ####+END:
     """
 ** Abstraction of the
@@ -200,14 +200,14 @@ class RegBoxPerfConf_FPs(b.fpCls.BaseDir):
     ):
         """staticmethod: takes in icmParms and augments it with fileParams. returns icmParams."""
         icmParams.parDictAdd(
-            parName='regBoxesBpoId',
+            parName='regContainersBpoId',
             parDescription="",
             parDataType=None,
             parDefault=None,
             parChoices=list(),
             #parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
             argparseShortOpt=None,
-            argparseLongOpt='--regBoxesBpoId',
+            argparseLongOpt='--regContainersBpoId',
         )
 
         return icmParams
@@ -225,7 +225,7 @@ class RegBoxPerfConf_FPs(b.fpCls.BaseDir):
         csParams = cs.G.icmParamDictGet()
         self._manifestDict = {}
         paramsList = [
-                'regBoxesBpoId',
+                'regContainersBpoId',
         ]
         for eachParam in paramsList:
             thisCsParam = csParams.parNameFind(eachParam)   # type: ignore
@@ -258,7 +258,7 @@ class RegBoxPerfConf_FPs(b.fpCls.BaseDir):
            self,
     ) -> pathlib.Path:
 
-        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/perf.fp')
+        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/perf.fps')
         assert fpsBase.exists()
         return fpsBase
 
@@ -300,12 +300,12 @@ class RegBoxPerfConf_FPs(b.fpCls.BaseDir):
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perfSiteRegBoxConf_set" :ro "noCli" :comment "" :parsMand "regBoxesBpoId" :parsOpt "" :argsMin 0 :argsMax 0
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perfSiteRegContainerConf_set" :ro "noCli" :comment "" :parsMand "regContainersBpoId" :parsOpt "" :argsMin 0 :argsMax 0
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perfSiteRegBoxConf_set>>  =verify= parsMand=regBoxesBpoId ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perfSiteRegContainerConf_set>>  =verify= parsMand=regContainersBpoId ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class perfSiteRegBoxConf_set(cs.Cmnd):
-    cmndParamsMandatory = [ 'regBoxesBpoId', ]
+class perfSiteRegContainerConf_set(cs.Cmnd):
+    cmndParamsMandatory = [ 'regContainersBpoId', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
     rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
@@ -314,29 +314,29 @@ class perfSiteRegBoxConf_set(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
-             regBoxesBpoId: typing.Optional[str]=None,  # Cs Mandatory Param
+             regContainersBpoId: typing.Optional[str]=None,  # Cs Mandatory Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'regBoxesBpoId': regBoxesBpoId, }
+        callParamsDict = {'regContainersBpoId': regContainersBpoId, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
-        regBoxesBpoId = csParam.mappedValue('regBoxesBpoId', regBoxesBpoId)
+        regContainersBpoId = csParam.mappedValue('regContainersBpoId', regContainersBpoId)
 ####+END:
         """\
 ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Creates path for ro_sap and updates FPs
         """
 
-        confFps = b.pattern.sameInstance(RegBoxPerfConf_FPs,)
+        confFps = b.pattern.sameInstance(RegContainerPerfConf_FPs,)
 
-        confFps.fps_setParam('regBoxesBpoId', regBoxesBpoId)
+        confFps.fps_setParam('regContainersBpoId', regContainersBpoId)
 
         return(cmndOutcome)
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perfSiteRegBoxConf_fps" :comment ""  :extent "noVerify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 9999 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perfSiteRegContainerConf_fps" :comment ""  :extent "noVerify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 9999 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perfSiteRegBoxConf_fps>>  =noVerify= argsMin=1 argsMax=9999 ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perfSiteRegContainerConf_fps>>  =noVerify= argsMin=1 argsMax=9999 ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class perfSiteRegBoxConf_fps(cs.Cmnd):
+class perfSiteRegContainerConf_fps(cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 1, 'Max': 9999,}
@@ -359,10 +359,10 @@ class perfSiteRegBoxConf_fps(cs.Cmnd):
         action = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
         actionArgs = self.cmndArgsGet("1&9999", cmndArgsSpecDict, argsList)
 
-        confFps = b.pattern.sameInstance(RegBoxPerfConf_FPs,)
+        confFps = b.pattern.sameInstance(RegContainerPerfConf_FPs,)
 
         if action == "list":
-            # print(f"With fpBase={roSapPath} and cls={RegBoxPerfConf_FPs} name={sapBaseFps.__class__.__name__}.")
+            # print(f"With fpBase={roSapPath} and cls={RegContainerPerfConf_FPs} name={sapBaseFps.__class__.__name__}.")
             if b.fpCls.fpParamsReveal(cmndOutcome=cmndOutcome).cmnd(
                     rtInv=rtInv,
                     cmndOutcome=cmndOutcome,
@@ -372,7 +372,7 @@ class perfSiteRegBoxConf_fps(cs.Cmnd):
             ).isProblematic(): return(b_io.EH_badOutcome(cmndOutcome))
 
         elif action == "menu":
-            print(f"With fpBase={roSapPath} and cls={RegBoxPerfConf_FPs} NOTYET.")
+            print(f"With fpBase={roSapPath} and cls={RegContainerPerfConf_FPs} NOTYET.")
         else:
             print(f"bad input {action}")
 

@@ -122,7 +122,7 @@ def examples_csu(
 
     icmWrapper = ""
     cmndName = "perfSiteRegBoxConf_set"
-    cps = cpsInit() ; cps['regBoxesBpoId'] = '["localhost"]'
+    cps = cpsInit() ; cps['regBoxesBpoId'] = 'pmb_clusterNeda-boxes'
     cmndArgs = "" ;
 
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
@@ -258,7 +258,7 @@ class RegBoxPerfConf_FPs(b.fpCls.BaseDir):
            self,
     ) -> pathlib.Path:
 
-        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/perf.fp')
+        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/perf.fps')
         assert fpsBase.exists()
         return fpsBase
 

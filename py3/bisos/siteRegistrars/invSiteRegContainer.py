@@ -28,7 +28,7 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/bisos/siteRegistrars/csSiteRegBox.py
+** This File: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/bisos/siteRegistrars/csSiteRegContainer.py
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -38,7 +38,7 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['csSiteRegBox'], }
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['csSiteRegContainer'], }
 csInfo['version'] = '202401192758'
 csInfo['status']  = 'inUse'
 csInfo['panel'] = "[[../../panels/_nodeBase_/fullUsagePanel-en.org]]"
@@ -88,9 +88,9 @@ from bisos.common import csParam
 import collections
 ####+END:
 
-from bisos.siteRegistrars import perfSiteRegBox
+from bisos.siteRegistrars import perfSiteRegContainer
 from bisos.siteRegistrars import siteRegPortNu
-from bisos.siteRegistrars import invSiteRegBoxConf
+from bisos.siteRegistrars import invSiteRegContainerConf
 
 import pwd
 import pathlib
@@ -199,7 +199,7 @@ def examples_csu(
                 rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
     ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
 
-    # if (thisBoxPath := perfSiteRegBox.perf_boxFind().cmnd(
+    # if (thisBoxPath := perfSiteRegContainer.perf_boxFind().cmnd(
     #         rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
     #         uniqBoxId=thisUniqBoxId,
     # ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
@@ -222,8 +222,8 @@ def examples_csu(
     cmndName = "reg_sapCreate" ; cmndArgs = "" ; cps = collections.OrderedDict() ;
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
-    print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="csSiteRegBox.cs"  -i ro_fps list""")
-    print(f"""csSiteRegBox.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
+    print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="csSiteRegContainer.cs"  -i ro_fps list""")
+    print(f"""csSiteRegContainer.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
 
     if sectionTitle == 'default': cs.examples.menuChapter('*Registrar Svc Commands -- perfName=siteRegistrar*')
 
@@ -420,37 +420,37 @@ class reg_sapCreate(cs.Cmnd):
         """
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs -i reg_sapCreate
+  csSiteRegContainer.cs -i reg_sapCreate
 #+end_src
 #+RESULTS:
 #+begin_example
 
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/perfIpAddr/value value=192.168.0.90
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/perfPortNu/value value=22222001
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/accessControl/value value=placeholder
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/perfName/value value=siteRegistrar
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/perfModel/value value=rpyc
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/rosmu/value value=csSiteRegBox.cs
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/rosmuSel/value value=default
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/rosmuControl/value value=bisos
-/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/perfIpAddr/value value=192.168.0.90
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/perfPortNu/value value=22222001
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/accessControl/value value=placeholder
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/perfName/value value=siteRegistrar
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/perfModel/value value=rpyc
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/rosmu/value value=csSiteRegContainer.cs
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/rosmuSel/value value=default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/rosmuControl/value value=bisos
+/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default
 #+end_example
 
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs --rosmuControl="/tmp/boxesBase"  -i reg_sapCreate
+  csSiteRegContainer.cs --rosmuControl="/tmp/boxesBase"  -i reg_sapCreate
 #+end_src
 #+RESULTS:
 #+begin_example
 
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpyc/default/perfIpAddr/value value=localhost
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpyc/default/perfPortNu/value value=22222001
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpyc/default/accessControl/value value=placeholder
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpyc/default/perfName/value value=exampleRegistrar
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpyc/default/perfModel/value value=rpyc
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpyc/default/rosmu/value value=csSiteRegBox.cs
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpyc/default/rosmuSel/value value=default
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpyc/default/rosmuControl/value value=/tmp/boxesBase
-/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpyc/default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/exampleRegistrar/rpyc/default/perfIpAddr/value value=localhost
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/exampleRegistrar/rpyc/default/perfPortNu/value value=22222001
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/exampleRegistrar/rpyc/default/accessControl/value value=placeholder
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/exampleRegistrar/rpyc/default/perfName/value value=exampleRegistrar
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/exampleRegistrar/rpyc/default/perfModel/value value=rpyc
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/exampleRegistrar/rpyc/default/rosmu/value value=csSiteRegContainer.cs
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/exampleRegistrar/rpyc/default/rosmuSel/value value=default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/exampleRegistrar/rpyc/default/rosmuControl/value value=/tmp/boxesBase
+/bisos/var/cs/ro/sap/csSiteRegContainer.cs/exampleRegistrar/rpyc/default
 #+end_example
 
         #+end_org """)
@@ -468,7 +468,7 @@ FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpy
             rosmuSel = "default"
             rosmuControl = 'bisos'
 
-            confFps = invSiteRegBoxConf.RegBoxInvConf_FPs()
+            confFps = invSiteRegContainerConf.RegContainerInvConf_FPs()
             ipAddrs_fp =  confFps.fps_getParam('regBoxPerfAddrs')
             ipAddrStr = ipAddrs_fp.parValueGet()
             print(ipAddrStr)
@@ -481,7 +481,7 @@ FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpy
         if (perfPortList := siteRegPortNu.portNuOf().cmnd(
                 rtInv=cs.RtInvoker.new_py(),
                 cmndOutcome=cmndOutcome,
-                argsList=['csSiteRegBox']
+                argsList=['csSiteRegContainer']
         ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
 
         perfPortNu = perfPortList[0]
@@ -529,7 +529,7 @@ class reg_boxAdd(cs.Cmnd):
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
         #+end_org """): return(cmndOutcome)
 
-        cmndClass = perfSiteRegBox.ro_boxAdd
+        cmndClass = perfSiteRegContainer.ro_boxAdd
         cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
@@ -567,7 +567,7 @@ class reg_boxRead(cs.Cmnd):
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
         #+end_org """): return(cmndOutcome)
 
-        cmndClass = perfSiteRegBox.ro_boxRead
+        cmndClass = perfSiteRegContainer.ro_boxRead
         cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
@@ -610,7 +610,7 @@ class reg_boxUpdate(cs.Cmnd):
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
         #+end_org """): return(cmndOutcome)
 
-        cmndClass = perfSiteRegBox.ro_boxUpdate
+        cmndClass = perfSiteRegContainer.ro_boxUpdate
         cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
@@ -648,7 +648,7 @@ class reg_boxDelete(cs.Cmnd):
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
         #+end_org """): return(cmndOutcome)
 
-        cmndClass = perfSiteRegBox.ro_boxDelete
+        cmndClass = perfSiteRegContainer.ro_boxDelete
         cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
@@ -689,7 +689,7 @@ class reg_boxFind(cs.Cmnd):
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
         #+end_org """): return(cmndOutcome)
 
-        cmndClass = perfSiteRegBox.ro_boxFind
+        cmndClass = perfSiteRegContainer.ro_boxFind
         cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
@@ -725,7 +725,7 @@ class reg_boxesList(cs.Cmnd):
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
         #+end_org """): return(cmndOutcome)
 
-        cmndClass = perfSiteRegBox.ro_boxesList
+        cmndClass = perfSiteRegContainer.ro_boxesList
         cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(

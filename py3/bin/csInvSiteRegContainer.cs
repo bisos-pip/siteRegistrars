@@ -99,13 +99,13 @@ import collections
    "blee.csPlayer.bleep"
    "bisos.b.fpCls"
    "bisos.b.clsMethod_csu"
-   "bisos.siteRegistrars.invSiteRegBox"
-   "bisos.siteRegistrars.perfSiteRegBox"
-   "bisos.siteRegistrars.invSiteRegBoxConf"
+   "bisos.siteRegistrars.invSiteRegContainer"
+   "bisos.siteRegistrars.perfSiteRegContainer"
+   "bisos.siteRegistrars.invSiteRegContainerConf"
  ))
 #+END_SRC
 #+RESULTS:
-| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.siteRegistrars.invSiteRegBox | bisos.siteRegistrars.perfSiteRegBox | bisos.siteRegistrars.invSiteRegBoxConf |
+| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.siteRegistrars.invSiteRegContainer | bisos.siteRegistrars.perfSiteRegContainer | bisos.siteRegistrars.invSiteRegContainerConf |
 #+end_org """
 
 ####+BEGIN: b:py3:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t
@@ -117,12 +117,12 @@ from bisos.b.cs import ro
 from blee.csPlayer import bleep
 from bisos.b import fpCls
 from bisos.b import clsMethod_csu
-from bisos.siteRegistrars import invSiteRegBox
-from bisos.siteRegistrars import perfSiteRegBox
-from bisos.siteRegistrars import invSiteRegBoxConf
+from bisos.siteRegistrars import invSiteRegContainer
+from bisos.siteRegistrars import perfSiteRegContainer
+from bisos.siteRegistrars import invSiteRegContainerConf
 
 
-csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.siteRegistrars.invSiteRegBox', 'bisos.siteRegistrars.perfSiteRegBox', 'bisos.siteRegistrars.invSiteRegBoxConf', ]
+csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.siteRegistrars.invSiteRegContainer', 'bisos.siteRegistrars.perfSiteRegContainer', 'bisos.siteRegistrars.invSiteRegContainerConf', ]
 
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 
@@ -133,12 +133,12 @@ def g_extraParams():
 
 ####+END:
 
-####+BEGIN: b:py3:cs:main/exposedSymbols :classes ("invSiteRegBoxConf.RegBoxInvConf_FPs")
+####+BEGIN: b:py3:cs:main/exposedSymbols :classes ("invSiteRegContainerConf.RegContainerInvConf_FPs")
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Exposed Symbols List Specification~ with /1/ in Classes List
 #+end_org """
 
-RegBoxInvConf_FPs = invSiteRegBoxConf.RegBoxInvConf_FPs # exec/eval-ed as __main__.ClassName
+RegContainerInvConf_FPs = invSiteRegContainerConf.RegContainerInvConf_FPs # exec/eval-ed as __main__.ClassName
 
 ####+END:
 
@@ -183,9 +183,9 @@ class examples(cs.Cmnd):
 
         #cs.examples.menuChapter('=Misc=  *Facilities*')
 
-        invSiteRegBoxConf.examples_csu(sectionTitle="default")
+        invSiteRegContainerConf.examples_csu(sectionTitle="default")
 
-        invSiteRegBox.examples_csu(sectionTitle="default")
+        invSiteRegContainer.examples_csu(sectionTitle="default")
 
         # b.ignore(ro.__doc__, fpCls.__doc__, clsMethod_csu.__doc__)  # We are not using these modules, but they are auto imported.
 

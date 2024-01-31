@@ -260,7 +260,7 @@ class RegBoxInvConf_FPs(b.fpCls.BaseDir):
            self,
     ) -> pathlib.Path:
 
-        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/inv.fp')
+        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/inv.fps')
         assert fpsBase.exists()
         return fpsBase
 

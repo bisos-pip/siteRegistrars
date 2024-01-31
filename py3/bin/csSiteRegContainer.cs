@@ -99,32 +99,34 @@ import collections
    "blee.csPlayer.bleep"
    "bisos.b.fpCls"
    "bisos.b.clsMethod_csu"
-   "bisos.siteRegistrars.invSiteRegBox"
-   "bisos.siteRegistrars.perfSiteRegBox"
+   "bisos.siteRegistrars.invSiteRegContainer"
+   "bisos.siteRegistrars.perfSiteRegContainer"
    "bisos.siteRegistrars.siteRegPortNu"
-   "bisos.siteRegistrars.invSiteRegBoxConf"
+   "bisos.siteRegistrars.invSiteRegContainerConf"
+   "bisos.siteRegistrars.perfSiteRegContainerConf"
  ))
 #+END_SRC
 #+RESULTS:
-| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.siteRegistrars.invSiteRegBox | bisos.siteRegistrars.perfSiteRegBox | bisos.siteRegistrars.siteRegPortNu | bisos.siteRegistrars.invSiteRegBoxConf |
+| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.siteRegistrars.invSiteRegContainer | bisos.siteRegistrars.perfSiteRegContainer | bisos.siteRegistrars.siteRegPortNu | bisos.siteRegistrars.invSiteRegContainerConf | bisos.siteRegistrars.perfSiteRegContainerConf |
 #+end_org """
 
 ####+BEGIN: b:py3:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] =Process CSU List= with /8/ in csuList pyImports=t csuImports=t csuParams=t
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] =Process CSU List= with /9/ in csuList pyImports=t csuImports=t csuParams=t
 #+end_org """
 
 from bisos.b.cs import ro
 from blee.csPlayer import bleep
 from bisos.b import fpCls
 from bisos.b import clsMethod_csu
-from bisos.siteRegistrars import invSiteRegBox
-from bisos.siteRegistrars import perfSiteRegBox
+from bisos.siteRegistrars import invSiteRegContainer
+from bisos.siteRegistrars import perfSiteRegContainer
 from bisos.siteRegistrars import siteRegPortNu
-from bisos.siteRegistrars import invSiteRegBoxConf
+from bisos.siteRegistrars import invSiteRegContainerConf
+from bisos.siteRegistrars import perfSiteRegContainerConf
 
 
-csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.siteRegistrars.invSiteRegBox', 'bisos.siteRegistrars.perfSiteRegBox', 'bisos.siteRegistrars.siteRegPortNu', 'bisos.siteRegistrars.invSiteRegBoxConf', ]
+csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.siteRegistrars.invSiteRegContainer', 'bisos.siteRegistrars.perfSiteRegContainer', 'bisos.siteRegistrars.siteRegPortNu', 'bisos.siteRegistrars.invSiteRegContainerConf', 'bisos.siteRegistrars.perfSiteRegContainerConf', ]
 
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 
@@ -135,12 +137,12 @@ def g_extraParams():
 
 ####+END:
 
-####+BEGIN: b:py3:cs:main/exposedSymbols :classes ("invSiteRegBoxConf.RegBoxInvConf_FPs")
+####+BEGIN: b:py3:cs:main/exposedSymbols :classes ("invSiteRegContainerConf.RegContainerInvConf_FPs")
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Exposed Symbols List Specification~ with /1/ in Classes List
 #+end_org """
 
-RegBoxInvConf_FPs = invSiteRegBoxConf.RegBoxInvConf_FPs # exec/eval-ed as __main__.ClassName
+RegContainerInvConf_FPs = invSiteRegContainerConf.RegContainerInvConf_FPs # exec/eval-ed as __main__.ClassName
 
 ####+END:
 
@@ -186,10 +188,12 @@ class examples(cs.Cmnd):
 
         #cs.examples.menuChapter('=Misc=  *Facilities*')
 
-        invSiteRegBoxConf.examples_csu(sectionTitle="default")
+        invSiteRegContainerConf.examples_csu(sectionTitle="default")
+        invSiteRegContainer.examples_csu(sectionTitle="default")
 
-        invSiteRegBox.examples_csu(sectionTitle="default")
-        perfSiteRegBox.examples_csu(sectionTitle="default")
+        perfSiteRegContainerConf.examples_csu(sectionTitle="default")
+        perfSiteRegContainer.examples_csu(sectionTitle="default")
+
         siteRegPortNu.examples_csu(sectionTitle="default")
 
         # b.ignore(ro.__doc__, fpCls.__doc__, clsMethod_csu.__doc__)  # We are not using these modules, but they are auto imported.
