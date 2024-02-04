@@ -10,7 +10,7 @@
 * [[elisp:(org-cycle)][| /Control Parameters Of This File/ |]] :: dblk ctrls classifications=cs-mu
 #+BEGIN_SRC emacs-lisp
 (setq-local b:dblockControls t) ; (setq-local b:dblockControls nil)
-(put 'b:dblockControls 'py3:cs:Classification "cs-mu") ; Main Multi-Unit CommandSvc
+(put 'b:dblockControls 'py3:cs:Classification "cs-mu") ; one of cs-mu, cs-u, cs-lib, bpf-lib, pyLibPure
 #+END_SRC
 #+RESULTS:
 : cs-mu
@@ -29,7 +29,7 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/auth/bxRepos/bisos-pip/bpf/py3/bin/csExamples.cs
+** This File: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/bin/csSiteRegBox.cs
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -39,10 +39,10 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['csExamples'], }
-csInfo['version'] = '202209225748'
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['csSiteRegBox'], }
+csInfo['version'] = '202402040906'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'csExamples-Panel.org'
+csInfo['panel'] = 'csSiteRegBox-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
@@ -62,8 +62,9 @@ It works closely with the bisos.examples package.
 
 ####+BEGIN: b:prog:file/orgTopControls :outLevel 1
 """ #+begin_org
-* [[elisp:(org-cycle)][| Controls |]] :: [[elisp:(delete-other-windows)][(1)]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+* [[elisp:(org-cycle)][| Controls |]] :: [[elisp:(delete-other-windows)][(1)]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
 ** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
+
 #+end_org """
 ####+END:
 
@@ -86,6 +87,7 @@ It works closely with the bisos.examples package.
 from bisos import b
 from bisos.b import cs
 from bisos.b import b_io
+from bisos.common import csParam
 
 import collections
 ####+END:
@@ -104,15 +106,16 @@ import collections
    "bisos.siteRegistrars.siteRegPortNu"
    "bisos.siteRegistrars.invSiteRegBoxConf"
    "bisos.siteRegistrars.perfSiteRegBoxConf"
+   "bisos.siteRegistrars.boxRegfps"
  ))
 #+END_SRC
 #+RESULTS:
-| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.siteRegistrars.invSiteRegBox | bisos.siteRegistrars.perfSiteRegBox | bisos.siteRegistrars.siteRegPortNu | bisos.siteRegistrars.invSiteRegBoxConf | bisos.siteRegistrars.perfSiteRegBoxConf |
+| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.siteRegistrars.invSiteRegBox | bisos.siteRegistrars.perfSiteRegBox | bisos.siteRegistrars.siteRegPortNu | bisos.siteRegistrars.invSiteRegBoxConf | bisos.siteRegistrars.perfSiteRegBoxConf | bisos.siteRegistrars.boxRegfps |
 #+end_org """
 
 ####+BEGIN: b:py3:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] =Process CSU List= with /9/ in csuList pyImports=t csuImports=t csuParams=t
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] =Process CSU List= with /10/ in csuList pyImports=t csuImports=t csuParams=t
 #+end_org """
 
 from bisos.b.cs import ro
@@ -124,9 +127,10 @@ from bisos.siteRegistrars import perfSiteRegBox
 from bisos.siteRegistrars import siteRegPortNu
 from bisos.siteRegistrars import invSiteRegBoxConf
 from bisos.siteRegistrars import perfSiteRegBoxConf
+from bisos.siteRegistrars import boxRegfps
 
 
-csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.siteRegistrars.invSiteRegBox', 'bisos.siteRegistrars.perfSiteRegBox', 'bisos.siteRegistrars.siteRegPortNu', 'bisos.siteRegistrars.invSiteRegBoxConf', 'bisos.siteRegistrars.perfSiteRegBoxConf', ]
+csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.siteRegistrars.invSiteRegBox', 'bisos.siteRegistrars.perfSiteRegBox', 'bisos.siteRegistrars.siteRegPortNu', 'bisos.siteRegistrars.invSiteRegBoxConf', 'bisos.siteRegistrars.perfSiteRegBoxConf', 'bisos.siteRegistrars.boxRegfps', ]
 
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 
@@ -137,13 +141,13 @@ def g_extraParams():
 
 ####+END:
 
-####+BEGIN: b:py3:cs:main/exposedSymbols :classes ("perfSiteRegBoxConf.RegBoxPerfConf_FPs" "invSiteRegBoxConf.RegBoxInvConf_FPs")
+####+BEGIN: b:py3:cs:main/exposedSymbols :classes ("invSiteRegBoxConf.RegBoxInvConf_FPs" "boxRegfps.Box_RegFPs")
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Exposed Symbols List Specification~ with /2/ in Classes List
 #+end_org """
 
-RegBoxPerfConf_FPs = perfSiteRegBoxConf.RegBoxPerfConf_FPs # exec/eval-ed as __main__.ClassName
 RegBoxInvConf_FPs = invSiteRegBoxConf.RegBoxInvConf_FPs # exec/eval-ed as __main__.ClassName
+Box_RegFPs = boxRegfps.Box_RegFPs # exec/eval-ed as __main__.ClassName
 
 ####+END:
 
@@ -189,11 +193,13 @@ class examples(cs.Cmnd):
 
         #cs.examples.menuChapter('=Misc=  *Facilities*')
 
-        perfSiteRegBoxConf.examples_csu(sectionTitle="default")
         invSiteRegBoxConf.examples_csu(sectionTitle="default")
-
         invSiteRegBox.examples_csu(sectionTitle="default")
+
+        perfSiteRegBoxConf.examples_csu(sectionTitle="default")
+        boxRegfps.examples_csu(sectionTitle="default")
         perfSiteRegBox.examples_csu(sectionTitle="default")
+
         siteRegPortNu.examples_csu(sectionTitle="default")
 
         # b.ignore(ro.__doc__, fpCls.__doc__, clsMethod_csu.__doc__)  # We are not using these modules, but they are auto imported.

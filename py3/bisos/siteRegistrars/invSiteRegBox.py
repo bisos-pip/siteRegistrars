@@ -123,14 +123,14 @@ def commonParamsSpecify(
         argparseLongOpt='--boxNu',
     )
     csParams.parDictAdd(
-        parName='uniqBoxId',
-        parDescription="uniqBoxId",
+        parName='uniqueBoxId',
+        parDescription="uniqueBoxId",
         parDataType=None,
         parDefault=None,
         parChoices=["any"],
         # parScope=icm.CmndParamScope.TargetParam,
         argparseShortOpt=None,
-        argparseLongOpt='--uniqBoxId',
+        argparseLongOpt='--uniqueBoxId',
     )
 
     csParams.parDictAdd(
@@ -201,7 +201,7 @@ def examples_csu(
 
     # if (thisBoxPath := perfSiteRegBox.perf_boxFind().cmnd(
     #         rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
-    #         uniqBoxId=thisUniqBoxId,
+    #         uniqueBoxId=thisUniqBoxId,
     # ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
 
     thisBoxNu = 1014
@@ -228,7 +228,7 @@ def examples_csu(
     if sectionTitle == 'default': cs.examples.menuChapter('*Registrar Svc Commands -- perfName=siteRegistrar*')
 
     cmndName = "reg_boxAdd" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['uniqBoxId'] = thisUniqBoxId
+    cps = collections.OrderedDict() ; cps['uniqueBoxId'] = thisUniqBoxId
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     cmndName = "reg_boxRead" ; cmndArgs = "" ;
@@ -236,7 +236,7 @@ def examples_csu(
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     cmndName = "reg_boxUpdate" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu ; cps['uniqBoxId'] = thisUniqBoxId
+    cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu ; cps['uniqueBoxId'] = thisUniqBoxId
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     cmndName = "reg_boxDelete" ; cmndArgs = "" ;
@@ -248,7 +248,7 @@ def examples_csu(
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     cmndName = "reg_boxFind" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;  cps['uniqBoxId'] = thisUniqBoxId
+    cps = collections.OrderedDict() ;  cps['uniqueBoxId'] = thisUniqBoxId
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
 
     cmndName = "reg_boxesList" ; cmndArgs = "" ;
@@ -502,12 +502,12 @@ FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/exampleRegistrar/rpy
         return cmndOutcome.set(opResults=sapPath,)
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_boxAdd" :comment "" :extent "verify" :ro "cli" :parsMand "uniqBoxId" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_boxAdd" :comment "" :extent "verify" :ro "cli" :parsMand "uniqueBoxId" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_boxAdd>>  =verify= parsMand=uniqBoxId parsOpt=boxName ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_boxAdd>>  =verify= parsMand=uniqueBoxId parsOpt=boxName ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_boxAdd(cs.Cmnd):
-    cmndParamsMandatory = [ 'uniqBoxId', ]
+    cmndParamsMandatory = [ 'uniqueBoxId', ]
     cmndParamsOptional = [ 'boxName', ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
@@ -515,14 +515,14 @@ class reg_boxAdd(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
-             uniqBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
+             uniqueBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
              boxName: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'uniqBoxId': uniqBoxId, 'boxName': boxName, }
+        callParamsDict = {'uniqueBoxId': uniqueBoxId, 'boxName': boxName, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
+        uniqueBoxId = csParam.mappedValue('uniqueBoxId', uniqueBoxId)
         boxName = csParam.mappedValue('boxName', boxName)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
@@ -581,12 +581,12 @@ class reg_boxRead(cs.Cmnd):
         return cmndOutcome
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_boxUpdate" :comment "" :extent "verify" :ro "cli" :parsMand "uniqBoxId" :parsOpt "boxNu boxName" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_boxUpdate" :comment "" :extent "verify" :ro "cli" :parsMand "uniqueBoxId" :parsOpt "boxNu boxName" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_boxUpdate>>  =verify= parsMand=uniqBoxId parsOpt=boxNu boxName ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_boxUpdate>>  =verify= parsMand=uniqueBoxId parsOpt=boxNu boxName ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_boxUpdate(cs.Cmnd):
-    cmndParamsMandatory = [ 'uniqBoxId', ]
+    cmndParamsMandatory = [ 'uniqueBoxId', ]
     cmndParamsOptional = [ 'boxNu', 'boxName', ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
@@ -594,15 +594,15 @@ class reg_boxUpdate(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
-             uniqBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
+             uniqueBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
              boxNu: typing.Optional[str]=None,  # Cs Optional Param
              boxName: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'uniqBoxId': uniqBoxId, 'boxNu': boxNu, 'boxName': boxName, }
+        callParamsDict = {'uniqueBoxId': uniqueBoxId, 'boxNu': boxNu, 'boxName': boxName, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
+        uniqueBoxId = csParam.mappedValue('uniqueBoxId', uniqueBoxId)
         boxNu = csParam.mappedValue('boxNu', boxNu)
         boxName = csParam.mappedValue('boxName', boxName)
 ####+END:
@@ -662,13 +662,13 @@ class reg_boxDelete(cs.Cmnd):
         return cmndOutcome
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_boxFind" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "boxName uniqBoxId" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_boxFind" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "boxName uniqueBoxId" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_boxFind>>  =verify= parsOpt=boxName uniqBoxId ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_boxFind>>  =verify= parsOpt=boxName uniqueBoxId ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_boxFind(cs.Cmnd):
     cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ 'boxName', 'uniqBoxId', ]
+    cmndParamsOptional = [ 'boxName', 'uniqueBoxId', ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
@@ -676,14 +676,14 @@ class reg_boxFind(cs.Cmnd):
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
              boxName: typing.Optional[str]=None,  # Cs Optional Param
-             uniqBoxId: typing.Optional[str]=None,  # Cs Optional Param
+             uniqueBoxId: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'boxName': boxName, 'uniqBoxId': uniqBoxId, }
+        callParamsDict = {'boxName': boxName, 'uniqueBoxId': uniqueBoxId, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
         boxName = csParam.mappedValue('boxName', boxName)
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
+        uniqueBoxId = csParam.mappedValue('uniqueBoxId', uniqueBoxId)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
