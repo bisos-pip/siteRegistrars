@@ -48,25 +48,25 @@
 * DONE Build bisos.usgAcct CREATED -- Obtains ~/bpos/sites/selected
 * =========== Github Repos Create  End }  ===================
 * TODO adoptingByStar doc also in startHere of github/mohsen
-* TODO For exampleRegistrar, use rosmuSel to specify /tmp/exampleRegistrar//roSap/. Seems to have been in design
+* DONE For exampleRegistrar, use rosmuSel to specify /tmp/exampleRegistrar//roSap/. Seems to have been in design
 * TODO absorb previous engineering/genesis with adoptByStar
-* TODO Add support for siteRegBoxParams -- Where you read params from base like with reSapManager
+* DONE Add support for siteRegBoxParams -- Where you read params from base like with reSapManager
 * TODO Locate sites from ~/bpos/sites/selected
 * TODO In siteBpos have a var link to /bisos/var/sites/siteName
 * TODO Figure and complete /bisos/sites/selected/
-* TODO In bxGits/bisos Create bso-genesis-siteBoxes. Create //bxo/bso//genesis-siteBoxes with links
+* WAITING In bxGits/bisos Create bso-genesis-siteBoxes. Create //bxo/bso//genesis-siteBoxes with links
 * WAITING Look at exisiting siteAssignContainer for tracking base of registrars bpos
 * TODO Replecate siteAssignContainer for tracking base of registrars in python.
-* TODO [#A] Complete box to equivalent of bash.
+* DONE [#A] Complete box to equivalent of bash.
 DEADLINE: <2024-01-22 Mon> SCHEDULED: <2024-01-21 Sun>
-** TODO Create invSite.py and perfSite.py
-** TODO Create csSite.py and csInvSite.py
-** TODO Better menuItems library
-* TODO [#A] Use exsisting code to register new machines.
+** DONE Create invSite.py and perfSite.py
+** DONE Create csSite.py and csInvSite.py
+** DONE Better menuItems library
+* WAITING [#A] Use exsisting code to register new machines.
 SCHEDULED: <2024-01-21 Sun>
 * TODO [#A] Rebuild raw-bisos with siteRegistrars. Setup site registrars
 SCHEDULED: <2024-01-21 Sun>
-* TODO [#B] Convert from bash container assignments.
+* WAITING [#B] Convert from bash container assignments.
 * TODO [#B] Convert from bash nets assignments.
 * TODO [#B] Build container with registrars
 * -B|

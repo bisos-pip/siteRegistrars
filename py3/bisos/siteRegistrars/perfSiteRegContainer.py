@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """ #+begin_org
-* ~[Summary]~ :: =CS-Lib= A RO service for registration of Boxes at a site.
+* ~[Summary]~ :: =CS-Lib= A RO service for registration of Containers at a site.
 #+end_org """
 
 ####+BEGIN: b:py3:cs:file/dblockControls :classification "cs-u"
@@ -39,7 +39,6 @@
 #+end_org """
 import typing
 
-from bisos import siteRegistrars
 csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['csSiteRegContainer'], }
 csInfo['version'] = '202401192758'
 csInfo['status']  = 'inUse'
@@ -90,8 +89,12 @@ from bisos.common import csParam
 import collections
 ####+END:
 
+
+# from bisos import siteRegistrars
+
 from bisos.siteRegistrars import invSiteRegContainer
 from bisos.siteRegistrars import perfSiteRegContainerConf
+from bisos.siteRegistrars import containerRegfps
 from bisos.bpo import bpo
 
 import pwd
@@ -148,151 +151,117 @@ def examples_csu(
 ** [[elisp:(org-cycle)][| *DocStr* |]] Examples of Service Access Instance Commands.
     #+end_org """
 
-    # def cpsInit(): return collections.OrderedDict()
-    # def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
-
     cmndOutcome = b.op.Outcome()
 
-    if (thisUniqBoxId := invSiteRegContainer.thisBoxUUID().cmnd(
-            rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
-    ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
+    od = collections.OrderedDict
+    cmnd = cs.examples.cmndEnter
 
-    if (thisBoxPath := perf_boxFind().cmnd(
-            rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
-            uniqBoxId=thisUniqBoxId,
-    ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
+    perfName = 'localhost'
 
-    thisBoxNu = thisBoxPath.name
-    thisBoxName = f"box{thisBoxNu}"
+    thisModel = 'Pure'
+    thisAbode = 'Mobile'
+    thisPurpose = 'LinuxU'
+    thisBoxNu = 'box1014'
+    thisContainerNu = '1099'
 
-    perfName = "localhost"
+    unitsPars = collections.OrderedDict([('model', thisModel), ('abode', thisAbode), ('purpose', thisPurpose)])
+    unitBasePars = collections.OrderedDict([('model', thisModel), ('abode', thisAbode), ('purpose', thisPurpose), ('containerNu', thisContainerNu)])
+    createPars = collections.OrderedDict([('model', thisModel), ('abode', thisAbode), ('purpose', thisPurpose), ('containerNu', thisContainerNu), ('boxNu', thisBoxNu)])
+    addPars = collections.OrderedDict([('model', thisModel), ('abode', thisAbode), ('purpose', thisPurpose), ('boxNu', thisBoxNu)])
+
+    ro_unitsPars = cs.examples.perfNameParsInsert(unitsPars, perfName)
+    ro_unitBasePars = cs.examples.perfNameParsInsert(unitBasePars, perfName)
+    ro_createPars = cs.examples.perfNameParsInsert(createPars, perfName)
+    ro_addPars = cs.examples.perfNameParsInsert(addPars, perfName)
 
     if sectionTitle == 'default':
         cs.examples.menuChapter('*Performer Only Commands*')
 
-    cmndName = "perf_siteBoxesBaseObtain" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    #cmnd("someExample", pars=od([('boxNu', thisBoxNu)]), args="some args", verb=['none', 'full'])
 
-    cmndName = "perf_boxCreate" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu ; cps['uniqBoxId'] = thisUniqBoxId
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    cmnd('config_siteContainersBaseObtain')
 
-    cmndName = "perf_boxRead" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    cmnd('container_unitCreate', pars=createPars)
+    cmnd('container_unitRead', pars=unitBasePars)
+    cmnd('container_unitUpdate', pars=createPars)
+    cmnd('container_unitDelete', pars=unitBasePars)
+    cmnd('container_unitId', pars=unitBasePars, comment="# E.g., PML-1099")
+    cmnd('ro_container_add', pars=addPars)
 
-    cmndName = "perf_boxUpdate" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu ; cps['boxName'] = thisBoxName
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    cs.examples.menuSection('*Performer Only Units (all units) Commands*')
 
-    cmndName = "perf_boxDelete" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['boxNu'] = thisBoxNu
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    cmnd('container_unitsNextNu', pars=unitsPars)
+    cmnd('container_unitsList', pars=unitsPars)
+    cmnd('container_unitsFind', pars=unitsPars, args=f"boxId {thisBoxNu}")
 
-    cmndName = "perf_boxFind" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;  cps['uniqBoxId'] = thisUniqBoxId
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    cs.examples.menuSection('*Performer Only Repos Commands*')
 
-    cmndName = "perf_boxesList" ; cmndArgs = "" ;
-    cps = collections.OrderedDict()
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    cmnd('container_repoPull', pars=unitsPars)
+    cmnd('container_repoPush', pars=unitsPars)
+    cmnd('container_repoLock', pars=unitsPars)
+    cmnd('container_repoUnlock', pars=unitsPars)
 
-    cmndName = "perf_boxNuGetNext" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    cs.examples.menuSection('*RO Service Commands*')
 
-    cmndName = "perf_boxesRepoPush" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    cmnd('ro_container_add', pars=ro_addPars)
+    cmnd('container_unitRead', pars=ro_unitBasePars)
+    cmnd('container_unitUpdate', pars=ro_createPars)
+    cmnd('container_unitDelete', pars=ro_unitBasePars)
+    cmnd('container_unitsFind', pars=ro_unitsPars, args=f"boxId {thisBoxNu}")
+    cmnd('container_unitsList', pars=ro_unitsPars)
 
-    cmndName = "perf_boxesRepoPull" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    cs.examples.menuSection('*Container ID Mapping Commands*')
 
-    cmndName = "perf_lock" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    cmndName = "perf_unlock" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    if sectionTitle == 'default': cs.examples.menuChapter('*RO Svc Commands*')
-
-    cmndName = "ro_boxAdd" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['perfName'] = perfName ; cps['uniqBoxId'] = thisUniqBoxId
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    cmndName = "ro_boxRead" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['perfName'] = perfName ; cps['boxNu'] = thisBoxNu
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    cmndName = "ro_boxUpdate" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['perfName'] = perfName ; cps['boxNu'] = thisBoxNu ; cps['uniqBoxId'] = thisUniqBoxId
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    cmndName = "ro_boxDelete" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['perfName'] = perfName ; cps['boxNu'] = thisBoxNu
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    cmndName = "ro_boxFind" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['perfName'] = perfName ; cps['boxName'] = thisBoxName
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    cmndName = "ro_boxFind" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; cps['perfName'] = perfName ; cps['uniqBoxId'] = thisUniqBoxId
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    cmndName = "ro_boxesList" ; cmndArgs = "" ;
-    cps = collections.OrderedDict()
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    if sectionTitle == 'default':
-        cs.examples.menuChapter('*roPy_ and roPerf_ examples*')
-
-    cmndName = "roPy_givenUniqBoxIdFindBoxNuExample" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;  cps['uniqBoxId'] = thisUniqBoxId
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    cmndName = "roPerf_givenUniqBoxIdFindBoxNuExample" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ;  cps['uniqBoxId'] = thisUniqBoxId
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-
-    if sectionTitle == 'default':
-        cs.examples.menuChapter('*Place Holders*')
-
-    cmndName = "roPyExInvoker" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; # cps['icmsPkgName'] = icmsPkgName
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='full')
-
-    cmndName = "roPyExPerformer" ; cmndArgs = "" ;
-    cps = collections.OrderedDict() ; # cps['icmsPkgName'] = icmsPkgName
-    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='little')
+    cmnd('withContainerIdGetBase', args=f"PML-1006", comment="# inverse of -i container_unitId")
 
 
 
-####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Support Functions" :anchor ""  :extraInfo "Command Services Section"
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Configuration: Performer Only CmndSvcs" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Support Functions_: |]]  Command Services Section  [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Configuration: Performer Only CmndSvcs_: |]]  Command Services Section  [[elisp:(org-shifttab)][<)]] E|
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:func/typing :funcName "boxFpNamesList" :comment "~Name of Box File Params~"  :funcType "eType" :deco "track"
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "config_siteContainersBaseObtain" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-T-eType  [[elisp:(outline-show-subtree+toggle)][||]] /boxFpNamesList/  ~Name of Box File Params~ deco=track  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<config_siteContainersBaseObtain>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-@cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-def boxFpNamesList(
-####+END:
-) -> list:
-    """ #+begin_org
-** [[elisp:(org-cycle)][| *DocStr | ]
-    #+end_org """
+class config_siteContainersBaseObtain(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
 
-    return invSiteRegContainer.boxFpNamesList()
-    #return [ 'boxNu', 'boxId',  'uniqueBoxId',  ]
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
+
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Outcome: Containers base directory. NOTYET, should become configurable
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs -i config_siteContainersBaseObtain
+#+end_src
+#+RESULTS:
+:
+: /bxo/iso/pmc_clusterNeda-containers/assign
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        confFps = perfSiteRegContainerConf.RegContainerPerfConf_FPs()
+        containersBpoId_fp =  confFps.fps_getParam('regContainersBpoId')
+        containersBpoPath = bpo.bpoBaseDir_obtain(containersBpoId_fp.parValueGet())
+        siteContainersBase = pathlib.Path(containersBpoPath).joinpath('assign') # Result
+
+        return cmndOutcome.set(opResults=siteContainersBase,)
 
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Performer Only CmndSvcs" :anchor ""  :extraInfo "Command Services Section"
@@ -301,12 +270,14 @@ def boxFpNamesList(
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_siteBoxesBaseObtain" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_unitCreate" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose containerNu boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_siteBoxesBaseObtain>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_unitCreate>>  =verify= parsMand=model abode purpose containerNu boxNu ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class perf_siteBoxesBaseObtain(cs.Cmnd):
-    cmndParamsMandatory = [ ]
+class container_unitCreate(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', 'containerNu', 'boxNu', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
     rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
@@ -315,127 +286,79 @@ class perf_siteBoxesBaseObtain(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
-    ) -> b.op.Outcome:
-
-        callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Outcome: Boxes base directory. NOTYET, should become configurable
-        #+end_org """): return(cmndOutcome)
-
-        self.captureRunStr(""" #+begin_org
-#+begin_src sh :results output :session shared
-  csSiteRegContainer.cs -i perf_siteBoxesBaseObtain
-#+end_src
-#+RESULTS:
-:
-: /bxo/iso/pmb_clusterNeda-boxes/boxes
-        #+end_org """)
-        if self.justCaptureP(): return cmndOutcome
-
-        perfName = invSiteRegContainer.perfNameGet()
-
-        if perfName == 'siteRegistrar':
-            confFps = perfSiteRegContainerConf.RegContainerPerfConf_FPs()
-            boxesBpoId_fp =  confFps.fps_getParam('regBoxesBpoId')
-            boxesBpoPath = bpo.bpoBaseDir_obtain(boxesBpoId_fp.parValueGet())
-            siteBoxesBase = pathlib.Path(boxesBpoPath).joinpath('boxes') # Result
-
-        elif perfName == 'exampleRegistrar':
-            roSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath(perfName)  # static method
-            sapBaseFps = b.pattern.sameInstance(cs.ro.SapBase_FPs, roSapPath=roSapPath)
-            rosmuControl = sapBaseFps.fps_getParam('rosmuControl')
-            siteBoxesBase = pathlib.Path(rosmuControl.parValueGet())
-
-        else:
-            siteBoxesBase = pathlib.Path(f"Problem: perfName={perfName} --- missing roSap Perhaps?")
-
-        return cmndOutcome.set(opResults=siteBoxesBase,)
-
-
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxCreate" :comment "" :extent "verify" :ro "noCli" :parsMand "boxNu uniqBoxId" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxCreate>>  =verify= parsMand=boxNu uniqBoxId parsOpt=boxName ro=noCli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class perf_boxCreate(cs.Cmnd):
-    cmndParamsMandatory = [ 'boxNu', 'uniqBoxId', ]
-    cmndParamsOptional = [ 'boxName', ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+             containerNu: typing.Optional[str]=None,  # Cs Mandatory Param
              boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
-             uniqBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
-             boxName: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'boxNu': boxNu, 'uniqBoxId': uniqBoxId, 'boxName': boxName, }
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, 'containerNu': containerNu, 'boxNu': boxNu, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+        containerNu = csParam.mappedValue('containerNu', containerNu)
         boxNu = csParam.mappedValue('boxNu', boxNu)
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
-        boxName = csParam.mappedValue('boxName', boxName)
 ####+END:
         if self.cmndDocStr(""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
         #+end_org """): return(cmndOutcome)
 
-        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU --containerNu=1099 --boxNu=box1014 -i perf_containerUnitCreate
+#+end_src
+#+RESULTS:
+:
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/model/value value=Pure
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/function/value value=LinuxU
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/abode/value value=Mobile
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/containerNu/value value=1099
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/containerId/value value=PML-1099
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/boxId/value value=box1014
+: PML-1099
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
 
-        newBoxBase = siteBoxesBase.joinpath(boxNu)
-
-        try:
-            newBoxBase.mkdir(exist_ok=False)
-        except FileExistsError:
-            return(b_io.eh.badOutcome(cmndOutcome))
-
-        if not boxName:
-            boxName = f"box{boxNu}"
-
-        b.fp.FileParamWriteTo(parRoot=newBoxBase,
-                              parName='boxNu',
-                              parValue=boxNu,
-        )
-        b.fp.FileParamWriteTo(parRoot=newBoxBase,
-                              parName='uniqueBoxId',
-                              parValue=uniqBoxId,
-        )
-        b.fp.FileParamWriteTo(parRoot=newBoxBase,
-                              parName='boxId',
-                              parValue=boxName,
+        regfps = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=containerNu,
         )
 
-        return cmndOutcome.set(opResults=boxNu,)
+        containerId = regfps.unitCreate(boxNu)
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxRead" :comment "" :extent "verify" :ro "noCli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+        return cmndOutcome.set(opResults=containerId,)
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_unitRead" :comment "" :extent "verify" :ro "" :parsMand "model abode purpose containerNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxRead>>  =verify= parsMand=boxNu ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_unitRead>>  =verify= parsMand=model abode purpose containerNu   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class perf_boxRead(cs.Cmnd):
-    cmndParamsMandatory = [ 'boxNu', ]
+class container_unitRead(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', 'containerNu', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
-             boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+             containerNu: typing.Optional[str]=None,  # Cs Mandatory Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'boxNu': boxNu, }
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, 'containerNu': containerNu, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
-        boxNu = csParam.mappedValue('boxNu', boxNu)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+        containerNu = csParam.mappedValue('containerNu', containerNu)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Given boxNu, uniqBoxId and optionally boxName, update the info if missing. Report if inconsistent.
@@ -443,211 +366,200 @@ class perf_boxRead(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegContainer.cs --boxNu=1002 -i perf_boxRead
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU --containerNu=1006  -i container_unitRead
 #+end_src
 #+RESULTS:
 :
-: ['1002', '4c4c4544-0051-3210-804e-b5c04f334b31', 'box1002']
+: {'function': 'LinuxU', 'abode': 'Mobile', 'boxId': 'box1014', 'containerId': 'PML-1006', 'model': 'Pure', 'containerNu': '1006'}
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
 
+        regfps = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=containerNu,
+        )
 
-        boxInfo: typing.Optional[list] = None
+        dictOfFpsValue = regfps.unitRead()
 
-        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+        return cmndOutcome.set(opResults=dictOfFpsValue,)
 
-        boxNuBaseDir = siteBoxesBase.joinpath(boxNu)
 
-        boxFpsDict = b.fp.parsGetAsDictValue(boxFpNamesList(), boxNuBaseDir,)
-
-        stored_boxNu = boxFpsDict['boxNu']
-        stored_uniqBoxId = boxFpsDict['uniqueBoxId']
-        stored_boxName = boxFpsDict['boxId']
-
-        boxInfo = [stored_boxNu, stored_uniqBoxId, stored_boxName]
-
-        #cs.invOutcomeReportControl(cmnd=False, ro=True)
-        return cmndOutcome.set(opResults=boxInfo,)
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxUpdate" :comment "" :extent "verify" :ro "noCli" :parsMand "boxNu" :parsOpt "boxName uniqBoxId" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_unitUpdate" :comment "" :extent "verify" :ro "" :parsMand "model abode purpose containerNu boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxUpdate>>  =verify= parsMand=boxNu parsOpt=boxName uniqBoxId ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_unitUpdate>>  =verify= parsMand=model abode purpose containerNu boxNu   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class perf_boxUpdate(cs.Cmnd):
-    cmndParamsMandatory = [ 'boxNu', ]
-    cmndParamsOptional = [ 'boxName', 'uniqBoxId', ]
+class container_unitUpdate(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', 'containerNu', 'boxNu', ]
+    cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+             containerNu: typing.Optional[str]=None,  # Cs Mandatory Param
              boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
-             boxName: typing.Optional[str]=None,  # Cs Optional Param
-             uniqBoxId: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'boxNu': boxNu, 'boxName': boxName, 'uniqBoxId': uniqBoxId, }
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, 'containerNu': containerNu, 'boxNu': boxNu, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+        containerNu = csParam.mappedValue('containerNu', containerNu)
         boxNu = csParam.mappedValue('boxNu', boxNu)
-        boxName = csParam.mappedValue('boxName', boxName)
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
 ####+END:
         if self.cmndDocStr(""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
         #+end_org """): return(cmndOutcome)
 
-        result: b.op.OpError = b.op.OpError.Success
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU --containerNu=1099 --boxNu=box1014 -i perf_containerUnitCreate
+#+end_src
+#+RESULTS:
+:
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/model/value value=Pure
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/function/value value=LinuxU
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/abode/value value=Mobile
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/containerNu/value value=1099
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/containerId/value value=PML-1099
+: FileParam.writeTo path=/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099/boxId/value value=box1014
+: PML-1099
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
 
-        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+        regfps = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=containerNu,
+        )
 
-        boxNuBaseDir = siteBoxesBase.joinpath(boxNu)
+        containerId = regfps.unitUpdate(boxNu)
 
-        if not boxNuBaseDir.exists():
-            return(b_io.eh.badOutcome(cmndOutcome))
+        return cmndOutcome.set(opResults=containerId,)
 
-        boxFpsDict = b.fp.parsGetAsDictValue(boxFpNamesList(), boxNuBaseDir,)
 
-        stored_boxNu = boxFpsDict['boxNu']
-        stored_uniqBoxId = boxFpsDict['uniqueBoxId']
-        stored_boxName = boxFpsDict['boxId']
-
-        if stored_boxNu != boxNu:
-            return(b_io.eh.badOutcome(cmndOutcome.set(
-                    opStderr=f"boxNu {boxNu} != stored_boxNu {stored_boxNu}",
-                    opResults=b.op.OpError.Failure,
-            )))
-
-        if boxName:
-            if stored_boxName == boxName:
-                        b_io.pr(f"boxName is as stored, update skipped")
-            else:
-                b.fp.FileParamWriteTo(parRoot=boxNuBaseDir,
-                                      parName='boxId',
-                                      parValue=boxName,
-                                      )
-        if uniqBoxId:
-            if stored_uniqBoxId == uniqBoxId:
-                    b_io.pr(f"uniqBoxId is as stored, update skipped")
-            else:
-                b.fp.FileParamWriteTo(parRoot=boxNuBaseDir,
-                                      parName='uniqueBoxId',
-                                      parValue=uniqBoxId,
-                                      )
-
-        return cmndOutcome.set(opResults=result,)
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxDelete" :comment "" :extent "verify" :ro "noCli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_unitDelete" :comment "" :extent "verify" :ro "" :parsMand "model abode purpose containerNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxDelete>>  =verify= parsMand=boxNu ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_unitDelete>>  =verify= parsMand=model abode purpose containerNu   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class perf_boxDelete(cs.Cmnd):
-    cmndParamsMandatory = [ 'boxNu', ]
+class container_unitDelete(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', 'containerNu', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
-             boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+             containerNu: typing.Optional[str]=None,  # Cs Mandatory Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'boxNu': boxNu, }
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, 'containerNu': containerNu, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
-        boxNu = csParam.mappedValue('boxNu', boxNu)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Given boxNu, uniqBoxId and optionally boxName, update the info if missing. Report if inconsistent.
-        #+end_org """): return(cmndOutcome)
-
-        return cmndOutcome.set(opResults="NOTYET",)
-
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxFind" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "uniqBoxId boxName" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxFind>>  =verify= parsOpt=uniqBoxId boxName ro=noCli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class perf_boxFind(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ 'uniqBoxId', 'boxName', ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             uniqBoxId: typing.Optional[str]=None,  # Cs Optional Param
-             boxName: typing.Optional[str]=None,  # Cs Optional Param
-    ) -> b.op.Outcome:
-
-        callParamsDict = {'uniqBoxId': uniqBoxId, 'boxName': boxName, }
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
-        boxName = csParam.mappedValue('boxName', boxName)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+        containerNu = csParam.mappedValue('containerNu', containerNu)
 ####+END:
         if self.cmndDocStr(""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  result: boxBaseDir corresponding to uniqBoxId
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
         #+end_org """): return(cmndOutcome)
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegContainer.cs --boxName="box1003" -i perf_boxFind
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU --containerNu=1099 -i container_unitDelete
 #+end_src
 #+RESULTS:
 :
 : Cmnd -- No Results
         #+end_org """)
-
         if self.justCaptureP(): return cmndOutcome
 
-        boxBaseDir: typing.Optional[pathlib.Path] = None
+        regfps = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=containerNu,
+        )
 
-        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+        containerId = regfps.unitDelete()
 
-        parNamesList = boxFpNamesList()
-
-        if uniqBoxId:
-            for each in siteBoxesBase.iterdir():
-                if each.name.isnumeric():
-                    boxFpsDict = b.fp.parsGetAsDictValue(parNamesList, each,)
-                    stored_uniqBoxId = boxFpsDict['uniqueBoxId']
-                    if stored_uniqBoxId == uniqBoxId:
-                        boxBaseDir = each
-                        break
-
-        elif boxName:
-            for each in siteBoxesBase.iterdir():
-                if each.name.isnumeric():
-                    boxFpsDict = b.fp.parsGetAsDictValue(parNamesList, each,)
-                    stored_boxName = boxFpsDict['boxId']
-                    if stored_boxName == boxName:
-                        boxBaseDir = each
-                        break
-        else:
-            return(b_io.eh.badOutcome(cmndOutcome.set(opResults=boxBaseDir,)))
-
-        return cmndOutcome.set(opResults=boxBaseDir,)
+        return cmndOutcome.set(opResults=containerId,)
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxesList" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_unitId" :comment "" :extent "verify" :ro "" :parsMand "model abode purpose containerNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxesList>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_unitId>>  =verify= parsMand=model abode purpose containerNu   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class perf_boxesList(cs.Cmnd):
-    cmndParamsMandatory = [ ]
+class container_unitId(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', 'containerNu', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+             containerNu: typing.Optional[str]=None,  # Cs Mandatory Param
+    ) -> b.op.Outcome:
+
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, 'containerNu': containerNu, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+        containerNu = csParam.mappedValue('containerNu', containerNu)
+####+END:
+        if self.cmndDocStr(""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU --containerNu=1099 -i container_unitId
+#+end_src
+#+RESULTS:
+:
+: PML-1099
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        regfps = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=containerNu,
+        )
+
+        containerId = regfps.unitId()
+
+        return cmndOutcome.set(opResults=containerId,)
+
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_unitsNextNu" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_unitsNextNu>>  =verify= parsMand=model abode purpose ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class container_unitsNextNu(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
     rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
@@ -656,11 +568,17 @@ class perf_boxesList(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {}
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
 ####+END:
         if self.cmndDocStr(""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  result: List of all boxes
@@ -668,46 +586,31 @@ class perf_boxesList(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegContainer.cs -i perf_boxesList
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_unitsNextNu
 #+end_src
 #+RESULTS:
 :
-:
+: 1100
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
 
-        boxesList: typing.Optional[list] = []
+        regUnits = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=None,
+        )
 
-        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+        nextUnitNu  = regUnits.nextUnitNu()
 
-        parNamesList = boxFpNamesList()
+        return cmndOutcome.set(opResults=nextUnitNu,)
 
-        relevantPaths = []
-        for each in siteBoxesBase.iterdir():
-            if each.name.isnumeric():
-                relevantPaths.append(each)
-
-        relevantPaths = sorted(relevantPaths)
-
-        for each in relevantPaths:
-            if (eachBox := perf_boxRead().cmnd(
-                    rtInv=cs.RtInvoker.new_py(),
-                    cmndOutcome=cmndOutcome,
-                    boxNu=each,
-            ).results) is None : return(b_io.eh.badOutcome(cmndOutcome))
-            boxesList.append(eachBox)
-
-        return cmndOutcome.set(opResults=boxesList,)
-
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxNuGetNext" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_unitsList" :comment "" :extent "verify" :ro "" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxNuGetNext>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_unitsList>>  =verify= parsMand=model abode purpose   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class perf_boxNuGetNext(cs.Cmnd):
-    cmndParamsMandatory = [ ]
+class container_unitsList(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
@@ -715,644 +618,99 @@ class perf_boxNuGetNext(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {}
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
 ####+END:
         if self.cmndDocStr(""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Outcome: Last existing boxNu + 1. Starts at 1000.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  result: List of all boxes
         #+end_org """): return(cmndOutcome)
-
-        lastBoxNu: int = 1000
-
-        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
-
-        relevantPaths = []
-        for each in siteBoxesBase.iterdir():
-            if each.name.isnumeric():
-                relevantPaths.append(each)
-
-        relevantPaths = sorted(relevantPaths)
-
-        if relevantPaths:
-            lastBoxNu = int(str(relevantPaths[-1].name))
-
-        nextBoxNu = lastBoxNu + 1
-
-        return cmndOutcome.set(opResults=nextBoxNu,)
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxesRepoPull" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxesRepoPull>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class perf_boxesRepoPull(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-    ) -> b.op.Outcome:
-
-        callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Runs: echo siteBoxesBase | bx-gitRepos -i gitRemPull
-        #+end_org """): return(cmndOutcome)
-
-        result: b.op.OpError = b.op.OpError.Success
-
-        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
-
-        if b.subProc.WOpW(invedBy=self, log=1).bash(
-                f"""echo {siteBoxesBase} | bx-gitRepos -i gitRemPull""",
-        ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
-
-        cs.invOutcomeReportControl(cmnd=False, ro=True)
-        return cmndOutcome.set(opResults=result,)
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxesRepoPush" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxesRepoPush>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class perf_boxesRepoPush(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-    ) -> b.op.Outcome:
-
-        callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Runs: echo siteBoxesBase | bx-gitRepos -i  addCommitPush all
-        #+end_org """): return(cmndOutcome)
-
-        result: b.op.OpError = b.op.OpError.Success
-
-        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
-
-        if b.subProc.WOpW(invedBy=self, log=1).bash(
-                f"""echo {siteBoxesBase} | bx-gitRepos -i  addCommitPush all""",
-        ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
-
-        return cmndOutcome.set(opResults=result,)
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_boxCreateAndPush" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_boxCreateAndPush>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class perf_boxCreateAndPush(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-    ) -> b.op.Outcome:
-
-        callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Add the box and push.
-        #+end_org """): return(cmndOutcome)
-
-        result: b.op.OpError = b.op.OpError.Success
-
-        if (siteBoxesBase := perf_boxesAdd().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
-
-        if (siteBoxesBase := perf_boxesRepoPull().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
-
-        return cmndOutcome.set(opResults=result,)
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_lock" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_lock>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class perf_lock(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-    ) -> b.op.Outcome:
-
-        callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]] NOTYET, Lock a write transaction using https://docs.gitlab.com/ee/user/project/file_lock.html
-        #+end_org """): return(cmndOutcome)
-
-        result: b.op.OpError = b.op.OpError.Success
-
-        return cmndOutcome.set(opResults=result,)
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perf_unlock" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perf_unlock>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class perf_unlock(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-    ) -> b.op.Outcome:
-
-        callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]] NOTYET, Unlock a write transaction using https://docs.gitlab.com/ee/user/project/file_lock.html
-        #+end_org """): return(cmndOutcome)
-
-        result: b.op.OpError = b.op.OpError.Success
-
-        return cmndOutcome.set(opResults=result,)
-
-
-####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "RO Service Commands" :anchor ""  :extraInfo "Command Services Section"
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _RO Service Commands_: |]]  Command Services Section  [[elisp:(org-shifttab)][<)]] E|
-#+end_org """
-####+END:
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_boxAdd" :comment "" :extent "verify" :ro "cli" :parsMand "uniqBoxId" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_boxAdd>>  =verify= parsMand=uniqBoxId parsOpt=boxName ro=cli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class ro_boxAdd(cs.Cmnd):
-    cmndParamsMandatory = [ 'uniqBoxId', ]
-    cmndParamsOptional = [ 'boxName', ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             uniqBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
-             boxName: typing.Optional[str]=None,  # Cs Optional Param
-    ) -> b.op.Outcome:
-
-        callParamsDict = {'uniqBoxId': uniqBoxId, 'boxName': boxName, }
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
-        boxName = csParam.mappedValue('boxName', boxName)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Returns a boxNu
-        #+end_org """): return(cmndOutcome)
-
-        assignedBoxNu: str = ""
-        cmndOutcome.set(opResults=assignedBoxNu,)
-
-        if (siteBoxesBase := perf_siteBoxesBaseObtain().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
-
-        boxNuBaseDir = perf_boxFind().cmnd(
-                rtInv=cs.RtInvoker.new_py(),
-                cmndOutcome=cmndOutcome,
-                uniqBoxId=uniqBoxId,
-        ).results
-
-        if boxNuBaseDir != None:
-            print(boxNuBaseDir)
-            return(b_io.eh.badOutcome(cmndOutcome)) # add stderrinfo NOTYET
-
-        if (assignedBoxNu := perf_boxNuGetNext().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-        ).results) is None : return(b_io.eh.badOutcome(cmndOutcome))
-
-        if (boxNu := perf_boxCreate().cmnd(
-                rtInv=cs.RtInvoker.new_py(),
-                cmndOutcome=cmndOutcome,
-                boxNu=str(assignedBoxNu),
-                uniqBoxId=uniqBoxId,
-                boxName=boxName,
-        ).results) is None : return(b_io.eh.badOutcome(cmndOutcome))
-
-        return cmndOutcome.set(opResults=assignedBoxNu,)
-
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_boxRead" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_boxRead>>  =verify= parsMand=boxNu ro=cli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class ro_boxRead(cs.Cmnd):
-    cmndParamsMandatory = [ 'boxNu', ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
-    ) -> b.op.Outcome:
-
-        callParamsDict = {'boxNu': boxNu, }
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        boxNu = csParam.mappedValue('boxNu', boxNu)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
-        #+end_org """): return(cmndOutcome)
-
-        return(
-            perf_boxRead().cmnd(
-                rtInv=cs.RtInvoker.new_py(),
-                cmndOutcome=cmndOutcome,
-                boxNu=boxNu,
-            )
-        )
-
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_boxUpdate" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "uniqBoxId boxName" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_boxUpdate>>  =verify= parsMand=boxNu parsOpt=uniqBoxId boxName ro=cli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class ro_boxUpdate(cs.Cmnd):
-    cmndParamsMandatory = [ 'boxNu', ]
-    cmndParamsOptional = [ 'uniqBoxId', 'boxName', ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
-             uniqBoxId: typing.Optional[str]=None,  # Cs Optional Param
-             boxName: typing.Optional[str]=None,  # Cs Optional Param
-    ) -> b.op.Outcome:
-
-        callParamsDict = {'boxNu': boxNu, 'uniqBoxId': uniqBoxId, 'boxName': boxName, }
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        boxNu = csParam.mappedValue('boxNu', boxNu)
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
-        boxName = csParam.mappedValue('boxName', boxName)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
-        #+end_org """): return(cmndOutcome)
-
-        return(
-            perf_boxUpdate().cmnd(
-                rtInv=cs.RtInvoker.new_py(),
-                cmndOutcome=cmndOutcome,
-                boxNu=boxNu,
-                uniqBoxId=uniqBoxId,
-                boxName=boxName,
-            )
-        )
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_boxDelete" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_boxDelete>>  =verify= parsMand=boxNu ro=cli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class ro_boxDelete(cs.Cmnd):
-    cmndParamsMandatory = [ 'boxNu', ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
-    ) -> b.op.Outcome:
-
-        callParamsDict = {'boxNu': boxNu, }
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        boxNu = csParam.mappedValue('boxNu', boxNu)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
-        #+end_org """): return(cmndOutcome)
-
-        return(
-            perf_boxDelete().cmnd(
-                rtInv=cs.RtInvoker.new_py(),
-                cmndOutcome=cmndOutcome,
-                boxNu=boxNu,
-            )
-        )
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_boxFind" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "boxName uniqBoxId" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_boxFind>>  =verify= parsOpt=boxName uniqBoxId ro=cli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class ro_boxFind(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ 'boxName', 'uniqBoxId', ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             boxName: typing.Optional[str]=None,  # Cs Optional Param
-             uniqBoxId: typing.Optional[str]=None,  # Cs Optional Param
-    ) -> b.op.Outcome:
-
-        callParamsDict = {'boxName': boxName, 'uniqBoxId': uniqBoxId, }
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        boxName = csParam.mappedValue('boxName', boxName)
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
-        #+end_org """): return(cmndOutcome)
-
-        return(
-            perf_boxFind().cmnd(
-                rtInv=cs.RtInvoker.new_py(),
-                cmndOutcome=cmndOutcome,
-                uniqBoxId=uniqBoxId,
-                boxName=boxName,
-            )
-        )
-
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_boxesList" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_boxesList>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class ro_boxesList(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-    ) -> b.op.Outcome:
-
-        callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-####+END:
-        if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
-        #+end_org """): return(cmndOutcome)
-
-        return(
-            perf_boxesList().cmnd(
-                rtInv=cs.RtInvoker.new_py(),
-                cmndOutcome=cmndOutcome,
-            )
-        )
-
-
-####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Examples" :anchor ""  :extraInfo "Command Services Section Examples"
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Examples_: |]]  Command Services Section Examples  [[elisp:(org-shifttab)][<)]] E|
-#+end_org """
-####+END:
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "roPy_givenUniqBoxIdFindBoxNuExample" :ro "py"  :extent "verify" :comment "" :parsMand "uniqBoxId" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<roPy_givenUniqBoxIdFindBoxNuExample>>  =verify= parsMand=uniqBoxId ro=py   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class roPy_givenUniqBoxIdFindBoxNuExample(cs.Cmnd):
-    cmndParamsMandatory = [ 'uniqBoxId', ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             uniqBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
-             roSapPath: typing.Optional[str]=None,  # RO pyInv Sap Path
-    ) -> b.op.Outcome:
-
-        callParamsDict = {'uniqBoxId': uniqBoxId, }
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        # Remotely invoke this same command and return cmndOutcome
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
-####+END:
-        self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Example of using built-in features of an CMND in an ICM.
-        #+end_org """)
-
-        # roPath
-        roSapPath = "/bisos/var/cs/ro/sap/csExamples.cs/localhost/rpyc/default"
-
-        roPerf_givenUniqBoxIdFindBoxNu().cmnd(
-            rtInv=rtInv,
-            cmndOutcome=cmndOutcome,
-            roSapPath=roSapPath,
-            uniqBoxId=uniqBoxId
-        )
-
-        b_io.pr(f"{self.__class__.__name__} RESULT= {cmndOutcome.results}")
-
-
-        return(cmndOutcome)
-
-
-# VALUABLE CODE HERE
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "roPerf_givenUniqBoxIdFindBoxNuExample" :ro "py"  :extent "verify" :comment "" :parsMand "uniqBoxId" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<roPerf_givenUniqBoxIdFindBoxNuExample>>  =verify= parsMand=uniqBoxId ro=py   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class roPerf_givenUniqBoxIdFindBoxNuExample(cs.Cmnd):
-    cmndParamsMandatory = [ 'uniqBoxId', ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             uniqBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
-             roSapPath: typing.Optional[str]=None,  # RO pyInv Sap Path
-    ) -> b.op.Outcome:
-
-        callParamsDict = {'uniqBoxId': uniqBoxId, }
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        # Remotely invoke this same command and return cmndOutcome
-        uniqBoxId = csParam.mappedValue('uniqBoxId', uniqBoxId)
-####+END:
-        self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  RO Performer: Given uniqBoxId, outcome box info.
-        #+end_org """)
-
-        # Invoker runs this and returns outcome.
-        if roSapPath:
-            sapBaseFps = b.pattern.sameInstance(cs.ro.SapBase_FPs, roSapPath=roSapPath)
-            portNu = sapBaseFps.fps_getParam('perfPortNu')
-            ipAddr = sapBaseFps.fps_getParam('perfIpAddr')
-            cmndKwArgs = self.cmndCallTimeKwArgs()
-            cmndKwArgs.update({'rtInv': rtInv})
-            cmndKwArgs.update({'cmndOutcome': cmndOutcome})
-            print(f"PyRO at {roSapPath} with {cmndKwArgs}")
-            rpycInvResult = cs.rpyc.csInvoke(
-                ipAddr.parValueGet(),
-                portNu.parValueGet(),
-                self.__class__,
-                **cmndKwArgs,
-            )
-            return rpycInvResult
-
-        if (boxNuBase := perf_givenUniqBoxIdFindBoxNuBase().cmnd(
-                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
-                uniqBoxId=uniqBoxId,
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
-
-        boxNu = boxNuBase.name
-
-        # NOTYET, also boxName
-
-        cmndOutcome.set(
-            #opError=b.op.OpError.Success,
-            opError=None,
-            opResults=(f"{self.__class__.__name__} {boxNu}"),
-        )
-
-        b_io.pr(f"{self.__class__.__name__} Returning: {cmndOutcome.error} {cmndOutcome.results}")
-
-        return cmndOutcome
-
-
-
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "parsArgsStdinCmndResultDEFUNCT" :extent "verify" :comment "stdin as input" :parsMand "par1Example" :parsOpt "par2Example" :argsMin 1 :argsMax 9999 :pyInv "methodInvokeArg"
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<parsArgsStdinCmndResultDEFUNCT>>  *stdin as input*  =verify= parsMand=par1Example parsOpt=par2Example argsMin=1 argsMax=9999 ro=cli pyInv=methodInvokeArg   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class parsArgsStdinCmndResultDEFUNCT(cs.Cmnd):
-    cmndParamsMandatory = [ 'par1Example', ]
-    cmndParamsOptional = [ 'par2Example', ]
-    cmndArgsLen = {'Min': 1, 'Max': 9999,}
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             par1Example: typing.Optional[str]=None,  # Cs Mandatory Param
-             par2Example: typing.Optional[str]=None,  # Cs Optional Param
-             argsList: typing.Optional[list[str]]=None,  # CsArgs
-             methodInvokeArg: typing.Any=None,   # pyInv Argument
-    ) -> b.op.Outcome:
-        """stdin as input"""
-        callParamsDict = {'par1Example': par1Example, 'par2Example': par2Example, }
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        cmndArgsSpecDict = self.cmndArgsSpec()
-        par1Example = csParam.mappedValue('par1Example', par1Example)
-        par2Example = csParam.mappedValue('par2Example', par2Example)
-####+END:
-        self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]] This is an example of a CmndSvc with lots of features.
-The features include:
-
-        1) An optional parameter called someParam
-        2) A first mandatory argument called action which must be one of list or print.
-        3) An optional set of additional argumets.
-
-The param, and args are then validated and form a single string.
-That string is then echoed in a sub-prococessed. The stdout of that sub-proc is assigned
-to a variable similar to bash back-quoting.
-
-And that variable is then printed.
-
-Variations of this are captured as snippets to be used.
-        #+end_org """)
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csExamples.cs --par1Example="par1Mantory" --par2Example="par2Optional" -i parsArgsStdinCmndResult arg1 argTwo
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_unitsList
 #+end_src
 #+RESULTS:
 :
-: cmndArgs= arg1  argTwo
-: stdin instead of methodInvokeArg =
-: cmndParams= par1Mantory par2Optional
-: OpError.Success
+: [{'function': 'LinuxU', 'abode': 'Mobile', 'boxId': 'box1007', 'containerId': 'PML-1001', 'model': 'Pure', 'containerNu': '1001'}, {'function': 'LinuxU', 'abode': 'Mobile', 'boxId': 'box1008', 'containerId': 'PML-1002', 'model': 'Pure', 'containerNu': '1002'}, {'function': 'LinuxU', 'abode': 'Mobile', 'boxId': 'box1010', 'containerId': 'PML-1003', 'model': 'Pure', 'containerNu': '1003'}, {'function': 'LinuxU', 'abode': 'Mobile', 'boxId': 'box1012', 'containerId': 'PML-1004', 'model': 'Pure', 'containerNu': '1004'}, {'function': 'LinuxU', 'abode': 'Mobile', 'boxId': 'box1011', 'containerId': 'PML-1005', 'model': 'Pure', 'containerNu': '1005'}, {'function': 'LinuxU', 'abode': 'Mobile', 'boxId': 'box1014', 'containerId': 'PML-1006', 'model': 'Pure', 'containerNu': '1006'}, {'function': 'LinuxU', 'abode': 'Mobile', 'boxId': 'box1014', 'containerId': 'PML-1099', 'model': 'Pure', 'containerNu': '1099'}]
         #+end_org """)
-
         if self.justCaptureP(): return cmndOutcome
 
-
-        action = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
-        actionArgs = self.cmndArgsGet("1&9999", cmndArgsSpecDict, argsList)
-
-        actionArgsStr = ""
-        for each in actionArgs:
-            actionArgsStr = actionArgsStr + " " + each
-
-        actionAndArgs = f"""{action} {actionArgsStr}"""
-
-
-        b.comment.orgMode(""" #+begin_org
-*****  [[elisp:(org-cycle)][| *Note:* | ]] Next we take in stdin, when interactive.
-After that, we print the results and then provide a result in =cmndOutcome=.
-        #+end_org """)
-
-        if not methodInvokeArg:
-            methodInvokeArg = b_io.stdin.read()
-
-        print(f"cmndArgs= {actionAndArgs}")
-        print(f"stdin instead of methodInvokeArg = {methodInvokeArg}")
-        print(f"cmndParams= {par1Example} {par2Example}")
-
-        return cmndOutcome.set(
-            opError=b.op.OpError.Success,
-            opResults="cmnd results come here",
+        regUnits = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=0,
         )
+
+        unitsList = regUnits.unitsList()
+
+        return cmndOutcome.set(opResults=unitsList,)
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_unitsFind" :comment "" :extent "verify" :ro "" :parsMand "model abode purpose" :parsOpt "" :argsMin 2 :argsMax 2 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_unitsFind>>  =verify= parsMand=model abode purpose argsMin=2 argsMax=2   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class container_unitsFind(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 2, 'Max': 2,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
+    ) -> b.op.Outcome:
+
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        cmndArgsSpecDict = self.cmndArgsSpec()
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+####+END:
+        if self.cmndDocStr(""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  result: boxBaseDir corresponding to uniqBoxId
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_unitsFind boxId box1014
+#+end_src
+#+RESULTS:
+:
+: [PosixPath('/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1006'), PosixPath('/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099')]
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        cmndArgsSpecDict = self.cmndArgsSpec()
+        parName = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
+        parValue = self.cmndArgsGet("1", cmndArgsSpecDict, argsList)
+
+        regUnits = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=0,
+        )
+
+        foundList = regUnits.unitsFind(parName=parName, parValue=parValue)
+
+        return cmndOutcome.set(opResults=foundList,)
 
 ####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
     """ #+begin_org
@@ -1361,34 +719,247 @@ After that, we print the results and then provide a result in =cmndOutcome=.
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmndArgsSpec(self, ):
 ####+END:
-        """  #+begin_org
-*** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]] First arg defines rest
-        #+end_org """
-
+        """
+***** Cmnd Args Specification  -- Each As Any.
+"""
         cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
         cmndArgsSpecDict.argsDictAdd(
             argPosition="0",
-            argName="action",
-            argChoices=['echo', 'encrypt', 'ls', 'date'],
-            argDescription="Action to be specified by rest"
+            argName="parName",
+            argChoices=[],
+            argDescription="Name of File Parameter to search for."
         )
         cmndArgsSpecDict.argsDictAdd(
-            argPosition="1&9999",
-            argName="actionArgs",
+            argPosition="1",
+            argName="parValue",
             argChoices=[],
-            argDescription="Rest of args for use by action"
+            argDescription="Value of File Parameter to search for."
         )
-
         return cmndArgsSpecDict
 
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "pyCmndInvOf_parsArgsStdinCmndResultDEFUNCT" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_repoPull" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<pyCmndInvOf_parsArgsStdinCmndResultDEFUNCT>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_repoPull>>  =verify= parsMand=model abode purpose ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class pyCmndInvOf_parsArgsStdinCmndResultDEFUNCT(cs.Cmnd):
-    cmndParamsMandatory = [ ]
+class container_repoPull(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+    ) -> b.op.Outcome:
+
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Runs: echo siteContainersBase | bx-gitRepos -i gitRemPull
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_repoPull
+#+end_src
+#+RESULTS:
+:
+: ** cmnd= echo /bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU | echo bx-gitRepos -i gitRemPull
+: bx-gitRepos -i gitRemPull
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        regUnits = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=0,
+        )
+
+        regUnits.repoPull(cmndOutcome)
+
+        return cmndOutcome
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_repoPush" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_repoPush>>  =verify= parsMand=model abode purpose ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class container_repoPush(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+    ) -> b.op.Outcome:
+
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Runs: echo siteContainersBase | bx-gitRepos -i  addCommitPush all
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_repoPush
+#+end_src
+#+RESULTS:
+:
+: ** cmnd= echo /bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU | echo bx-gitRepos -i addCommitPush all
+: bx-gitRepos -i addCommitPush all
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        regUnits = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=0,
+        )
+
+        regUnits.repoPush(cmndOutcome)
+
+        return cmndOutcome
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_repoLock" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_repoLock>>  =verify= parsMand=model abode purpose ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class container_repoLock(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+    ) -> b.op.Outcome:
+
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]] NOTYET, Lock a write transaction using https://docs.gitlab.com/ee/user/project/file_lock.html
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_repoLock
+#+end_src
+#+RESULTS:
+:
+: OpError.Success
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        regUnits = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=0,
+        )
+
+        regUnits.repoLock(cmndOutcome)
+
+        return cmndOutcome
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_repoUnlock" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_repoUnlock>>  =verify= parsMand=model abode purpose ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class container_repoUnlock(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+    ) -> b.op.Outcome:
+
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]] NOTYET, Unlock a write transaction using https://docs.gitlab.com/ee/user/project/file_lock.html
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_repoUnlock
+#+end_src
+#+RESULTS:
+:
+: OpError.Success
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        regUnits = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=0,
+        )
+
+        regUnits.repoUnlock(cmndOutcome)
+
+        return cmndOutcome
+
+
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "RO Service Commands" :anchor ""  :extraInfo "Command Services Section"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _RO Service Commands_: |]]  Command Services Section  [[elisp:(org-shifttab)][<)]] E|
+#+end_org """
+####+END:
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_container_add" :comment "" :extent "verify" :ro "cli" :parsMand "model abode purpose boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_container_add>>  =verify= parsMand=model abode purpose boxNu ro=cli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class ro_container_add(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', 'boxNu', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
@@ -1396,26 +967,187 @@ class pyCmndInvOf_parsArgsStdinCmndResultDEFUNCT(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+             boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
+    ) -> b.op.Outcome:
+
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, 'boxNu': boxNu, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+        boxNu = csParam.mappedValue('boxNu', boxNu)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  NOTYET, First Implement Find
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU --boxNu=box1999 -i ro_container_add
+#+end_src
+#+RESULTS:
+:
+: box1999 has already been registered [PosixPath('/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1100')]
+: Cmnd -- No Results
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        regUnits = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=0,
+        )
+
+        foundList = regUnits.unitsFind(parName='boxId', parValue=boxNu)
+
+        if foundList:
+            b_io.ann.note(f"{boxNu} has already been registered {foundList}")
+            return(cmndOutcome)
+
+        nextUnitNu = regUnits.unitsNextNu()
+
+        regfps = containerRegfps.Container_RegFPs(
+            model=model,
+            abode=abode,
+            purpose=purpose,
+            nu=nextUnitNu,
+        )
+
+        containerId = regfps.unitCreate(boxNu)
+
+        return cmndOutcome.set(opResults=containerId,)
+
+####+BEGIN: b:py3:cs:cmnd/alias :cmndName "ro_container_read" :existingName "container_unitRead" :comment ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndAlias  [[elisp:(outline-show-subtree+toggle)][||]] <<ro_container_read>> is /alias/ for [[container_unitRead]]  [[elisp:(org-cycle)][| ]]
+#+end_org """
+ro_container_read = type('ro_container_read', container_unitRead.__bases__, dict(container_unitRead.__dict__))
+####+END:
+
+####+BEGIN: b:py3:cs:cmnd/alias :cmndName "ro_container_update" :existingName "container_unitUpdate" :comment ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndAlias  [[elisp:(outline-show-subtree+toggle)][||]] <<ro_container_update>> is /alias/ for [[container_unitUpdate]]  [[elisp:(org-cycle)][| ]]
+#+end_org """
+ro_container_update = container_unitUpdate
+####+END:
+
+####+BEGIN: b:py3:cs:cmnd/alias :cmndName "ro_container_delete" :existingName "container_unitDelete" :comment ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndAlias  [[elisp:(outline-show-subtree+toggle)][||]] <<ro_container_delete>> is /alias/ for [[container_unitDelete]]  [[elisp:(org-cycle)][| ]]
+#+end_org """
+ro_container_delete = container_unitDelete
+####+END:
+
+####+BEGIN: b:py3:cs:cmnd/alias :cmndName "ro_container_find" :existingName "container_unitsFind" :comment ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndAlias  [[elisp:(outline-show-subtree+toggle)][||]] <<ro_container_find>> is /alias/ for [[container_unitsFind]]  [[elisp:(org-cycle)][| ]]
+#+end_org """
+ro_container_find = container_unitsFind
+####+END:
+
+####+BEGIN: b:py3:cs:cmnd/alias :cmndName "ro_container_list" :existingName "container_unitsList" :comment ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndAlias  [[elisp:(outline-show-subtree+toggle)][||]] <<ro_container_list>> is /alias/ for [[container_unitsList]]  [[elisp:(org-cycle)][| ]]
+#+end_org """
+ro_container_list = container_unitsList
+####+END:
+
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Performer Facilities" :anchor ""  :extraInfo "Command Services Section Examples"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Performer Facilities_: |]]  Command Services Section Examples  [[elisp:(org-shifttab)][<)]] E|
+#+end_org """
+####+END:
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "withContainerIdGetBase" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<withContainerIdGetBase>>  =verify= argsMin=1 argsMax=1 ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class withContainerIdGetBase(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 1, 'Max': 1,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
     ) -> b.op.Outcome:
 
         callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
+        cmndArgsSpecDict = self.cmndArgsSpec()
 ####+END:
-        self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+        if self.cmndDocStr(""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs -i withContainerIdGetBase PML-1006
+#+end_src
+#+RESULTS:
+:
+: P
+: /bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1006
         #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
 
-        if not (results := parsArgsStdinCmndResult(cmndOutcome=cmndOutcome).cmnd(
-                rtInv=cs.RtInvoker.new_py(),
-                cmndOutcome=cmndOutcome,
-                par1Example="py_par1Val",
-                argsList=['echo', 'py_arg2Val'],
-                methodInvokeArg="py method invoke arg"
-        ).results): return(b_io.eh.badOutcome(cmndOutcome))
+        cmndArgsSpecDict = self.cmndArgsSpec()
+        cmndsArgs = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
 
-        return(cmndOutcome)
+        modelInitial = cmndsArgs[0]
+        abodeInitial = cmndsArgs[1]
+        purposeInitial = cmndsArgs[2]
 
+        thisModel = invSiteRegContainer.Models(modelInitial).name
+        thisAbode = invSiteRegContainer.Abodes(abodeInitial).name
+        thisPurpose = invSiteRegContainer.Purposes(purposeInitial).name
+
+        #print(getattr(invSiteRegContainer.Models, f'{thisModel}').value)
+
+        splited = cmndsArgs.split('-')
+        containerNu = splited[1]
+
+        if (siteContainersBase := config_siteContainersBaseObtain().cmnd(
+                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
+        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+
+
+        result = siteContainersBase.joinpath(f"{thisModel}/{thisAbode}/{thisPurpose}/{containerNu}")
+
+        # print(f"{result} {thisModel} {containerNu}")
+
+        assert result.exists()
+
+        return cmndOutcome.set(opResults=result,)
+
+####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self, ):
+####+END:
+        """
+***** Cmnd Args Specification  -- Each As Any.
+"""
+        cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0",
+            argName="cmndArgs",
+            argChoices=[],
+            argDescription="List Of CmndArgs To Be Processed. Each As Any."
+        )
+
+        return cmndArgsSpecDict
 
 
 ####+BEGIN: b:py3:cs:framework/endOfFile :basedOn "classification"

@@ -104,15 +104,16 @@ import collections
    "bisos.siteRegistrars.siteRegPortNu"
    "bisos.siteRegistrars.invSiteRegContainerConf"
    "bisos.siteRegistrars.perfSiteRegContainerConf"
+   "bisos.siteRegistrars.containerRegfps"
  ))
 #+END_SRC
 #+RESULTS:
-| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.siteRegistrars.invSiteRegContainer | bisos.siteRegistrars.perfSiteRegContainer | bisos.siteRegistrars.siteRegPortNu | bisos.siteRegistrars.invSiteRegContainerConf | bisos.siteRegistrars.perfSiteRegContainerConf |
+| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.siteRegistrars.invSiteRegContainer | bisos.siteRegistrars.perfSiteRegContainer | bisos.siteRegistrars.siteRegPortNu | bisos.siteRegistrars.invSiteRegContainerConf | bisos.siteRegistrars.perfSiteRegContainerConf | bisos.siteRegistrars.containerRegfps |
 #+end_org """
 
 ####+BEGIN: b:py3:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] =Process CSU List= with /9/ in csuList pyImports=t csuImports=t csuParams=t
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] =Process CSU List= with /10/ in csuList pyImports=t csuImports=t csuParams=t
 #+end_org """
 
 from bisos.b.cs import ro
@@ -124,9 +125,10 @@ from bisos.siteRegistrars import perfSiteRegContainer
 from bisos.siteRegistrars import siteRegPortNu
 from bisos.siteRegistrars import invSiteRegContainerConf
 from bisos.siteRegistrars import perfSiteRegContainerConf
+from bisos.siteRegistrars import containerRegfps
 
 
-csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.siteRegistrars.invSiteRegContainer', 'bisos.siteRegistrars.perfSiteRegContainer', 'bisos.siteRegistrars.siteRegPortNu', 'bisos.siteRegistrars.invSiteRegContainerConf', 'bisos.siteRegistrars.perfSiteRegContainerConf', ]
+csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.siteRegistrars.invSiteRegContainer', 'bisos.siteRegistrars.perfSiteRegContainer', 'bisos.siteRegistrars.siteRegPortNu', 'bisos.siteRegistrars.invSiteRegContainerConf', 'bisos.siteRegistrars.perfSiteRegContainerConf', 'bisos.siteRegistrars.containerRegfps', ]
 
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 
@@ -137,12 +139,13 @@ def g_extraParams():
 
 ####+END:
 
-####+BEGIN: b:py3:cs:main/exposedSymbols :classes ("invSiteRegContainerConf.RegContainerInvConf_FPs")
+####+BEGIN: b:py3:cs:main/exposedSymbols :classes ("invSiteRegContainerConf.RegContainerInvConf_FPs" "containerRegfps.Container_RegFPs")
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Exposed Symbols List Specification~ with /1/ in Classes List
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Exposed Symbols List Specification~ with /2/ in Classes List
 #+end_org """
 
 RegContainerInvConf_FPs = invSiteRegContainerConf.RegContainerInvConf_FPs # exec/eval-ed as __main__.ClassName
+Container_RegFPs = containerRegfps.Container_RegFPs # exec/eval-ed as __main__.ClassName
 
 ####+END:
 
@@ -192,6 +195,7 @@ class examples(cs.Cmnd):
         invSiteRegContainer.examples_csu(sectionTitle="default")
 
         perfSiteRegContainerConf.examples_csu(sectionTitle="default")
+        containerRegfps.examples_csu(sectionTitle="default")
         perfSiteRegContainer.examples_csu(sectionTitle="default")
 
         siteRegPortNu.examples_csu(sectionTitle="default")

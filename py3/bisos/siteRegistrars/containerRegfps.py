@@ -28,7 +28,7 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/bisos/siteRegistrars/perfSiteRegContainerConf.py
+** This File: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/bisos/siteRegistrars/containerRegFps.py
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -38,10 +38,10 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['perfSiteRegContainerConf'], }
-csInfo['version'] = '202401295255'
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['containerRegFps'], }
+csInfo['version'] = '202402023715'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'perfSiteRegContainerConf-Panel.org'
+csInfo['panel'] = 'containerRegFps-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
@@ -87,12 +87,17 @@ from bisos.common import csParam
 import collections
 ####+END:
 
+from bisos.siteRegistrars import perfSiteRegContainer
+from bisos.siteRegistrars import invSiteRegContainer
+from bisos.usgAcct import usgAcct
+from bisos.regfps import regfps
+
 import pathlib
 import __main__
 import os
 # import abc
 
-from bisos.usgAcct import usgAcct
+
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "CSU" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
@@ -118,28 +123,34 @@ def examples_csu(
     def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
 
     if sectionTitle == 'default':
-        cs.examples.menuChapter('*Performer Site Registrar Container Configuration*')
+        cs.examples.menuChapter('*Performer Site Registrar Container FPs*')
 
-    icmWrapper = ""
-    cmndName = "perfSiteRegContainerConf_set"
+    icmWrapper = "echo"
+    cmndName = "regfps_container_setDefaults"
     cps = cpsInit() ; cps['regContainersBpoId'] = 'pmc_clusterNeda-containers'
     cmndArgs = "" ;
-
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
+
+    icmWrapper = ""
+    cmndName = "regfps_container_setMenu"
+    cps = cpsInit()
+    cmndArgs = "list" ;
+    cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
+
 
     #cmndName = "pyCmndInvOf_parsArgsStdinCmndResult" ; cps = cpsInit() ; cmndArgs = "" ;
     #menuItem(verbosity='none')
 
-    cs.examples.menuChapter('FileParams Access And Management*')
+    # cs.examples.menuChapter('FileParams Access And Management*')
 
     icmWrapper = ""
-    cmndName = "perfSiteRegContainerConf_fps"
+    cmndName = "regfps_container_getMenu"
     cps = cpsInit()
     cmndArgs = "list" ;
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
 
     icmWrapper = ""
-    cmndName = "perfSiteRegContainerConf_fps"
+    cmndName = "regfps_container_get"
     cps = cpsInit()
     cmndArgs = "menu" ;
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
@@ -156,14 +167,14 @@ def commonParamsSpecify(
 ** --regContainersBpoId
     """
 
-    RegContainerPerfConf_FPs.fps_asCsParamsAdd(icmParams,)
+    Container_RegFPs.fps_asCsParamsAdd(icmParams,)
 
 
-####+BEGIN: bx:dblock:python:class :className "RegContainerPerfConf_FPs" :superClass "b.fpCls.BaseDir" :comment "" :classType "basic"
+####+BEGIN: bx:dblock:python:class :className "Container_RegFPs" :superClass "regfps.RegFPs" :comment "" :classType "basic"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-basic  [[elisp:(outline-show-subtree+toggle)][||]] /RegContainerPerfConf_FPs/ b.fpCls.BaseDir  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-basic  [[elisp:(outline-show-subtree+toggle)][||]] /Container_RegFPs/ regfps.RegFPs  [[elisp:(org-cycle)][| ]]
 #+end_org """
-class RegContainerPerfConf_FPs(b.fpCls.BaseDir):
+class Container_RegFPs(regfps.RegFPs):
 ####+END:
     """
 ** Abstraction of the
@@ -177,17 +188,25 @@ class RegContainerPerfConf_FPs(b.fpCls.BaseDir):
 ####+END:
             self,
             fpBase: str="",
+            model: typing.Union[invSiteRegContainer.Models, None]=None,
+            purpose: typing.Union[invSiteRegContainer.Purposes, None]=None,
+            abode: typing.Union[invSiteRegContainer.Abodes, None]=None,
+            nu: typing.Union[int, None]=None,
     ):
-        self.fpBase = fpBase
+        self.model = model
+        self.purpose = purpose
+        self.abode = abode
+        self.unitNu = nu
 
         if fpBase:
-            self.fpBase = fpBase
             fileSysPath = fpBase
+        elif (model is None) or (purpose is None) or (abode is None):
+            b_io.eh.eh_problem_usageError("Missing Required Params. (model, func.)")
+            assert False
         else:
             fileSysPath = self.basePath_obtain()
 
         super().__init__(fileSysPath,)
-
 
 ####+BEGIN: b:py3:cs:method/typing :methodName "fps_asCsParamsAdd" :deco "staticmethod"
     """ #+begin_org
@@ -200,14 +219,64 @@ class RegContainerPerfConf_FPs(b.fpCls.BaseDir):
     ):
         """staticmethod: takes in icmParms and augments it with fileParams. returns icmParams."""
         icmParams.parDictAdd(
-            parName='regContainersBpoId',
+            parName='fp_container_abode',
             parDescription="",
             parDataType=None,
             parDefault=None,
             parChoices=list(),
             #parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
             argparseShortOpt=None,
-            argparseLongOpt='--regContainersBpoId',
+            argparseLongOpt='--fp_container_abode',
+        )
+        icmParams.parDictAdd(
+            parName='fp_container_boxId',
+            parDescription="",
+            parDataType=None,
+            parDefault=None,
+            parChoices=list(),
+            #parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
+            argparseShortOpt=None,
+            argparseLongOpt='--fp_container_boxId',
+        )
+        icmParams.parDictAdd(
+            parName='fp_container_id',
+            parDescription="",
+            parDataType=None,
+            parDefault=None,
+            parChoices=list(),
+            #parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
+            argparseShortOpt=None,
+            argparseLongOpt='--fp_container_id',
+        )
+        icmParams.parDictAdd(
+            parName='fp_container_nu',
+            parDescription="",
+            parDataType=None,
+            parDefault=None,
+            parChoices=list(),
+            #parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
+            argparseShortOpt=None,
+            argparseLongOpt='--fp_container_nu',
+        )
+        icmParams.parDictAdd(
+            parName='fp_container_purpose',
+            parDescription="",
+            parDataType=None,
+            parDefault=None,
+            parChoices=list(),
+            #parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
+            argparseShortOpt=None,
+            argparseLongOpt='--fp_container_purpose',
+        )
+        icmParams.parDictAdd(
+            parName='fp_container_model',
+            parDescription="",
+            parDataType=None,
+            parDefault=None,
+            parChoices=list(),
+            #parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
+            argparseShortOpt=None,
+            argparseLongOpt='--fp_container_model',
         )
 
         return icmParams
@@ -224,16 +293,21 @@ class RegContainerPerfConf_FPs(b.fpCls.BaseDir):
         """
         csParams = cs.G.icmParamDictGet()
         self._manifestDict = {}
-        paramsList = [
-                'regContainersBpoId',
-        ]
-        for eachParam in paramsList:
-            thisCsParam = csParams.parNameFind(eachParam)   # type: ignore
+        paramsDict = {
+            'fp_container_model': 'model',
+            'fp_container_abode': 'abode',
+            'fp_container_purpose': 'function',
+            'fp_container_boxId': 'boxId',
+            'fp_container_id': 'containerId',
+            'fp_container_nu': 'containerNu',
+        }
+        for key, value in paramsDict.items():
+            thisCsParam = csParams.parNameFind(key)   # type: ignore
             thisFpCmndParam = b.fpCls.FpCmndParam(
                 cmndParam=thisCsParam,
                 fileParam=None,
             )
-            self._manifestDict[eachParam] = thisFpCmndParam
+            self._manifestDict[value] = thisFpCmndParam
 
         return self._manifestDict
 
@@ -258,8 +332,16 @@ class RegContainerPerfConf_FPs(b.fpCls.BaseDir):
            self,
     ) -> pathlib.Path:
 
-        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/container/perf.fps')
-        assert fpsBase.exists()
+        cmndOutcome = b.op.Outcome()
+        if (siteContainersBase := perfSiteRegContainer.config_siteContainersBaseObtain().cmnd(
+                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
+        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+
+        fpsBase = siteContainersBase.joinpath(f"{self.model}/{self.abode}/{self.purpose}")
+        if self.unitNu:
+            fpsBase = fpsBase.joinpath(f"{self.unitNu}")
+
+        # assert fpsBase.exists()
         return fpsBase
 
 ####+BEGIN: b:py3:cs:method/typing :methodName "basePath_update" :deco "default"
@@ -293,6 +375,64 @@ class RegContainerPerfConf_FPs(b.fpCls.BaseDir):
         #return self.fpsBaseInst
         pass
 
+####+BEGIN: b:py3:cs:method/typing :methodName "unitId" :deco "default"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /unitId/  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def unitId(
+####+END:
+            self,
+    ) -> typing.Optional[str]:
+        """ """
+
+        modelInitial = getattr(invSiteRegContainer.Models, f'{self.model}').value
+        abodeInitial = getattr(invSiteRegContainer.Abodes, f'{self.abode}').value
+        purposeInitial = getattr(invSiteRegContainer.Purposes, f'{self.purpose}').value
+
+        self.containerId = f"{modelInitial}{abodeInitial}{purposeInitial}-{self.unitNu}"
+        return  self.containerId
+
+
+####+BEGIN: b:py3:cs:method/typing :methodName "unitCreate" :deco "default"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /unitCreate/  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def unitCreate(
+####+END:
+            self,
+            boxId,
+    ) -> typing.Optional[str]:
+        """ """
+        unitBase = self.basePath_obtain()
+        if unitBase.exists():
+            print(f"eh_problem exists: {unitBase}")
+            return None
+
+        unitBase.mkdir(parents=False, exist_ok=False)
+
+        self.fps_setParam('model', self.model)
+        self.fps_setParam('function', self.purpose)
+        self.fps_setParam('abode', self.abode)
+        self.fps_setParam('containerNu', self.unitNu)
+        self.fps_setParam('containerId', self.unitId())
+        self.fps_setParam('boxId', boxId)
+
+        return self.containerId
+
+####+BEGIN: b:py3:cs:method/typing :methodName "unitUpdate" :deco "default"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /unitUpdate/  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def unitUpdate(
+####+END:
+           self,
+
+    ):
+        return typing.cast(str, self.basePath_obtain())
+
 
 ####+BEGIN: bx:cs:py3:section :title "CS ro_sap Cmnds"
 """ #+begin_org
@@ -300,11 +440,11 @@ class RegContainerPerfConf_FPs(b.fpCls.BaseDir):
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perfSiteRegContainerConf_set" :ro "noCli" :comment "" :parsMand "regContainersBpoId" :parsOpt "" :argsMin 0 :argsMax 0
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "regfps_container_setDefaults" :ro "noCli" :comment "" :parsMand "regContainersBpoId" :parsOpt "" :argsMin 0 :argsMax 0
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perfSiteRegContainerConf_set>>  =verify= parsMand=regContainersBpoId ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<regfps_container_setDefaults>>  =verify= parsMand=regContainersBpoId ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class perfSiteRegContainerConf_set(cs.Cmnd):
+class regfps_container_setDefaults(cs.Cmnd):
     cmndParamsMandatory = [ 'regContainersBpoId', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
@@ -326,17 +466,18 @@ class perfSiteRegContainerConf_set(cs.Cmnd):
 ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Creates path for ro_sap and updates FPs
         """
 
-        confFps = b.pattern.sameInstance(RegContainerPerfConf_FPs,)
+        confFps = b.pattern.sameInstance(RegContainer_FPs,)
 
-        confFps.fps_setParam('regContainersBpoId', regContainersBpoId)
+        # NOTYET
+        # confFps.fps_setParam('regContainersBpoId', regContainersBpoId)
 
         return(cmndOutcome)
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "perfSiteRegContainerConf_fps" :comment ""  :extent "noVerify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 9999 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "regfps_container_getMenu" :comment ""  :extent "noVerify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 9999 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<perfSiteRegContainerConf_fps>>  =noVerify= argsMin=1 argsMax=9999 ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<regfps_container_getMenu>>  =noVerify= argsMin=1 argsMax=9999 ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class perfSiteRegContainerConf_fps(cs.Cmnd):
+class regfps_container_getMenu(cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 1, 'Max': 9999,}
@@ -359,11 +500,12 @@ class perfSiteRegContainerConf_fps(cs.Cmnd):
         action = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
         actionArgs = self.cmndArgsGet("1&9999", cmndArgsSpecDict, argsList)
 
-        confFps = b.pattern.sameInstance(RegContainerPerfConf_FPs,)
+        confFps = RegContainer_FPs()
 
         if action == "list":
-            # print(f"With fpBase={roSapPath} and cls={RegContainerPerfConf_FPs} name={sapBaseFps.__class__.__name__}.")
-            if b.fpCls.fpParamsReveal(cmndOutcome=cmndOutcome).cmnd(
+            # print(f"With fpBase={roSapPath} and cls={RegContainer_FPs} name={sapBaseFps.__class__.__name__}.")
+            # if b.fpCls.fpParamsReveal(cmndOutcome=cmndOutcome).cmnd(
+            if b.fpCls.fpParamsReveal().cmnd(
                     rtInv=rtInv,
                     cmndOutcome=cmndOutcome,
                     fpBase="",
@@ -372,7 +514,82 @@ class perfSiteRegContainerConf_fps(cs.Cmnd):
             ).isProblematic(): return(b_io.EH_badOutcome(cmndOutcome))
 
         elif action == "menu":
-            print(f"With fpBase={roSapPath} and cls={RegContainerPerfConf_FPs} NOTYET.")
+            print(f"With fpBase={roSapPath} and cls={RegContainer_FPs} NOTYET.")
+        else:
+            print(f"bad input {action}")
+
+        return(cmndOutcome)
+
+####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self, ):
+####+END:
+        """  #+begin_org
+** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]]
+        #+end_org """
+
+        cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0",
+            argName="action",
+            argChoices=['list', 'menu',],
+            argDescription="Action to be specified by rest"
+        )
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="1&9999",
+            argName="actionArgs",
+            argChoices=[],
+            argDescription="Rest of args for use by action"
+        )
+
+        return cmndArgsSpecDict
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "regfps_container_setMenu" :comment ""  :extent "noVerify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 9999 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<regfps_container_setMenu>>  =noVerify= argsMin=1 argsMax=9999 ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class regfps_container_setMenu(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 1, 'Max': 9999,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
+    ) -> b.op.Outcome:
+
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+        #+end_org """)
+
+        cmndArgsSpecDict = self.cmndArgsSpec()
+
+        action = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
+        actionArgs = self.cmndArgsGet("1&9999", cmndArgsSpecDict, argsList)
+
+        confFps = RegContainer_FPs()
+
+        if action == "list":
+            # print(f"With fpBase={roSapPath} and cls={RegContainer_FPs} name={sapBaseFps.__class__.__name__}.")
+            # if b.fpCls.fpParamsReveal(cmndOutcome=cmndOutcome).cmnd(
+            if b.fpCls.fpParamsReveal().cmnd(
+                    rtInv=rtInv,
+                    cmndOutcome=cmndOutcome,
+                    fpBase="",
+                    cls=confFps.__class__.__name__,
+                    argsList=['setExamples'],
+            ).isProblematic(): return(b_io.EH_badOutcome(cmndOutcome))
+
+        elif action == "menu":
+            print(f"With fpBase={roSapPath} and cls={RegContainer_FPs} NOTYET.")
         else:
             print(f"bad input {action}")
 
