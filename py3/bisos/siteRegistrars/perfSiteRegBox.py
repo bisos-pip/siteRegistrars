@@ -162,20 +162,21 @@ def examples_csu(
             rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
     ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
 
-    # if (thisBoxPath := perf_boxFind().cmnd(
-    #         rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
-    #         uniqueBoxId=thisUniqueBoxId,
-    # ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
+    if (thisBoxPath := box_unitsFind().cmnd(
+            rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
+            argsList=["uniqueBoxId", thisUniqueBoxId],
+    ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
 
-    thisBoxPath = pathlib.Path("/xx/boxes/1005")
+    #thisBoxPath = pathlib.Path("/xx/boxes/1005")
 
-    thisBoxNu = thisBoxPath.name
+    thisBoxNu = thisBoxPath[0].name
     thisBoxName = f"box{thisBoxNu}"
 
     unitsPars = collections.OrderedDict([])
     unitBasePars = collections.OrderedDict([('boxNu', thisBoxNu)])
     createPars = collections.OrderedDict([('boxNu', thisBoxNu), ('uniqueBoxId', thisUniqueBoxId), ('boxName', thisBoxName)])
-    addPars = collections.OrderedDict([('uniqueBoxId', thisUniqueBoxId), ('boxName', thisBoxName)])
+    addPars = collections.OrderedDict([])
+    addArgs = f"uniqueBoxId {thisUniqueBoxId}"
 
     ro_unitsPars = cs.examples.perfNameParsInsert(unitsPars, perfName)
     ro_unitBasePars = cs.examples.perfNameParsInsert(unitBasePars, perfName)
@@ -194,7 +195,7 @@ def examples_csu(
     cmnd('box_unitUpdate', pars=createPars)
     cmnd('box_unitDelete', pars=unitBasePars)
     cmnd('box_unitId', pars=unitBasePars, comment="# E.g., PML-1099")
-    cmnd('ro_box_add', pars=addPars)
+    cmnd('ro_box_add', pars=addPars, args=addArgs)
 
     cs.examples.menuSection('*Performer Only Units (all units) Commands*')
 
@@ -217,7 +218,7 @@ def examples_csu(
     cmnd('box_unitUpdate', pars=ro_createPars)
     cmnd('box_unitDelete', pars=ro_unitBasePars)
     cmnd('box_unitsFind', pars=ro_unitsPars, args=f"boxId {thisBoxNu}")
-    cmnd('box_unitsFind', pars=ro_unitsPars, args=f"wBoxId {thisUniqueBoxId}")
+    cmnd('box_unitsFind', pars=ro_unitsPars, args=f"uniqueBoxId {thisUniqueBoxId}")
     cmnd('box_unitsList', pars=ro_unitsPars)
 
     cs.examples.menuSection('*Box ID Mapping Commands*')
