@@ -176,7 +176,7 @@ def examples_csu(
     unitBasePars = collections.OrderedDict([('boxNu', thisBoxNu)])
     createPars = collections.OrderedDict([('boxNu', thisBoxNu), ('uniqueBoxId', thisUniqueBoxId), ('boxName', thisBoxName)])
     addPars = collections.OrderedDict([])
-    addArgs = f"uniqueBoxId {thisUniqueBoxId}"
+    #findArgs = f"uniqueBoxId {thisUniqueBoxId}"
 
     ro_unitsPars = cs.examples.perfNameParsInsert(unitsPars, perfName)
     ro_unitBasePars = cs.examples.perfNameParsInsert(unitBasePars, perfName)
@@ -195,7 +195,7 @@ def examples_csu(
     cmnd('box_unitUpdate', pars=createPars)
     cmnd('box_unitDelete', pars=unitBasePars)
     cmnd('box_unitId', pars=unitBasePars, comment="# E.g., PML-1099")
-    cmnd('ro_box_add', pars=addPars, args=addArgs)
+    cmnd('ro_box_add', pars=addPars)
 
     cs.examples.menuSection('*Performer Only Units (all units) Commands*')
 

@@ -29,4 +29,4 @@ Example Usage
 
 ::
 
-   from  unisos import icm
+   from  bisos import siteRegistrars

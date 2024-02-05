@@ -55,8 +55,8 @@
 * TODO In siteBpos have a var link to /bisos/var/sites/siteName
 * TODO Figure and complete /bisos/sites/selected/
 * WAITING In bxGits/bisos Create bso-genesis-siteBoxes. Create //bxo/bso//genesis-siteBoxes with links
-* WAITING Look at exisiting siteAssignContainer for tracking base of registrars bpos
-* TODO Replecate siteAssignContainer for tracking base of registrars in python.
+* DONE Look at exisiting siteAssignContainer for tracking base of registrars bpos
+* DONE Replecate siteAssignContainer for tracking base of registrars in python.
 * DONE [#A] Complete box to equivalent of bash.
 DEADLINE: <2024-01-22 Mon> SCHEDULED: <2024-01-21 Sun>
 ** DONE Create invSite.py and perfSite.py
