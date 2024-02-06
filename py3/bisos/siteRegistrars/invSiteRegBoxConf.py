@@ -116,8 +116,17 @@ def examples_csu(
     def cpsInit(): return collections.OrderedDict()
     def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
 
+    od = collections.OrderedDict
+    cmnd = cs.examples.cmndEnter
+
+    
+    confFps = RegBoxInvConf_FPs()
+    ipAddrs_fp = confFps.fps_getParam('regBoxPerfAddrs')
+    
     if sectionTitle == 'default':
         cs.examples.menuChapter('*Invoker Site Registrar Box Configuration*')
+ 
+    cmnd('invSiteRegBoxConf_set', pars=od([('regBoxPerfAddrs', ipAddrs_fp.parValueGet())]), comment=" # Current Value")
 
     icmWrapper = ""
     cmndName = "invSiteRegBoxConf_set"

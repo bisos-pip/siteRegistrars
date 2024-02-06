@@ -116,14 +116,22 @@ def examples_csu(
     def cpsInit(): return collections.OrderedDict()
     def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
 
+    od = collections.OrderedDict
+    cmnd = cs.examples.cmndEnter
+    
+    confFps = RegContainerInvConf_FPs()
+    ipAddrs_fp = confFps.fps_getParam('regContainerPerfAddrs')
+        
+    
     if sectionTitle == 'default':
         cs.examples.menuChapter('*Invoker Site Registrar Container Configuration*')
 
+    cmnd('invSiteRegContainerConf_set', pars=od([('regContainerPerfAddrs', ipAddrs_fp.parValueGet())]), comment=" # Current Value")
+        
     icmWrapper = ""
     cmndName = "invSiteRegContainerConf_set"
     cps = cpsInit() ; cps['regContainerPerfAddrs'] = "['localhost']"
     cmndArgs = "" ;
-
     cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity='none', icmWrapper=icmWrapper)
 
     #cmndName = "pyCmndInvOf_parsArgsStdinCmndResult" ; cps = cpsInit() ; cmndArgs = "" ;
