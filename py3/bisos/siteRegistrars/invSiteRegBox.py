@@ -450,26 +450,28 @@ FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/d
         return cmndOutcome.set(opResults=sapPath,)
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_add" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "boxNu" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_add" :comment "" :extent "verify" :ro "cli" :parsMand "uniqueBoxId" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_add>>  =verify= parsOpt=boxNu ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_add>>  =verify= parsMand=uniqueBoxId parsOpt=boxName ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_box_add(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ 'boxNu', ]
+    cmndParamsMandatory = [ 'uniqueBoxId', ]
+    cmndParamsOptional = [ 'boxName', ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
-             boxNu: typing.Optional[str]=None,  # Cs Optional Param
+             uniqueBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
+             boxName: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'boxNu': boxNu, }
+        callParamsDict = {'uniqueBoxId': uniqueBoxId, 'boxName': boxName, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
-        boxNu = csParam.mappedValue('boxNu', boxNu)
+        uniqueBoxId = csParam.mappedValue('uniqueBoxId', uniqueBoxId)
+        boxName = csParam.mappedValue('boxName', boxName)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
@@ -488,7 +490,7 @@ class reg_box_add(cs.Cmnd):
 
         return cmndOutcome
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_read" :comment "" :extent "verify" :ro "cli" :parsMand " boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_read" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_read>>  =verify= parsMand= boxNu ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
