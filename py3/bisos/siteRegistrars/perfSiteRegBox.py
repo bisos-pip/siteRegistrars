@@ -848,31 +848,31 @@ class box_repoUnlock(cs.Cmnd):
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_box_add" :comment "" :extent "verify" :ro "cli" :parsMand "boxName uniqueBoxId" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_box_add" :comment "" :extent "verify" :ro "cli" :parsMand "uniqueBoxId" :parsOpt "boxName " :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_box_add>>  =verify= parsMand=boxName uniqueBoxId ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_box_add>>  =verify= parsMand=uniqueBoxId parsOpt=boxName  ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class ro_box_add(cs.Cmnd):
-    cmndParamsMandatory = [ 'boxName', 'uniqueBoxId', ]
-    cmndParamsOptional = [ ]
+    cmndParamsMandatory = [ 'uniqueBoxId', ]
+    cmndParamsOptional = [ 'boxName', ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
-             boxName: typing.Optional[str]=None,  # Cs Mandatory Param
              uniqueBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
+             boxName: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'boxName': boxName, 'uniqueBoxId': uniqueBoxId, }
+        callParamsDict = {'uniqueBoxId': uniqueBoxId, 'boxName': boxName, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)
-        boxName = csParam.mappedValue('boxName', boxName)
         uniqueBoxId = csParam.mappedValue('uniqueBoxId', uniqueBoxId)
+        boxName = csParam.mappedValue('boxName', boxName)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  NOTYET, First Implement Find
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  if boxName has not been specified, it become of the form boxXXX
         #+end_org """): return(cmndOutcome)
 
         self.captureRunStr(""" #+begin_org
@@ -901,6 +901,9 @@ class ro_box_add(cs.Cmnd):
         regfps = boxRegfps.Box_RegFPs(
             unitNu=nextUnitNu,
         )
+
+        if not boxName:
+            boxName = f"box{nextUnitNu}"
 
         regfps.unitCreate(uniqueBoxId, boxName)
 
