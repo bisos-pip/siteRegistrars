@@ -229,7 +229,8 @@ def examples_csu(
     cmnd('runningInChromeOsContainer')
     cmnd('thisBoxUUID')
 
-    cs.examples.menuSection('*RO Service Commands*')
+    cmnd('thisBox_findNu')
+    cmnd('thisBox_assign')
 
     if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Invoker and Performer Management*')
 
@@ -354,6 +355,108 @@ class thisBoxUUID(cs.Cmnd):
             opResults=f"{boxUniqId}",
         )
 
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisBox_findNu" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<thisBox_findNu>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class thisBox_findNu(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
+
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Equivalent of: -i reg_box_find $( -i thisBoxUUID ). Result: boxNu
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csInvSiteRegBox.cs -i thisBox_findNu
+#+end_src
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7fba029cd750>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7fba0205d050>}
+: [PosixPath('/bxo/iso/pmb_clusterNeda-boxes/boxes/1017')]
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        if (uniqueBoxId := thisBoxUUID().pyWCmnd(cmndOutcome,).results) == None:
+            return(b_io.eh.badOutcome(cmndOutcome))
+
+        if (boxNus := reg_box_find().pyWCmnd(cmndOutcome,
+            pyKwArgs={'argsList': ['uniqueBoxId', f"{uniqueBoxId}"]}
+        ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
+
+        return cmndOutcome.set(
+            opResults=f"{boxNus}",
+        )
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisBox_assign" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<thisBox_assign>>  =verify= parsOpt=boxName ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class thisBox_assign(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ 'boxName', ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             boxName: typing.Optional[str]=None,  # Cs Optional Param
+    ) -> b.op.Outcome:
+
+        callParamsDict = {'boxName': boxName, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        boxName = csParam.mappedValue('boxName', boxName)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Result: dmidecode -s system-uuid or macAddress when in ChromeOsContainer.
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csInvSiteRegBox.cs -i thisBox_assign
+#+end_src
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f74d5f049d0>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f74d5455110>}
+: [PosixPath('/bxo/iso/pmb_clusterNeda-boxes/boxes/1017')]
+: This box ([PosixPath('/bxo/iso/pmb_clusterNeda-boxes/boxes/1017')]) has already been registered -- addition skipped
+: 0
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        assignedBoxNu = "0"
+
+        if (uniqueBoxId := thisBoxUUID().pyWCmnd(cmndOutcome,).results) == None:
+            return(b_io.eh.badOutcome(cmndOutcome))
+
+        if (boxNus := reg_box_find().pyWCmnd(cmndOutcome,
+            pyKwArgs={'argsList': ['uniqueBoxId', f"{uniqueBoxId}"]}
+        ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
+
+        if len(boxNus) == 0:
+            if (assignedBoxNu :=reg_box_add().pyWCmnd(cmndOutcome,
+                    pyKwArgs={'uniqueBoxId': uniqueBoxId,}
+            ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
+        else:
+            b_io.ann.note(f"This box ({boxNus}) has already been registered -- addition skipped")
+
+        return cmndOutcome.set(
+            opResults=f"{assignedBoxNu}",
+        )
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Invoke Service Commands At Site Registrar" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
@@ -450,9 +553,9 @@ FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/d
         return cmndOutcome.set(opResults=sapPath,)
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_add" :comment "" :extent "verify" :ro "cli" :parsMand "uniqueBoxId" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_add" :comment "" :extent "verify" :ro "cli" :parsMand "uniqueBoxId" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_add>>  =verify= parsMand=uniqueBoxId parsOpt=boxName ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_add>>  =verify= parsMand=uniqueBoxId parsOpt=boxName ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_box_add(cs.Cmnd):
     cmndParamsMandatory = [ 'uniqueBoxId', ]
@@ -465,6 +568,7 @@ class reg_box_add(cs.Cmnd):
              cmndOutcome: b.op.Outcome,
              uniqueBoxId: typing.Optional[str]=None,  # Cs Mandatory Param
              boxName: typing.Optional[str]=None,  # Cs Optional Param
+             pyKwArgs: typing.Any=None,   # pyInv Argument
     ) -> b.op.Outcome:
 
         callParamsDict = {'uniqueBoxId': uniqueBoxId, 'boxName': boxName, }
@@ -474,11 +578,25 @@ class reg_box_add(cs.Cmnd):
         boxName = csParam.mappedValue('boxName', boxName)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Re-invokero_box_add with KwArgs, therefore pyKwArgs are needed.
         #+end_org """): return(cmndOutcome)
 
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csInvSiteRegBox.cs --uniqueBoxId 4c4c4544-0043-3510-8052-b9c04f4c4e31 -i reg_box_add
+#+end_src
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of ro_box_add with {'uniqueBoxId': '4c4c4544-0043-3510-8052-b9c04f4c4e31', 'boxName': None, 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7fb936e51dd0>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7fb9369c9390>}
+: Cmnd -- No Results
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
         cmndClass = perfSiteRegBox.ro_box_add
-        cmndKwArgs = self.cmndCallTimeKwArgs()
+        if pyKwArgs:
+            cmndKwArgs = pyKwArgs
+        else:
+            cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
             roSiteRegistrarSapPath,
@@ -490,9 +608,9 @@ class reg_box_add(cs.Cmnd):
 
         return cmndOutcome
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_read" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_read" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_read>>  =verify= parsMand= boxNu ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_read>>  =verify= parsMand=boxNu ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_box_read(cs.Cmnd):
     cmndParamsMandatory = [ 'boxNu', ]
@@ -504,6 +622,7 @@ class reg_box_read(cs.Cmnd):
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
              boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
+             pyKwArgs: typing.Any=None,   # pyInv Argument
     ) -> b.op.Outcome:
 
         callParamsDict = {'boxNu': boxNu, }
@@ -512,11 +631,24 @@ class reg_box_read(cs.Cmnd):
         boxNu = csParam.mappedValue('boxNu', boxNu)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Re-invokes box_unitsFind with KwArgs, therefore pyKwArgs are needed.
         #+end_org """): return(cmndOutcome)
 
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csInvSiteRegBox.cs --boxNu 1006 -i reg_box_read
+#+end_src
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitRead with {'boxNu': '1006', 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f33e2bc4950>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f33e2bc4910>}
+: {'uniqueBoxId': '4c4c4544-0059-5110-8051-c6c04f564831', 'boxId': 'box1006', 'boxNu': '1006'}
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
         cmndClass = perfSiteRegBox.box_unitRead
-        cmndKwArgs = self.cmndCallTimeKwArgs()
+        if pyKwArgs:
+            cmndKwArgs = pyKwArgs
+        else:
+            cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
             roSiteRegistrarSapPath,
@@ -605,10 +737,9 @@ class reg_box_delete(cs.Cmnd):
 
         return cmndOutcome
 
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_find" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt ""  :argsMin 2 :argsMax 2 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_find" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt ""  :argsMin 2 :argsMax 2 :pyInv "pyKwArgs"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_find>>  =verify= argsMin=2 argsMax=2 ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_find>>  =verify= argsMin=2 argsMax=2 ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_box_find(cs.Cmnd):
     cmndParamsMandatory = [ ]
@@ -620,6 +751,7 @@ class reg_box_find(cs.Cmnd):
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
              argsList: typing.Optional[list[str]]=None,  # CsArgs
+             pyKwArgs: typing.Any=None,   # pyInv Argument
     ) -> b.op.Outcome:
 
         callParamsDict = {}
@@ -628,11 +760,24 @@ class reg_box_find(cs.Cmnd):
         cmndArgsSpecDict = self.cmndArgsSpec()
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Re-invokes box_unitsFind with KwArgs, therefore pyKwArgs are needed.
         #+end_org """): return(cmndOutcome)
 
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csInvSiteRegBox.cs -i reg_box_find uniqueBoxId someBox
+#+end_src
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', 'someBox'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f5a28f9ba50>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f5a28f9ba10>}
+: []
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
         cmndClass = perfSiteRegBox.box_unitsFind
-        cmndKwArgs = self.cmndCallTimeKwArgs()
+        if pyKwArgs:
+            cmndKwArgs = pyKwArgs
+        else:
+            cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
             roSiteRegistrarSapPath,
@@ -644,9 +789,9 @@ class reg_box_find(cs.Cmnd):
 
         return cmndOutcome
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_list" :comment "" :extent "verify" :ro "cli" parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_list" :comment "" :extent "verify" :ro "cli" parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_list>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_list>>  =verify= ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_box_list(cs.Cmnd):
     cmndParamsMandatory = [ ]
@@ -657,6 +802,7 @@ class reg_box_list(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
+             pyKwArgs: typing.Any=None,   # pyInv Argument
     ) -> b.op.Outcome:
 
         callParamsDict = {}
@@ -664,11 +810,25 @@ class reg_box_list(cs.Cmnd):
             return b_io.eh.badOutcome(cmndOutcome)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]   Re-invokes box_unitsList with KwArgs, therefore pyKwArgs are needed.
         #+end_org """): return(cmndOutcome)
 
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csInvSiteRegBox.cs -i reg_box_list
+#+end_src
+
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitsList with {'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f258e26ffd0>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f258d76ee50>}
+
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
         cmndClass = perfSiteRegBox.box_unitsList
-        cmndKwArgs = self.cmndCallTimeKwArgs()
+        if pyKwArgs:
+            cmndKwArgs = pyKwArgs
+        else:
+            cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
             roSiteRegistrarSapPath,
