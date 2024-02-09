@@ -668,9 +668,9 @@ class reg_box_read(cs.Cmnd):
         return cmndOutcome
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_update" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_update" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_update>>  =verify= parsMand=boxNu ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_update>>  =verify= parsMand=boxNu ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_box_update(cs.Cmnd):
     cmndParamsMandatory = [ 'boxNu', ]
@@ -682,11 +682,13 @@ class reg_box_update(cs.Cmnd):
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
              boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
+             pyKwArgs: typing.Any=None,   # pyInv Argument
     ) -> b.op.Outcome:
 
+        failed = b_io.eh.badOutcome
         callParamsDict = {'boxNu': boxNu, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
+            return failed(cmndOutcome)
         boxNu = csParam.mappedValue('boxNu', boxNu)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
@@ -694,7 +696,10 @@ class reg_box_update(cs.Cmnd):
         #+end_org """): return(cmndOutcome)
 
         cmndClass = perfSiteRegBox.box_unitUpdate
-        cmndKwArgs = self.cmndCallTimeKwArgs()
+        if pyKwArgs:
+            cmndKwArgs = pyKwArgs
+        else:
+            cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
             roSiteRegistrarSapPath,
@@ -706,9 +711,9 @@ class reg_box_update(cs.Cmnd):
 
         return cmndOutcome
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_delete" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_delete" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_delete>>  =verify= parsMand=boxNu ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_delete>>  =verify= parsMand=boxNu ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_box_delete(cs.Cmnd):
     cmndParamsMandatory = [ 'boxNu', ]
@@ -720,11 +725,13 @@ class reg_box_delete(cs.Cmnd):
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
              boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
+             pyKwArgs: typing.Any=None,   # pyInv Argument
     ) -> b.op.Outcome:
 
+        failed = b_io.eh.badOutcome
         callParamsDict = {'boxNu': boxNu, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
+            return failed(cmndOutcome)
         boxNu = csParam.mappedValue('boxNu', boxNu)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
@@ -732,7 +739,10 @@ class reg_box_delete(cs.Cmnd):
         #+end_org """): return(cmndOutcome)
 
         cmndClass = perfSiteRegBox.box_unitDelete
-        cmndKwArgs = self.cmndCallTimeKwArgs()
+        if pyKwArgs:
+            cmndKwArgs = pyKwArgs
+        else:
+            cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
             roSiteRegistrarSapPath,
