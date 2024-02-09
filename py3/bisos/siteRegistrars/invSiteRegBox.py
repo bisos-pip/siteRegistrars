@@ -88,7 +88,7 @@ from bisos.common import csParam
 import collections
 ####+END:
 
-from bisos.siteRegistrars import siteRegPortNu
+from bisos.banna import bannaPortNu
 from bisos.siteRegistrars import invSiteRegBoxConf
 from bisos.siteRegistrars import perfSiteRegBox
 
@@ -164,9 +164,8 @@ def commonParamsSpecify(
 #+end_org """
 ####+END:
 
-perfName = "siteRegistrar"
-
-roSiteRegistrarSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath(perfName)  # static method
+svcName = "csSiteRegBox"
+roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName)  # static method
 
 cs.invOutcomeReportControl(cmnd=True, ro=True)
 
@@ -232,12 +231,15 @@ def examples_csu(
     cmnd('thisBox_findNu')
     cmnd('thisBox_assign')
 
-    if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Invoker and Performer Management*')
+    if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Box Invoker Management*')
 
-    cmnd('reg_sapCreate')
+    cmnd('reg_sapCreateBox', pars=od([('perfName', 'csSiteRegBox')]))
+    print(f"""csRo-manage.cs --svcName="csSiteRegBox" --rosmu="csSiteRegBox.cs"  -i ro_fps list""")
 
-    print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="csSiteRegBox.cs"  -i ro_fps list""")
-    print(f"""csSiteRegBox.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
+    cmnd('reg_sapCreateBox', pars=od([('perfName', 'csSiteRegistrars')]))
+    print(f"""csRo-manage.cs --svcName="csSiteRegBox" --rosmu="csSiteRegistrars.cs"  -i ro_fps list""")
+
+    # print(f"""csSiteRegBox.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
 
     if sectionTitle == 'default': cs.examples.menuChapter('*Registrar Svc Commands -- perfName=siteRegistrar*')
 
@@ -417,9 +419,10 @@ class thisBox_assign(cs.Cmnd):
              boxName: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
+        failed = b_io.eh.badOutcome
         callParamsDict = {'boxName': boxName, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
+            return failed(cmndOutcome)
         boxName = csParam.mappedValue('boxName', boxName)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
@@ -440,8 +443,7 @@ class thisBox_assign(cs.Cmnd):
 
         assignedBoxNu = "0"
 
-        if (uniqueBoxId := thisBoxUUID().pyWCmnd(cmndOutcome,).results) == None:
-            return(b_io.eh.badOutcome(cmndOutcome))
+        if (uniqueBoxId := thisBoxUUID().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
 
         if (boxNus := reg_box_find().pyWCmnd(cmndOutcome,
             pyKwArgs={'argsList': ['uniqueBoxId', f"{uniqueBoxId}"]}
@@ -464,12 +466,12 @@ class thisBox_assign(cs.Cmnd):
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_sapCreate" :ro "noCli" :comment "" :parsMand "" :parsOpt "rosmuControl" :argsMin 0 :argsMax 0
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_sapCreateBox" :ro "noCli" :comment "" :parsMand "perfName" :parsOpt "rosmuControl" :argsMin 0 :argsMax 0
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_sapCreate>>  =verify= parsOpt=rosmuControl ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_sapCreateBox>>  =verify= parsMand=perfName parsOpt=rosmuControl ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class reg_sapCreate(cs.Cmnd):
-    cmndParamsMandatory = [ ]
+class reg_sapCreateBox(cs.Cmnd):
+    cmndParamsMandatory = [ 'perfName', ]
     cmndParamsOptional = [ 'rosmuControl', ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
     rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
@@ -478,66 +480,71 @@ class reg_sapCreate(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
+             perfName: typing.Optional[str]=None,  # Cs Mandatory Param
              rosmuControl: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'rosmuControl': rosmuControl, }
+        failed = b_io.eh.badOutcome
+        callParamsDict = {'perfName': perfName, 'rosmuControl': rosmuControl, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
+            return failed(cmndOutcome)
+        perfName = csParam.mappedValue('perfName', perfName)
         rosmuControl = csParam.mappedValue('rosmuControl', rosmuControl)
 ####+END:
         """\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Creates path for ro_sap and updates FPs
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Invoked both by invoker and performer. Creates path for ro_sap and updates FPs
         """
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs -i reg_sapCreate
+  csInvSiteRegBox.cs --rosmu csSiteRegistrars.cs -i reg_sapCreateBox
 #+end_src
 #+RESULTS:
 #+begin_example
 
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/perfIpAddr/value value=192.168.0.90
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/perfPortNu/value value=22222001
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/accessControl/value value=placeholder
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/perfName/value value=siteRegistrar
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/perfModel/value value=rpyc
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/rosmu/value value=csSiteRegBox.cs
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/rosmuSel/value value=default
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default/rosmuControl/value value=bisos
-/bisos/var/cs/ro/sap/csSiteRegBox.cs/siteRegistrar/rpyc/default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfIpAddr/value value=localhost
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfPortNu/value value=22222003
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/accessControl/value value=placeholder
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfName/value value=siteRegistrar
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfModel/value value=rpyc
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmu/value value=csSiteRegistrars.cs
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmuSel/value value=default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmuControl/value value=bisos
+/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default
 #+end_example
+
+#+begin_src sh :results output :session shared
+  csSiteRegistrars.cs -i reg_sapCreateBox
+#+end_src
+#+RESULTS:
+:
+: bash: csSiteRegistrars.cs: command not found
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
 
-        rosmu = cs.G.icmMyName()
         perfModel = "rpyc"
+        rosmu = cs.G.icmMyName()
 
         if rosmuControl:
             perfName = "exampleRegistrar"
             rosmuSel = 'default'  #  A file path to
             perfIpAddr = "localhost"
         else:
-            perfName = "siteRegistrar"
             rosmuSel = "default"
             rosmuControl = 'bisos'
 
             confFps = invSiteRegBoxConf.RegBoxInvConf_FPs()
             ipAddrs_fp =  confFps.fps_getParam('regBoxPerfAddrs')
             ipAddrStr = ipAddrs_fp.parValueGet()
-            #print(ipAddrStr)
             ipAddrs = ast.literal_eval(ipAddrStr)
             perfIpAddr = ipAddrs[0]
 
-
-        if (perfPortList := siteRegPortNu.portNuOf().cmnd(
-                rtInv=cs.RtInvoker.new_py(),
-                cmndOutcome=cmndOutcome,
-                argsList=['csSiteRegBox']
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+        if (perfPortList := bannaPortNu.bannaPortNuOf().pyWCmnd(cmndOutcome,
+                argsList=[perfName]
+        ).results) == None : return failed(cmndOutcome)
 
         perfPortNu = perfPortList[0]
 
-        sapBaseFps = b.pattern.sameInstance(cs.ro.SapBase_FPs, rosmu=rosmu, perfName=perfName, perfModel=perfModel, rosmuSel=rosmuSel)
+        sapBaseFps = b.pattern.sameInstance(cs.ro.SapBase_FPs, rosmu=rosmu, svcName=svcName, perfName=perfName, perfModel=perfModel, rosmuSel=rosmuSel)
 
         sapBaseFps.fps_setParam('perfIpAddr', perfIpAddr)
         sapBaseFps.fps_setParam('perfPortNu', perfPortNu)

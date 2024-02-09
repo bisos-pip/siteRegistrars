@@ -127,8 +127,8 @@ def commonParamsSpecify(
 # G = cs.globalContext.get()
 # icmRunArgs = G.icmRunArgsGet()
 
-perfName = "siteRegistrar"
-roSiteRegistrarSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath(perfName)  # static method
+svcName = "csSiteRegBox"
+roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName)  # static method
 
 cs.invOutcomeReportControl(cmnd=True, ro=True)
 

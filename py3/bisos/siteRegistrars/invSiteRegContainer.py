@@ -88,8 +88,7 @@ from bisos.common import csParam
 import collections
 ####+END:
 
-
-from bisos.siteRegistrars import siteRegPortNu
+from bisos.banna import bannaPortNu
 from bisos.siteRegistrars import invSiteRegContainerConf
 
 import pwd
@@ -173,9 +172,9 @@ def commonParamsSpecify(
 #+end_org """
 ####+END:
 
-perfName = "siteRegistrar"
+svcName = "csSiteRegContainer"
 
-roSiteRegistrarSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath(perfName)  # static method
+roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName)  # static method
 
 cs.invOutcomeReportControl(cmnd=True, ro=True)
 
@@ -319,14 +318,15 @@ def examples_csu(
 
     cs.examples.menuSection('*RO Service Commands*')
 
+    if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Container Invoker Management*')
 
-
-    if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Invoker and Performer Management*')
-
-    cmnd('reg_sapCreate')
-
+    cmnd('reg_sapCreateContainer', pars=od([('perfName', 'csSiteRegContainer')]))
     print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="csSiteRegContainer.cs"  -i ro_fps list""")
-    print(f"""csSiteRegContainer.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
+
+    cmnd('reg_sapCreateContainer', pars=od([('perfName', 'csSiteRegistrars')]))
+    print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="csSiteRegistrars.cs"  -i ro_fps list""")
+
+    # print(f"""csSiteRegContainer.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
 
     if sectionTitle == 'default': cs.examples.menuChapter('*Registrar Svc Commands -- perfName=siteRegistrar*')
 
@@ -397,12 +397,12 @@ class thisSys_findContainer(cs.Cmnd):
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_sapCreate" :ro "noCli" :comment "" :parsMand "" :parsOpt "rosmuControl" :argsMin 0 :argsMax 0
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_sapCreateContainer" :ro "noCli" :comment "" :parsMand "perfName" :parsOpt "rosmuControl" :argsMin 0 :argsMax 0
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_sapCreate>>  =verify= parsOpt=rosmuControl ro=noCli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_sapCreateContainer>>  =verify= parsMand=perfName parsOpt=rosmuControl ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class reg_sapCreate(cs.Cmnd):
-    cmndParamsMandatory = [ ]
+class reg_sapCreateContainer(cs.Cmnd):
+    cmndParamsMandatory = [ 'perfName', ]
     cmndParamsOptional = [ 'rosmuControl', ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
     rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
@@ -411,12 +411,15 @@ class reg_sapCreate(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
+             perfName: typing.Optional[str]=None,  # Cs Mandatory Param
              rosmuControl: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'rosmuControl': rosmuControl, }
+        failed = b_io.eh.badOutcome
+        callParamsDict = {'perfName': perfName, 'rosmuControl': rosmuControl, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
+            return failed(cmndOutcome)
+        perfName = csParam.mappedValue('perfName', perfName)
         rosmuControl = csParam.mappedValue('rosmuControl', rosmuControl)
 ####+END:
         """\
@@ -424,7 +427,7 @@ class reg_sapCreate(cs.Cmnd):
         """
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegContainer.cs -i reg_sapCreate
+  csSInviteRegContainer.cs -i reg_sapCreateContainer
 #+end_src
 #+RESULTS:
 #+begin_example
@@ -442,35 +445,31 @@ FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
 
-        rosmu = cs.G.icmMyName()
         perfModel = "rpyc"
+        rosmu = cs.G.icmMyName()
+
 
         if rosmuControl:
             perfName = "exampleRegistrar"
             rosmuSel = 'default'  #  A file path to
             perfIpAddr = "localhost"
         else:
-            perfName = "siteRegistrar"
             rosmuSel = "default"
             rosmuControl = 'bisos'
 
             confFps = invSiteRegContainerConf.RegContainerInvConf_FPs()
             ipAddrs_fp =  confFps.fps_getParam('regContainerPerfAddrs')
             ipAddrStr = ipAddrs_fp.parValueGet()
-            #print(ipAddrStr)
             ipAddrs = ast.literal_eval(ipAddrStr)
             perfIpAddr = ipAddrs[0]
 
-
-        if (perfPortList := siteRegPortNu.portNuOf().cmnd(
-                rtInv=cs.RtInvoker.new_py(),
-                cmndOutcome=cmndOutcome,
-                argsList=['csSiteRegContainer']
-        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+        if (perfPortList := bannaPortNu.bannaPortNuOf().pyWCmnd(cmndOutcome,
+                argsList=[perfName]
+        ).results) == None : return failed(cmndOutcome)
 
         perfPortNu = perfPortList[0]
 
-        sapBaseFps = b.pattern.sameInstance(cs.ro.SapBase_FPs, rosmu=rosmu, perfName=perfName, perfModel=perfModel, rosmuSel=rosmuSel)
+        sapBaseFps = b.pattern.sameInstance(cs.ro.SapBase_FPs, rosmu=rosmu, svcName=svcName, perfName=perfName, perfModel=perfModel, rosmuSel=rosmuSel)
 
         sapBaseFps.fps_setParam('perfIpAddr', perfIpAddr)
         sapBaseFps.fps_setParam('perfPortNu', perfPortNu)
@@ -710,12 +709,12 @@ class reg_container_find(cs.Cmnd):
 
         return cmndOutcome
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_container_list" :comment "" :extent "verify" :ro "cli" parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_container_list" :comment "" :extent "verify" :ro "cli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_container_list>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_container_list>>  =verify= parsMand=model abode purpose ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_container_list(cs.Cmnd):
-    cmndParamsMandatory = [ ]
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
@@ -723,11 +722,18 @@ class reg_container_list(cs.Cmnd):
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {}
+        failed = b_io.eh.badOutcome
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
+            return failed(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.

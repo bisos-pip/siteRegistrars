@@ -101,16 +101,16 @@ import collections
    "blee.csPlayer.bleep"
    "bisos.b.fpCls"
    "bisos.b.clsMethod_csu"
+   "bisos.banna.bannaPortNu"
    "bisos.siteRegistrars.invSiteRegBox"
    "bisos.siteRegistrars.perfSiteRegBox"
-   "bisos.siteRegistrars.siteRegPortNu"
    "bisos.siteRegistrars.invSiteRegBoxConf"
    "bisos.siteRegistrars.perfSiteRegBoxConf"
    "bisos.siteRegistrars.boxRegfps"
  ))
 #+END_SRC
 #+RESULTS:
-| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.siteRegistrars.invSiteRegBox | bisos.siteRegistrars.perfSiteRegBox | bisos.siteRegistrars.siteRegPortNu | bisos.siteRegistrars.invSiteRegBoxConf | bisos.siteRegistrars.perfSiteRegBoxConf | bisos.siteRegistrars.boxRegfps |
+| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.banna.bannaPortNu | bisos.siteRegistrars.invSiteRegBox | bisos.siteRegistrars.perfSiteRegBox | bisos.siteRegistrars.invSiteRegBoxConf | bisos.siteRegistrars.perfSiteRegBoxConf | bisos.siteRegistrars.boxRegfps |
 #+end_org """
 
 ####+BEGIN: b:py3:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t
@@ -122,15 +122,15 @@ from bisos.b.cs import ro
 from blee.csPlayer import bleep
 from bisos.b import fpCls
 from bisos.b import clsMethod_csu
+from bisos.banna import bannaPortNu
 from bisos.siteRegistrars import invSiteRegBox
 from bisos.siteRegistrars import perfSiteRegBox
-from bisos.siteRegistrars import siteRegPortNu
 from bisos.siteRegistrars import invSiteRegBoxConf
 from bisos.siteRegistrars import perfSiteRegBoxConf
 from bisos.siteRegistrars import boxRegfps
 
 
-csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.siteRegistrars.invSiteRegBox', 'bisos.siteRegistrars.perfSiteRegBox', 'bisos.siteRegistrars.siteRegPortNu', 'bisos.siteRegistrars.invSiteRegBoxConf', 'bisos.siteRegistrars.perfSiteRegBoxConf', 'bisos.siteRegistrars.boxRegfps', ]
+csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.banna.bannaPortNu', 'bisos.siteRegistrars.invSiteRegBox', 'bisos.siteRegistrars.perfSiteRegBox', 'bisos.siteRegistrars.invSiteRegBoxConf', 'bisos.siteRegistrars.perfSiteRegBoxConf', 'bisos.siteRegistrars.boxRegfps', ]
 
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 
@@ -200,7 +200,7 @@ class examples(cs.Cmnd):
         boxRegfps.examples_csu(sectionTitle="default")
         perfSiteRegBox.examples_csu(sectionTitle="default")
 
-        siteRegPortNu.examples_csu(sectionTitle="default")
+        bannaPortNu.examples_csu(sectionTitle="default")
 
         # b.ignore(ro.__doc__, fpCls.__doc__, clsMethod_csu.__doc__)  # We are not using these modules, but they are auto imported.
 
