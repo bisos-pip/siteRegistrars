@@ -640,7 +640,9 @@ class box_unitsFind(cs.Cmnd):
 
         foundList = regUnits.unitsFind(parName=parName, parValue=parValue)
 
-        return cmndOutcome.set(opResults=foundList,)
+        result = [ each.name for each in foundList ]
+
+        return cmndOutcome.set(opResults=result,)
 
 ####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
     """ #+begin_org
