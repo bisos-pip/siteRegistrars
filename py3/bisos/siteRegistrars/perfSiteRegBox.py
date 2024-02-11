@@ -162,14 +162,13 @@ def examples_csu(
             rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
     ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
 
-    if (thisBoxPath := box_unitsFind().cmnd(
+    if (boxNus := box_unitsFind().cmnd(
             rtInv=cs.RtInvoker.new_py(), cmndOutcome=b.op.Outcome(),
             argsList=["uniqueBoxId", thisUniqueBoxId],
     ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
 
-    #thisBoxPath = pathlib.Path("/xx/boxes/1005")
-
-    thisBoxNu = thisBoxPath[0].name
+    thisBoxNu = boxNus[0]
+    # thisBoxNu = thisBoxPath[0].name
     thisBoxName = f"box{thisBoxNu}"
 
     unitsPars = collections.OrderedDict([])
