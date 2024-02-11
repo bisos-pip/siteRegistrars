@@ -311,12 +311,14 @@ def examples_csu(
 
     unitsPars = collections.OrderedDict([('model', thisModel), ('abode', thisAbode), ('purpose', thisPurpose)])
     unitBasePars = collections.OrderedDict([('model', thisModel), ('abode', thisAbode), ('purpose', thisPurpose), ('containerNu', thisContainerNu)])
-    createPars = collections.OrderedDict([('model', thisModel), ('abode', thisAbode), ('purpose', thisPurpose), ('containerNu', thisContainerNu), ('boxNu', thisBoxNu)])
+    createPars = unitBasePars.copy()
+    createPars.update([('boxNu', thisBoxNu)])
+
+    thisSysPars = collections.OrderedDict([('model', 'Host'), ('abode', 'Shield'), ('purpose', 'Server'),])
 
     ro_unitsPars = cs.examples.perfNameParsInsert(unitsPars, perfName)
     ro_unitBasePars = cs.examples.perfNameParsInsert(unitBasePars, perfName)
     ro_createPars = cs.examples.perfNameParsInsert(createPars, perfName)
-
 
     cs.examples.menuSection('*RO Service Commands*')
 
@@ -339,6 +341,11 @@ def examples_csu(
     cmnd('reg_container_find', pars=unitsPars, args=f"boxId {thisBoxNu}")
     cmnd('reg_container_list', pars=unitsPars)
 
+    if sectionTitle == 'default': cs.examples.menuChapter('*ThisSys Facilities*')
+
+    cmnd('thisSys_findContainer', pars=thisSysPars,)
+    cmnd('thisSys_assignContainer', pars=thisSysPars,)
+    cmnd('withContainerIdRead', args=f"HSS-1006",)
 
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Invoker Only CmndSvc" :anchor ""  :extraInfo "Command Services Section"
@@ -384,25 +391,191 @@ class thisSys_findContainer(cs.Cmnd):
   csInvSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i thisSys_findContainer
 #+end_src
 #+RESULTS:
-: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegBox/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f42dc9bfc10>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f42dbed1cd0>}
-: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegContainer/rpyc/default of container_unitsFind with {'model': 'Pure', 'abode': 'Mobile', 'purpose': 'LinuxU', 'argsList': ['boxIdbox['], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f42dbd32210>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f42dbed1cd0>}
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegBox/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7fb82dc55c50>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7fb82d25dcd0>}
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegContainer/rpyc/default of container_unitsFind with {'model': 'Pure', 'abode': 'Mobile', 'purpose': 'LinuxU', 'argsList': ['boxId', 'box['], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7fb82e19c8d0>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7fb82d25dcd0>}
 : []
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
 
         if (boxNus := invSiteRegBox.thisBox_findNu().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
+        boxNus = ast.literal_eval(boxNus)
 
-        boxNu = pathlib.Path(boxNus[0]).name
+        if len(boxNus) == 0:
+            b_io.ann.note("No boxnu has been assigned to this system.")
+            return failed(cmndOutcome)
+
+        boxNu = boxNus[0]
 
         if (containers := reg_container_find().pyWCmnd(cmndOutcome,
-            pyKwArgs={'model': model, 'abode': abode, 'purpose': purpose, 'argsList': ['boxId' f"box{boxNu}"]},
+            pyKwArgs={'model': model, 'abode': abode, 'purpose': purpose, 'argsList': ['boxId', f"{boxNu}"]},
         ).results) == None: return failed(cmndOutcome)
 
         return cmndOutcome.set(
             opResults=f"{containers}",
         )
 
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisSys_assignContainer" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<thisSys_assignContainer>>  =verify= parsMand=model abode purpose ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class thisSys_assignContainer(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
 
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+    ) -> b.op.Outcome:
+
+        failed = b_io.eh.badOutcome
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return failed(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Equivalent of: -i reg_box_find $( -i thisBoxUUID ). Result: boxNu
+       NOTYET csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_unitsFind boxId box1014
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csInvSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i thisSys_assignContainer
+#+end_src
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegBox/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f2e7ba72d90>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f2e7ba721d0>}
+: roOutcomeOf box_unitsFind::  ['1017']
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegContainer/rpyc/default of container_unitsFind with {'model': 'Pure', 'abode': 'Mobile', 'purpose': 'LinuxU', 'argsList': ['boxId', '1017'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f2e7ba70510>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f2e7ba721d0>}
+: roOutcomeOf container_unitsFind::  ['1102']
+: ['1102'] has already been registered.
+: 0
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+
+        if (boxNus := invSiteRegBox.thisBox_findNu().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
+        boxNus = ast.literal_eval(boxNus)
+
+        if len(boxNus) == 0:
+            if (boxNus := invSiteRegBox.thisBox_assign().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
+            boxNus = ast.literal_eval(boxNus)
+
+
+        if len(boxNus) == 0: return failed(cmndOutcome)
+
+        boxNu = boxNus[0]
+
+        if (containers := reg_container_find().pyWCmnd(cmndOutcome,
+            pyKwArgs={'model': model, 'abode': abode, 'purpose': purpose, 'argsList': ['boxId', f"{boxNu}"]},
+        ).results) == None: return failed(cmndOutcome)
+
+        if len(containers) == 0:
+            if (containerId := reg_container_add().pyWCmnd(
+                    cmndOutcome,
+                    pyKwArgs={'model': model, 'abode': abode, 'purpose': purpose, 'boxNu': boxNu},
+            ).results) == None: return failed(cmndOutcome)
+        else:
+            b_io.ann.note(f"{containers} has already been registered.")
+            if (containerDict := reg_container_read().pyWCmnd(
+                    cmndOutcome,
+                    pyKwArgs={'model': model, 'abode': abode, 'purpose': purpose, 'containerNu': containers[0]},
+            ).results) == None: return failed(cmndOutcome)
+
+            containerId = containerDict['containerId']
+
+        return cmndOutcome.set(opResults=f"{containerId}",)
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "withContainerIdRead" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<withContainerIdRead>>  =verify= argsMin=1 argsMax=1 ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class withContainerIdRead(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 1, 'Max': 1,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
+    ) -> b.op.Outcome:
+
+        failed = b_io.eh.badOutcome
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
+            return failed(cmndOutcome)
+        cmndArgsSpecDict = self.cmndArgsSpec()
+####+END:
+        if self.cmndDocStr(""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csInvSiteRegContainer.cs -i withContainerIdRead HSS-1006
+#+end_src
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegContainer/rpyc/default of container_unitRead with {'model': 'Host', 'abode': 'Shield', 'purpose': 'Server', 'containerNu': '1006', 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f20e70dd750>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f20e657a550>}
+: roOutcomeOf container_unitRead::  {'function': 'Server', 'abode': 'Shield', 'boxId': '1017', 'containerId': 'HSS-1006', 'model': 'Host', 'containerNu': '1006'}
+: Host/Shield/Server/1006
+: {'function': 'Server', 'abode': 'Shield', 'boxId': '1017', 'containerId': 'HSS-1006', 'model': 'Host', 'containerNu': '1006'}
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        cmndArgsSpecDict = self.cmndArgsSpec()
+        cmndsArgs = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
+
+        modelInitial = cmndsArgs[0]
+        abodeInitial = cmndsArgs[1]
+        purposeInitial = cmndsArgs[2]
+
+        thisModel = Models(modelInitial).name
+        thisAbode = Abodes(abodeInitial).name
+        thisPurpose = Purposes(purposeInitial).name
+
+        #print(getattr(invSiteRegContainer.Models, f'{thisModel}').value)
+
+        splited = cmndsArgs.split('-')
+        containerNu = splited[1]
+
+        if (readResults := reg_container_read().pyWCmnd(
+                cmndOutcome,
+                pyKwArgs={'model': thisModel, 'abode': thisAbode, 'purpose': thisPurpose, 'containerNu': containerNu},
+        ).results) == None: return failed(cmndOutcome)
+
+        return cmndOutcome.set(opResults=readResults,)
+
+####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self, ):
+####+END:
+        """
+***** Cmnd Args Specification  -- Each As Any.
+"""
+        cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0",
+            argName="cmndArgs",
+            argChoices=[],
+            argDescription="List Of CmndArgs To Be Processed. Each As Any."
+        )
+
+        return cmndArgsSpecDict
+
+    
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Invoke Service Commands At Site Registrar" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Invoke Service Commands At Site Registrar_: |]]  Command Services Section  [[elisp:(org-shifttab)][<)]] E|
@@ -504,13 +677,13 @@ FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/
         return cmndOutcome.set(opResults=sapPath,)
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_container_add" :comment "" :extent "verify" :ro "cli" :parsMand "model abode purpose" :parsOpt "boxNu" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_container_add" :comment "" :extent "verify" :ro "cli" :parsMand "model abode purpose boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_container_add>>  =verify= parsMand=model abode purpose parsOpt=boxNu ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_container_add>>  =verify= parsMand=model abode purpose boxNu ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class reg_container_add(cs.Cmnd):
-    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
-    cmndParamsOptional = [ 'boxNu', ]
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', 'boxNu', ]
+    cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
@@ -520,7 +693,7 @@ class reg_container_add(cs.Cmnd):
              model: typing.Optional[str]=None,  # Cs Mandatory Param
              abode: typing.Optional[str]=None,  # Cs Mandatory Param
              purpose: typing.Optional[str]=None,  # Cs Mandatory Param
-             boxNu: typing.Optional[str]=None,  # Cs Optional Param
+             boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
              pyKwArgs: typing.Any=None,   # pyInv Argument
     ) -> b.op.Outcome:
 

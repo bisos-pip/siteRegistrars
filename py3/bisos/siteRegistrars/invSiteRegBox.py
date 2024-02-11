@@ -460,6 +460,66 @@ class thisBox_assign(cs.Cmnd):
             opResults=f"{assignedBoxNu}",
         )
 
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisBox_read" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<thisBox_read>>  =verify= parsOpt=boxName ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class thisBox_read(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ 'boxName', ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             boxName: typing.Optional[str]=None,  # Cs Optional Param
+    ) -> b.op.Outcome:
+
+        failed = b_io.eh.badOutcome
+        callParamsDict = {'boxName': boxName, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return failed(cmndOutcome)
+        boxName = csParam.mappedValue('boxName', boxName)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Result: dmidecode -s system-uuid or macAddress when in ChromeOsContainer.
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csInvSiteRegBox.cs -i thisBox_assign
+#+end_src
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f74d5f049d0>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f74d5455110>}
+: [PosixPath('/bxo/iso/pmb_clusterNeda-boxes/boxes/1017')]
+: This box ([PosixPath('/bxo/iso/pmb_clusterNeda-boxes/boxes/1017')]) has already been registered -- addition skipped
+: 0
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        assignedBoxNu = "0"
+
+        if (uniqueBoxId := thisBoxUUID().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
+
+        if (boxNus := reg_box_find().pyWCmnd(cmndOutcome,
+            pyKwArgs={'argsList': ['uniqueBoxId', f"{uniqueBoxId}"]}
+        ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
+
+        if len(boxNus) != 0:
+            if (readResult :=reg_box_read().pyWCmnd(cmndOutcome,
+                    pyKwArgs={'boxNu': boxNus[0],}
+            ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
+        else:
+            b_io.ann.note(f"This box ({boxNus}) has already been registered -- addition skipped")
+
+        return cmndOutcome.set(
+            opResults=f"{readResult}",
+        )
+
+
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Invoke Service Commands At Site Registrar" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Invoke Service Commands At Site Registrar_: |]]  Command Services Section  [[elisp:(org-shifttab)][<)]] E|
