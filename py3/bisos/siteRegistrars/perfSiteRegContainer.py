@@ -958,13 +958,13 @@ class container_repoUnlock(cs.Cmnd):
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_container_add" :comment "" :extent "verify" :ro "cli" :parsMand "model abode purpose boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "ro_container_add" :comment "" :extent "verify" :ro "cli" :parsMand "model abode purpose boxNu" :parsOpt "containerNu" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_container_add>>  =verify= parsMand=model abode purpose boxNu ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<ro_container_add>>  =verify= parsMand=model abode purpose boxNu parsOpt=containerNu ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class ro_container_add(cs.Cmnd):
     cmndParamsMandatory = [ 'model', 'abode', 'purpose', 'boxNu', ]
-    cmndParamsOptional = [ ]
+    cmndParamsOptional = [ 'containerNu', ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
@@ -975,15 +975,18 @@ class ro_container_add(cs.Cmnd):
              abode: typing.Optional[str]=None,  # Cs Mandatory Param
              purpose: typing.Optional[str]=None,  # Cs Mandatory Param
              boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
+             containerNu: typing.Optional[str]=None,  # Cs Optional Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, 'boxNu': boxNu, }
+        failed = b_io.eh.badOutcome
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, 'boxNu': boxNu, 'containerNu': containerNu, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
+            return failed(cmndOutcome)
         model = csParam.mappedValue('model', model)
         abode = csParam.mappedValue('abode', abode)
         purpose = csParam.mappedValue('purpose', purpose)
         boxNu = csParam.mappedValue('boxNu', boxNu)
+        containerNu = csParam.mappedValue('containerNu', containerNu)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  NOTYET, First Implement Find
@@ -1013,13 +1016,14 @@ class ro_container_add(cs.Cmnd):
             b_io.ann.note(f"{boxNu} has already been registered {foundList}")
             return(cmndOutcome)
 
-        nextUnitNu = regUnits.unitsNextNu()
+        if not containerNu:
+            containerNu = regUnits.unitsNextNu()
 
         regfps = containerRegfps.Container_RegFPs(
             model=model,
             abode=abode,
             purpose=purpose,
-            nu=nextUnitNu,
+            nu=containerNu,
         )
 
         containerId = regfps.unitCreate(boxNu)
