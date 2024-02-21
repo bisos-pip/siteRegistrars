@@ -17,7 +17,7 @@ def longDescription():
 
 
 #__version__ = get_version('unisos/icm/__init__.py')
-__version__ = '0.4'
+__version__ = '0.5'
 
 
 requires = [
@@ -28,13 +28,13 @@ requires = [
 #print('Requirements: %s' % ','.join(requires))
 
 scripts = [
-    "bin/csSiteRegBox.cs",
-    "bin/csInvSiteRegBox.cs",
-    "bin/csSiteRegNets.cs",
-    "bin/csSiteRegContainer.cs",
-    "bin/csSiteRegistrars.cs",
-    "bin/csPerfSiteRegistrars.cs",
-    "bin/csInvSiteRegContainer.cs",
+    "bin/svcSiteRegBox.cs",
+    "bin/svcInvSiteRegBox.cs",
+    "bin/svcSiteRegNets.cs",
+    "bin/svcSiteRegContainer.cs",
+    "bin/svcSiteRegistrars.cs",
+    "bin/svcPerfSiteRegistrars.cs",
+    "bin/svcInvSiteRegContainer.cs",
     "bin/siteRegistrarsDaemonSysd.cs",
     "bin/siteRegistrarsRuns.cs",
 ]

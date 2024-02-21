@@ -153,21 +153,21 @@ def examples_csu(
 
     myName = cs.G.icmMyName()
 
-    if myName == 'csPerfSiteRegistrars.cs':
+    if myName == 'svcPerfSiteRegistrars.cs':
         svcName = 'csSiteRegistrars'
         perfName = 'csSiteRegistrars'
-    elif myName == 'csSiteRegistrars.cs':
+    elif myName == 'svcSiteRegistrars.cs':
         svcName = 'csSiteRegistrars'
         perfName = 'csSiteRegistrars'
-    elif myName == 'csSiteRegBox.cs':
+    elif myName == 'svcSiteRegBox.cs':
         svcName = 'csSiteRegBox'
         perfName = 'csSiteRegBox'
-    elif myName == 'csSiteRegContainer.cs':
+    elif myName == 'svcSiteRegContainer.cs':
         svcName = 'csSiteRegContainer'
         perfName = 'csSiteRegContainer'
     else:
-        svcName = 'ZZ'
-        perfName = 'YY'
+        svcName = 'MissingSvcName'
+        perfName = 'MissingPerfName'
 
     if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Performer SAP Create and Manage*')
 
@@ -256,7 +256,7 @@ FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rp
             rosmuControl = 'bisos'
             perfIpAddr = "localhost"
 
-        if rosmu == 'csPerfSiteRegistrars.cs':
+        if rosmu == 'svcPerfSiteRegistrars.cs':
             portName = 'csSiteRegistrars.cs'
         else:
             portName = myName
