@@ -154,17 +154,17 @@ def examples_csu(
     myName = cs.G.icmMyName()
 
     if myName == 'svcPerfSiteRegistrars.cs':
-        svcName = 'csSiteRegistrars'
-        perfName = 'csSiteRegistrars'
+        svcName = 'svcSiteRegistrars'
+        perfName = 'svcSiteRegistrars'
     elif myName == 'svcSiteRegistrars.cs':
-        svcName = 'csSiteRegistrars'
-        perfName = 'csSiteRegistrars'
+        svcName = 'svcSiteRegistrars'
+        perfName = 'svcSiteRegistrars'
     elif myName == 'svcSiteRegBox.cs':
-        svcName = 'csSiteRegBox'
-        perfName = 'csSiteRegBox'
+        svcName = 'svcSiteRegBox'
+        perfName = 'svcSiteRegBox'
     elif myName == 'svcSiteRegContainer.cs':
-        svcName = 'csSiteRegContainer'
-        perfName = 'csSiteRegContainer'
+        svcName = 'svcSiteRegContainer'
+        perfName = 'svcSiteRegContainer'
     else:
         svcName = 'MissingSvcName'
         perfName = 'MissingPerfName'
@@ -177,7 +177,7 @@ def examples_csu(
 
     cmnd('csPerformer', pars=od([('svcName', svcName)]), comment="&  #  in background Start rpyc CS Service" )
 
-    # print(f"""csSiteRegBox.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
+    # print(f"""svcSiteRegBox.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
 
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Invoke Service Commands At Site Registrar" :anchor ""  :extraInfo "Command Services Section"
@@ -218,28 +218,28 @@ class perf_sapCreate(cs.Cmnd):
         """
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegistrars.cs --rosmu csSiteRegistrars.cs -i reg_sapCreateBox
+  svcSiteRegistrars.cs --rosmu svcSiteRegistrars.cs -i reg_sapCreateBox
 #+end_src
 #+RESULTS:
 #+begin_example
 
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfIpAddr/value value=localhost
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfPortNu/value value=22222003
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/accessControl/value value=placeholder
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfName/value value=siteRegistrar
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfModel/value value=rpyc
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmu/value value=csSiteRegistrars.cs
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmuSel/value value=default
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmuControl/value value=bisos
-/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/perfIpAddr/value value=localhost
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/perfPortNu/value value=22222003
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/accessControl/value value=placeholder
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/perfName/value value=siteRegistrar
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/perfModel/value value=rpyc
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmu/value value=svcSiteRegistrars.cs
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmuSel/value value=default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmuControl/value value=bisos
+/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default
 #+end_example
 
 #+begin_src sh :results output :session shared
-  csSiteRegistrars.cs -i reg_sapCreateBox
+  svcSiteRegistrars.cs -i reg_sapCreateBox
 #+end_src
 #+RESULTS:
 :
-: bash: csSiteRegistrars.cs: command not found
+: bash: svcSiteRegistrars.cs: command not found
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
 
@@ -257,7 +257,7 @@ FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rp
             perfIpAddr = "localhost"
 
         if rosmu == 'svcPerfSiteRegistrars.cs':
-            portName = 'csSiteRegistrars.cs'
+            portName = 'svcSiteRegistrars.cs'
         else:
             portName = myName
 

@@ -324,11 +324,11 @@ def examples_csu(
 
     if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Container Invoker Management*')
 
-    cmnd('reg_sapCreateContainer', pars=od([('perfName', 'csSiteRegContainer')]))
-    print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="csSiteRegContainer.cs"  -i ro_fps list""")
+    cmnd('reg_sapCreateContainer', pars=od([('perfName', 'svcSiteRegContainer')]))
+    print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="svcSiteRegContainer.cs"  -i ro_fps list""")
 
-    cmnd('reg_sapCreateContainer', pars=od([('perfName', 'csSiteRegistrars')]))
-    print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="csSiteRegistrars.cs"  -i ro_fps list""")
+    cmnd('reg_sapCreateContainer', pars=od([('perfName', 'svcSiteRegistrars')]))
+    print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="svcSiteRegistrars.cs"  -i ro_fps list""")
 
     # print(f"""csSiteRegContainer.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
 
@@ -388,7 +388,7 @@ class thisSys_findContainer(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i thisSys_findContainer
+  svcInvSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i thisSys_findContainer
 #+end_src
 #+RESULTS:
 : roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegBox/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7fb82dc55c50>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7fb82d25dcd0>}
@@ -448,7 +448,7 @@ class thisSys_assignContainer(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i thisSys_assignContainer
+  svcInvSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i thisSys_assignContainer
 #+end_src
 #+RESULTS:
 : roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegBox/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f2e7ba72d90>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f2e7ba721d0>}
@@ -522,7 +522,7 @@ class withContainerIdRead(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegContainer.cs -i withContainerIdRead HSS-1006
+  svcInvSiteRegContainer.cs -i withContainerIdRead HSS-1006
 #+end_src
 #+RESULTS:
 : roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegContainer/rpyc/default of container_unitRead with {'model': 'Host', 'abode': 'Shield', 'purpose': 'Server', 'containerNu': '1006', 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f20e70dd750>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f20e657a550>}

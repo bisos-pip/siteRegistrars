@@ -258,7 +258,7 @@ class config_siteBoxesBaseObtain(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs -i config_siteBoxesBaseObtain
+  svcSiteRegBox.cs -i config_siteBoxesBaseObtain
 #+end_src
 #+RESULTS:
 :
@@ -314,7 +314,7 @@ class box_unitCreate(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs --boxNu=10002  --uniqueBoxId=4c4c4544-0034-3310-8051-b5c04f335832 --boxName=box1014 -i box_unitCreate
+  svcSiteRegBox.cs --boxNu=10002  --uniqueBoxId=4c4c4544-0034-3310-8051-b5c04f335832 --boxName=box1014 -i box_unitCreate
 #+end_src
 #+RESULTS:
 :
@@ -360,7 +360,7 @@ class box_unitRead(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs  --boxNu=1006  -i box_unitRead
+  svcSiteRegBox.cs  --boxNu=1006  -i box_unitRead
 #+end_src
 #+RESULTS:
 :
@@ -404,7 +404,7 @@ class box_unitUpdate(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs  --boxNu=1099 -i box_unitUpdate
+  svcSiteRegBox.cs  --boxNu=1099 -i box_unitUpdate
 #+end_src
 #+RESULTS:
 :
@@ -447,7 +447,7 @@ class box_unitDelete(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs --boxNu=1099 -i box_unitDelete
+  svcSiteRegBox.cs --boxNu=1099 -i box_unitDelete
 #+end_src
 #+RESULTS:
 :
@@ -491,7 +491,7 @@ class box_unitId(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs --boxNu=1099 -i box_unitId
+  svcSiteRegBox.cs --boxNu=1099 -i box_unitId
 #+end_src
 #+RESULTS:
 :
@@ -535,7 +535,7 @@ class box_unitsNextNu(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs  -i box_unitsNextNu
+  svcSiteRegBox.cs  -i box_unitsNextNu
 #+end_src
 #+RESULTS:
 :
@@ -576,7 +576,7 @@ class box_unitsList(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs -i box_unitsList
+  svcSiteRegBox.cs -i box_unitsList
 #+end_src
 #+RESULTS:
 :
@@ -620,7 +620,7 @@ class box_unitsFind(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs  -i box_unitsFind boxId box1014
+  svcSiteRegBox.cs  -i box_unitsFind boxId box1014
 #+end_src
 #+RESULTS:
 :
@@ -696,7 +696,7 @@ class box_repoPull(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs -i box_repoPull
+  svcSiteRegBox.cs -i box_repoPull
 #+end_src
 #+RESULTS:
 :
@@ -740,7 +740,7 @@ class box_repoPush(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs -i box_repoPush
+  svcSiteRegBox.cs -i box_repoPush
 #+end_src
 #+RESULTS:
 :
@@ -783,7 +783,7 @@ class box_repoLock(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs -i box_repoLock
+  svcSiteRegBox.cs -i box_repoLock
 #+end_src
 #+RESULTS:
 :
@@ -826,7 +826,7 @@ class box_repoUnlock(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs -i box_repoUnlock
+  svcSiteRegBox.cs -i box_repoUnlock
 #+end_src
 #+RESULTS:
 :
@@ -878,7 +878,7 @@ class ro_box_add(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSiteRegBox.cs --uniqueBoxId=4c4c4544-0034-3310-8051-b5c04f335832 --boxName=box1999 -i ro_box_add
+  svcSiteRegBox.cs --uniqueBoxId=4c4c4544-0034-3310-8051-b5c04f335832 --boxName=box1999 -i ro_box_add
 #+end_src
 #+RESULTS:
 :

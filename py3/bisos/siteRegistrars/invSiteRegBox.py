@@ -234,12 +234,12 @@ def examples_csu(
     if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Box Invoker Management*')
 
     cmnd('reg_sapCreateBox', pars=od([('perfName', 'csSiteRegBox')]))
-    print(f"""csRo-manage.cs --svcName="csSiteRegBox" --rosmu="csSiteRegBox.cs"  -i ro_fps list""")
+    print(f"""csRo-manage.cs --svcName="svcSiteRegBox" --rosmu="svcSiteRegBox.cs"  -i ro_fps list""")
 
-    cmnd('reg_sapCreateBox', pars=od([('perfName', 'csSiteRegistrars')]))
-    print(f"""csRo-manage.cs --svcName="csSiteRegBox" --rosmu="csSiteRegistrars.cs"  -i ro_fps list""")
+    cmnd('reg_sapCreateBox', pars=od([('perfName', 'svcSiteRegistrars')]))
+    print(f"""csRo-manage.cs --svcName="svcSiteRegBox" --rosmu="svcSiteRegistrars.cs"  -i ro_fps list""")
 
-    # print(f"""csSiteRegBox.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
+    # print(f"""svcSiteRegBox.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
 
     if sectionTitle == 'default': cs.examples.menuChapter('*Registrar Svc Commands -- perfName=siteRegistrar*')
 
@@ -383,7 +383,7 @@ class thisBox_findNu(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegBox.cs -i thisBox_findNu
+  svcInvSiteRegBox.cs -i thisBox_findNu
 #+end_src
 #+RESULTS:
 : roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7fba029cd750>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7fba0205d050>}
@@ -431,7 +431,7 @@ class thisBox_assign(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegBox.cs -i thisBox_assign
+  svcInvSiteRegBox.cs -i thisBox_assign
 #+end_src
 #+RESULTS:
 : roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f74d5f049d0>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f74d5455110>}
@@ -490,7 +490,7 @@ class thisBox_read(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegBox.cs -i thisBox_assign
+  svcInvSiteRegBox.cs -i thisBox_assign
 #+end_src
 #+RESULTS:
 : roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f74d5f049d0>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f74d5455110>}
@@ -556,28 +556,28 @@ class reg_sapCreateBox(cs.Cmnd):
         """
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegBox.cs --rosmu csSiteRegistrars.cs -i reg_sapCreateBox
+  svcInvSiteRegBox.cs --rosmu svcSiteRegistrars.cs -i reg_sapCreateBox
 #+end_src
 #+RESULTS:
 #+begin_example
 
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfIpAddr/value value=localhost
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfPortNu/value value=22222003
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/accessControl/value value=placeholder
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfName/value value=siteRegistrar
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/perfModel/value value=rpyc
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmu/value value=csSiteRegistrars.cs
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmuSel/value value=default
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmuControl/value value=bisos
-/bisos/var/cs/ro/sap/csSiteRegistrars.cs/siteRegistrar/rpyc/default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/perfIpAddr/value value=localhost
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/perfPortNu/value value=22222003
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/accessControl/value value=placeholder
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/perfName/value value=siteRegistrar
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/perfModel/value value=rpyc
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmu/value value=svcSiteRegistrars.cs
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmuSel/value value=default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default/rosmuControl/value value=bisos
+/bisos/var/cs/ro/sap/svcSiteRegistrars.cs/siteRegistrar/rpyc/default
 #+end_example
 
 #+begin_src sh :results output :session shared
-  csSiteRegistrars.cs -i reg_sapCreateBox
+  svcSiteRegistrars.cs -i reg_sapCreateBox
 #+end_src
 #+RESULTS:
 :
-: bash: csSiteRegistrars.cs: command not found
+: bash: svcSiteRegistrars.cs: command not found
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
 
@@ -651,7 +651,7 @@ class reg_box_add(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegBox.cs --uniqueBoxId 4c4c4544-0043-3510-8052-b9c04f4c4e31 -i reg_box_add
+  svcInvSiteRegBox.cs --uniqueBoxId 4c4c4544-0043-3510-8052-b9c04f4c4e31 -i reg_box_add
 #+end_src
 #+RESULTS:
 : roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of ro_box_add with {'uniqueBoxId': '4c4c4544-0043-3510-8052-b9c04f4c4e31', 'boxName': None, 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7fb936e51dd0>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7fb9369c9390>}
@@ -703,7 +703,7 @@ class reg_box_read(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegBox.cs --boxNu 1006 -i reg_box_read
+  svcInvSiteRegBox.cs --boxNu 1006 -i reg_box_read
 #+end_src
 #+RESULTS:
 : roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitRead with {'boxNu': '1006', 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f33e2bc4950>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f33e2bc4910>}
@@ -842,7 +842,7 @@ class reg_box_find(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegBox.cs -i reg_box_find uniqueBoxId someBox
+  svcInvSiteRegBox.cs -i reg_box_find uniqueBoxId someBox
 #+end_src
 #+RESULTS:
 : roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegBox.cs/siteRegistrar/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', 'someBox'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f5a28f9ba50>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f5a28f9ba10>}
@@ -892,7 +892,7 @@ class reg_box_list(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csInvSiteRegBox.cs -i reg_box_list
+  svcInvSiteRegBox.cs -i reg_box_list
 #+end_src
 
 #+RESULTS:
