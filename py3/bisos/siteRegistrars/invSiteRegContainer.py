@@ -187,6 +187,7 @@ cs.invOutcomeReportControl(cmnd=True, ro=True)
 """
 ####+END:
 
+
 ####+BEGIN: bx:dblock:python:enum :enumName "Models" :comment "Host|Pure|Virt"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Enum       [[elisp:(outline-show-subtree+toggle)][||]] /Models/ =host|pure|virt=  [[elisp:(org-cycle)][| ]]
@@ -266,6 +267,80 @@ class Distros(enum.Enum):
 # names = [member.name for member in Sizes]
 # print(names)  # 👉️ ['SMALL', 'MEDIUM', 'LARGE']
 
+
+####+BEGIN: b:py3:cs:orgItem/basic :type "=NOTYET, TODO=" :title "*Action Item*" :comment "Create bisos.containerCharName"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =NOTYET, TODO= [[elisp:(outline-show-subtree+toggle)][||]] *Action Item* Create bisos.containerCharName  [[elisp:(org-cycle)][| ]]
+#+end_org """
+####+END:
+""" #+begin_org
+** TODO [#A] The ContainerCharName and all of the above enums should go into a module called bisos.containerCharName
+SCHEDULED: <2024-02-24 Sat>
+#+end_org """
+
+
+####+BEGIN: bx:dblock:python:class :className "ContainerCharName" :superClass "" :comment "" :classType "basic"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-basic  [[elisp:(outline-show-subtree+toggle)][||]] /ContainerCharType/ object  [[elisp:(org-cycle)][| ]]
+#+end_org """
+class ContainerCharName(object):
+####+END:
+    """
+** Abstraction of model-abode-purpose of container character types
+"""
+####+BEGIN: b:py3:cs:method/typing :methodName "__init__" :deco "default"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /__init__/  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def __init__(
+####+END:
+        self,
+        model: typing.Union[Models, None]=None,
+        abode: typing.Union[Abodes, None]=None,
+        purpose: typing.Union[Purposes, None]=None,
+        containerNu: typing.Union[int, None]=None,
+    ):
+        self.model = model
+        self.abode = abode
+        self.purpose = purpose
+        self.containerNu = containerNu
+        self.cctDict()
+
+####+BEGIN: b:py3:cs:method/typing :methodName "cctDict" :deco "default"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /cctDict/  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cctDict(
+####+END:
+            self,
+    ):
+        """ ."""
+        self.cct = {'model': self.model, 'abode': self.abode, 'purpose': self.purpose, 'containerNu': self.containerNu}
+        return self.cct
+
+####+BEGIN: b:py3:cs:method/typing :methodName "pathToContainerCharType" :deco "default"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /pathToContainerCharType/  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def pathToContainerCharType(
+####+END:
+            self,
+            cctPath:  pathlib.Path,
+    ):
+        """ ."""
+        pathTuple = cctPath.parts
+        self.model =  pathTuple[-4]
+        self.abode =  pathTuple[-3]
+        self.purpose =  pathTuple[-2]
+        self.containerNu =  pathTuple[-1]
+
+        return self.cctDict()
+
+
+
 ####+BEGIN: b:py3:cs:orgItem/section :title "Performer Modules Import" :comment "-- After Common Definitions"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *Performer Modules Import* -- After Common Definitions  [[elisp:(org-cycle)][| ]]
@@ -339,10 +414,12 @@ def examples_csu(
     cmnd('reg_container_update', pars=createPars)
     cmnd('reg_container_delete', pars=unitBasePars)
     cmnd('reg_container_find', pars=unitsPars, args=f"boxId {thisBoxNu}")
+    cmnd('reg_container_locateInAll', args=f"boxId {thisBoxNu}")
     cmnd('reg_container_list', pars=unitsPars)
 
     if sectionTitle == 'default': cs.examples.menuChapter('*ThisSys Facilities*')
 
+    cmnd('thisSys_locateBoxInAll')
     cmnd('thisSys_findContainer', pars=thisSysPars,)
     cmnd('thisSys_assignContainer', pars=thisSysPars,)
     cmnd('withContainerIdRead', args=f"HSS-1006",)
@@ -353,6 +430,66 @@ def examples_csu(
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Invoker Only CmndSvc_: |]]  Command Services Section  [[elisp:(org-shifttab)][<)]] E|
 #+end_org """
 ####+END:
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisSys_locateBoxInAll" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<thisSys_locateBoxInAll>>  =verify= ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class thisSys_locateBoxInAll(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
+
+        failed = b_io.eh.badOutcome
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return failed(cmndOutcome)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Equivalent of: -i reg_box_find $( -i thisBoxUUID ). Result: boxNu
+       NOTYET csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_unitsFind boxId box1014
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  svcInvSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i thisSys_findContainer
+#+end_src
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegBox/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7fb82dc55c50>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7fb82d25dcd0>}
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegContainer/rpyc/default of container_unitsFind with {'model': 'Pure', 'abode': 'Mobile', 'purpose': 'LinuxU', 'argsList': ['boxId', 'box['], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7fb82e19c8d0>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7fb82d25dcd0>}
+: []
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        if (boxNus := invSiteRegBox.thisBox_findNu().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
+        boxNus = ast.literal_eval(boxNus)
+
+        if len(boxNus) == 0:
+            b_io.ann.note("No boxnu has been assigned to this system.")
+            return failed(cmndOutcome)
+
+        boxNu = boxNus[0]
+
+        if (containers := reg_container_locateInAll().pyWCmnd(cmndOutcome,
+            pyKwArgs={'argsList': ['boxId', f"{boxNu}"]},
+        ).results) == None: return failed(cmndOutcome)
+
+        # Temporary -- To Deal with old Data
+        if (containers := reg_container_locateInAll().pyWCmnd(cmndOutcome,
+            pyKwArgs={'argsList': ['boxId', f"box{boxNu}"]},
+        ).results) == None: return failed(cmndOutcome)
+
+        return cmndOutcome.set(
+            opResults=f"{containers}",
+        )
+
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisSys_findContainer" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
@@ -927,6 +1064,52 @@ class reg_container_find(cs.Cmnd):
         )
 
         return cmndOutcome
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_container_locateInAll" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt ""  :argsMin 2 :argsMax 2 :pyInv "pyKwArgs"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_container_locateInAll>>  =verify= argsMin=2 argsMax=2 ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class reg_container_locateInAll(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 2, 'Max': 2,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
+             pyKwArgs: typing.Any=None,   # pyInv Argument
+    ) -> b.op.Outcome:
+
+        failed = b_io.eh.badOutcome
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
+            return failed(cmndOutcome)
+        cmndArgsSpecDict = self.cmndArgsSpec()
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+        #+end_org """): return(cmndOutcome)
+
+        cmndClass = perfSiteRegContainer.container_locateInAll
+        if pyKwArgs:
+            cmndKwArgs = pyKwArgs
+        else:
+            cmndKwArgs = self.cmndCallTimeKwArgs()
+
+        rpycInvResult =  cs.ro.roInvokeCmndAtSap(
+            roSiteRegistrarSapPath,
+            rtInv,
+            cmndOutcome,
+            cmndClass,
+            ** cmndKwArgs,
+        )
+
+        return cmndOutcome
+
+
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_container_list" :comment "" :extent "verify" :ro "cli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
 """ #+begin_org
