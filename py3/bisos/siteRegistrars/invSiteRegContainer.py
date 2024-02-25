@@ -534,12 +534,15 @@ class thisSys_findContainer(cs.Cmnd):
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
 
+        
         if (boxNus := invSiteRegBox.thisBox_findNu().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
         boxNus = ast.literal_eval(boxNus)
-
+        containers = []
+        
         if len(boxNus) == 0:
-            b_io.ann.note("No boxnu has been assigned to this system.")
-            return failed(cmndOutcome)
+            # Should log here, not note.
+            # b_io.ann.note("No boxnu has been assigned to this system.")
+            return cmndOutcome.set(opResults=f"{containers}",)
 
         boxNu = boxNus[0]
 
@@ -547,9 +550,7 @@ class thisSys_findContainer(cs.Cmnd):
             pyKwArgs={'model': model, 'abode': abode, 'purpose': purpose, 'argsList': ['boxId', f"{boxNu}"]},
         ).results) == None: return failed(cmndOutcome)
 
-        return cmndOutcome.set(
-            opResults=f"{containers}",
-        )
+        return cmndOutcome.set(opResults=f"{containers}",)
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisSys_assignContainer" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
