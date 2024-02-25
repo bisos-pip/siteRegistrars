@@ -420,6 +420,7 @@ def examples_csu(
     if sectionTitle == 'default': cs.examples.menuChapter('*ThisSys Facilities*')
 
     cmnd('thisSys_locateBoxInAll')
+    print(f"""svcInvSiteRegContainer.cs  -i thisSys_locateBoxInAll  2> /dev/null  | pyLiteralToBash.cs  -i stdinToBash""")
     cmnd('thisSys_findContainer', pars=thisSysPars,)
     cmnd('thisSys_assignContainer', pars=thisSysPars,)
     cmnd('withContainerIdRead', args=f"HSS-1006",)
