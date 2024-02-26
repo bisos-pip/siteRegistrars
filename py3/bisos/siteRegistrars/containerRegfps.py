@@ -91,6 +91,7 @@ from bisos.siteRegistrars import perfSiteRegContainer
 from bisos.siteRegistrars import invSiteRegContainer
 from bisos.usgAcct import usgAcct
 from bisos.regfps import regfps
+from bisos.cntnr import cntnrCharName
 
 import pathlib
 import __main__
@@ -188,9 +189,9 @@ class Container_RegFPs(regfps.RegFPs):
 ####+END:
             self,
             fpBase: str="",
-            model: typing.Union[invSiteRegContainer.Models, None]=None,
-            purpose: typing.Union[invSiteRegContainer.Purposes, None]=None,
-            abode: typing.Union[invSiteRegContainer.Abodes, None]=None,
+            model: typing.Union[cntnrCharName.Models, None]=None,
+            purpose: typing.Union[cntnrCharName.Purposes, None]=None,
+            abode: typing.Union[cntnrCharName.Abodes, None]=None,
             nu: typing.Union[int, None]=None,
     ):
         self.model = model

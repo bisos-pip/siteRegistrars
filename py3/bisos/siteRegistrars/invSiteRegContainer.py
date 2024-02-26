@@ -93,6 +93,8 @@ from bisos.siteRegistrars import invSiteRegContainerConf
 
 from bisos.siteRegistrars import invSiteRegBox
 
+from bisos.cntnr import cntnrCharName
+
 import pwd
 import pathlib
 import ast
@@ -174,171 +176,11 @@ def commonParamsSpecify(
 #+end_org """
 ####+END:
 
-svcName = "csSiteRegContainer"
+svcName = "svcSiteRegContainer"
 
-roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName)  # static method
+roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName, rosmu="svcInvSiteRegContainer.cs")  # static method
 
 cs.invOutcomeReportControl(cmnd=True, ro=True)
-
-
-####+BEGIN: bx:dblock:python:section :title "Enumerations"
-"""
-*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Enumerations*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
-"""
-####+END:
-
-
-####+BEGIN: bx:dblock:python:enum :enumName "Models" :comment "Host|Pure|Virt"
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Enum       [[elisp:(outline-show-subtree+toggle)][||]] /Models/ =host|pure|virt=  [[elisp:(org-cycle)][| ]]
-#+end_org """
-@enum.unique
-class Models(enum.Enum):
-####+END:
-
-    Host = 'H'
-    Pure = 'P'
-    Virt = 'V'
-
-####+BEGIN: bx:dblock:python:enum :enumName "Abodes" :comment ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Enum       [[elisp:(outline-show-subtree+toggle)][||]] /Abodes/  [[elisp:(org-cycle)][| ]]
-#+end_org """
-@enum.unique
-class Abodes(enum.Enum):
-####+END:
-    Mobile = 'M'  # Old
-    Rim_outer = 'Ro' # New
-
-    Shield = 'S'  # Old
-    Rim_inner = 'Ri' # New
-
-    Perim = 'Perim'  # Old
-    Rim_exposed = 'Re' # New
-
-    Internet  = 'I'  # Old
-    Svc = 'Se' # New  # Service Exposed Ring
-    Svc_interior = 'Si'  # DMZ for Ring # Service
-
-    Auto = 'A'  #  DHCP  Randomly Assigned
-
-# Abodes('M').name  # withInitialGetAbode
-
-####+BEGIN: bx:dblock:python:enum :enumName "Purposes" :comment ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Enum       [[elisp:(outline-show-subtree+toggle)][||]] /Purposes/  [[elisp:(org-cycle)][| ]]
-#+end_org """
-@enum.unique
-class Purposes(enum.Enum):
-####+END:
-    LinuxU = 'L'  # User Environment
-    AndroidU = 'A'
-    ChromeVmU = 'C'
-
-    Server = 'S'
-
-    Devel  = 'D'
-
-    Generic = 'G'
-
-
-
-####+BEGIN: bx:dblock:python:enum :enumName "Distros" :comment ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Enum       [[elisp:(outline-show-subtree+toggle)][||]] /Distros/  [[elisp:(org-cycle)][| ]]
-#+end_org """
-@enum.unique
-class Distros(enum.Enum):
-####+END:
-    deb10 = 'deb10'
-    deb11 = 'deb11'
-    deb12 = 'deb12'
-
-    ub2004 = 'ub2004'
-
-
-# if hasattr(Color, input_var):
-    # print('Everything is fine and dandy.')
-    #
-
-# values = [member.value for member in Sizes]
-# print(values)  # 👉️ [1, 2, 3]
-
-# names = [member.name for member in Sizes]
-# print(names)  # 👉️ ['SMALL', 'MEDIUM', 'LARGE']
-
-
-####+BEGIN: b:py3:cs:orgItem/basic :type "=NOTYET, TODO=" :title "*Action Item*" :comment "Create bisos.containerCharName"
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =NOTYET, TODO= [[elisp:(outline-show-subtree+toggle)][||]] *Action Item* Create bisos.containerCharName  [[elisp:(org-cycle)][| ]]
-#+end_org """
-####+END:
-""" #+begin_org
-** TODO [#A] The ContainerCharName and all of the above enums should go into a module called bisos.containerCharName
-SCHEDULED: <2024-02-24 Sat>
-#+end_org """
-
-
-####+BEGIN: bx:dblock:python:class :className "ContainerCharName" :superClass "" :comment "" :classType "basic"
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-basic  [[elisp:(outline-show-subtree+toggle)][||]] /ContainerCharType/ object  [[elisp:(org-cycle)][| ]]
-#+end_org """
-class ContainerCharName(object):
-####+END:
-    """
-** Abstraction of model-abode-purpose of container character types
-"""
-####+BEGIN: b:py3:cs:method/typing :methodName "__init__" :deco "default"
-    """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /__init__/  deco=default  [[elisp:(org-cycle)][| ]]
-    #+end_org """
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def __init__(
-####+END:
-        self,
-        model: typing.Union[Models, None]=None,
-        abode: typing.Union[Abodes, None]=None,
-        purpose: typing.Union[Purposes, None]=None,
-        containerNu: typing.Union[int, None]=None,
-    ):
-        self.model = model
-        self.abode = abode
-        self.purpose = purpose
-        self.containerNu = containerNu
-        self.cctDict()
-
-####+BEGIN: b:py3:cs:method/typing :methodName "cctDict" :deco "default"
-    """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /cctDict/  deco=default  [[elisp:(org-cycle)][| ]]
-    #+end_org """
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cctDict(
-####+END:
-            self,
-    ):
-        """ ."""
-        self.cct = {'model': self.model, 'abode': self.abode, 'purpose': self.purpose, 'containerNu': self.containerNu}
-        return self.cct
-
-####+BEGIN: b:py3:cs:method/typing :methodName "pathToContainerCharType" :deco "default"
-    """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-     [[elisp:(outline-show-subtree+toggle)][||]] /pathToContainerCharType/  deco=default  [[elisp:(org-cycle)][| ]]
-    #+end_org """
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def pathToContainerCharType(
-####+END:
-            self,
-            cctPath:  pathlib.Path,
-    ):
-        """ ."""
-        pathTuple = cctPath.parts
-        self.model =  pathTuple[-4]
-        self.abode =  pathTuple[-3]
-        self.purpose =  pathTuple[-2]
-        self.containerNu =  pathTuple[-1]
-
-        return self.cctDict()
-
 
 
 ####+BEGIN: b:py3:cs:orgItem/section :title "Performer Modules Import" :comment "-- After Common Definitions"
@@ -482,14 +324,13 @@ class thisSys_locateBoxInAll(cs.Cmnd):
             pyKwArgs={'argsList': ['boxId', f"{boxNu}"]},
         ).results) == None: return failed(cmndOutcome)
 
-        # Temporary -- To Deal with old Data
-        if (containers := reg_container_locateInAll().pyWCmnd(cmndOutcome,
-            pyKwArgs={'argsList': ['boxId', f"box{boxNu}"]},
-        ).results) == None: return failed(cmndOutcome)
+        if len(containers) == 0:
+            # Temporary -- To Deal with old Data
+            if (containers := reg_container_locateInAll().pyWCmnd(cmndOutcome,
+                pyKwArgs={'argsList': ['boxId', f"box{boxNu}"]},
+            ).results) == None: return failed(cmndOutcome)
 
-        return cmndOutcome.set(
-            opResults=f"{containers}",
-        )
+        return cmndOutcome.set(opResults=containers,)
 
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisSys_findContainer" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""

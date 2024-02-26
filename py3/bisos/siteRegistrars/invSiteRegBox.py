@@ -164,8 +164,8 @@ def commonParamsSpecify(
 #+end_org """
 ####+END:
 
-svcName = "csSiteRegBox"
-roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName)  # static method
+svcName = "svcSiteRegBox"
+roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName, rosmu="svcInvSiteRegBox.cs")  # static method
 
 cs.invOutcomeReportControl(cmnd=True, ro=True)
 

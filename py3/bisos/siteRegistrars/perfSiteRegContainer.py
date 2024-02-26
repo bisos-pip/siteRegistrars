@@ -96,6 +96,7 @@ from bisos.siteRegistrars import invSiteRegContainer
 from bisos.siteRegistrars import perfSiteRegContainerConf
 from bisos.siteRegistrars import containerRegfps
 from bisos.bpo import bpo
+from bisos.cntnr import cntnrCharName
 
 import pwd
 import pathlib
@@ -797,7 +798,7 @@ class container_locateInAll(cs.Cmnd):
             storedFp = regFps.fps_getParam(parName)
             storedValue = storedFp.parValueGet()
             if storedValue == parValue:
-                ccnDict = invSiteRegContainer.ContainerCharName().pathToContainerCharType(fpsBase)
+                ccnDict = cntnrCharName.ContainerCharName().pathToContainerCharType(fpsBase)
                 foundCcNames.append(ccnDict)
 
         return cmndOutcome.set(opResults=foundCcNames,)
