@@ -310,10 +310,12 @@ class thisSys_locateBoxInAll(cs.Cmnd):
 : []
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
-
+        
         if (boxNus := invSiteRegBox.thisBox_findNu().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
-        boxNus = ast.literal_eval(boxNus)
+        # boxNus = ast.literal_eval(boxNus)
 
+        cmndOutcome.set(opResults=list(),)
+        
         if len(boxNus) == 0:
             b_io.ann.note("No boxnu has been assigned to this system.")
             return failed(cmndOutcome)

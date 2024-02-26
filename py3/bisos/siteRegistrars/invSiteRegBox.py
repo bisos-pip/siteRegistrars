@@ -398,9 +398,7 @@ class thisBox_findNu(cs.Cmnd):
             pyKwArgs={'argsList': ['uniqueBoxId', f"{uniqueBoxId}"]}
         ).results) == None: return(b_io.eh.badOutcome(cmndOutcome))
 
-        return cmndOutcome.set(
-            opResults=f"{boxNus}",
-        )
+        return cmndOutcome.set(opResults=boxNus,)
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisBox_assign" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org

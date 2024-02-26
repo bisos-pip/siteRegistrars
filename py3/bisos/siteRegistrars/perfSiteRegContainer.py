@@ -790,7 +790,7 @@ class container_locateInAll(cs.Cmnd):
 
         allFiles = siteContainersBase.glob(f"**/{parName}")
 
-        foundCcNames = []
+        foundCcNames = []  # contaienr character names
 
         for eachFile in allFiles:
             fpsBase = eachFile.parent
