@@ -798,7 +798,8 @@ class container_locateInAll(cs.Cmnd):
             storedFp = regFps.fps_getParam(parName)
             storedValue = storedFp.parValueGet()
             if storedValue == parValue:
-                ccnDict = cntnrCharName.ContainerCharName().pathToContainerCharType(fpsBase)
+                ccn = cntnrCharName.ContainerCharName().setContainerCharName_withPath(fpsBase)
+                ccnDict = ccn.ccnDict
                 foundCcNames.append(ccnDict)
 
         return cmndOutcome.set(opResults=foundCcNames,)
@@ -1189,7 +1190,7 @@ class withContainerIdGetBase(cs.Cmnd):
 #+end_src
 #+RESULTS:
 :
-: P
+: 
 : /bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1006
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
@@ -1201,11 +1202,11 @@ class withContainerIdGetBase(cs.Cmnd):
         abodeInitial = cmndsArgs[1]
         purposeInitial = cmndsArgs[2]
 
-        thisModel = invSiteRegContainer.Models(modelInitial).name
-        thisAbode = invSiteRegContainer.Abodes(abodeInitial).name
-        thisPurpose = invSiteRegContainer.Purposes(purposeInitial).name
+        thisModel = cntnrCharName.Models(modelInitial).name
+        thisAbode = cntnrCharName.Abodes(abodeInitial).name
+        thisPurpose = cntnrCharName.Purposes(purposeInitial).name
 
-        #print(getattr(invSiteRegContainer.Models, f'{thisModel}').value)
+        #print(getattr(cntnrCharName.Models, f'{thisModel}').value)
 
         splited = cmndsArgs.split('-')
         containerNu = splited[1]

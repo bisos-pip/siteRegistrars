@@ -91,6 +91,7 @@ from bisos.siteRegistrars import perfSiteRegBox
 from bisos.siteRegistrars import invSiteRegBox
 from bisos.usgAcct import usgAcct
 from bisos.regfps import regfps
+from bisos.cntnr import cntnrCharName
 
 import pathlib
 import __main__
@@ -348,9 +349,9 @@ class Box_RegFPs(regfps.RegFPs):
     ) -> typing.Optional[str]:
         """ """
 
-        modelInitial = getattr(invSiteRegBox.Models, f'{self.model}').value
-        abodeInitial = getattr(invSiteRegBox.Abodes, f'{self.abode}').value
-        purposeInitial = getattr(invSiteRegBox.Purposes, f'{self.purpose}').value
+        modelInitial = getattr(cntnrCharName.Models, f'{self.model}').value
+        abodeInitial = getattr(cntnrCharName.Abodes, f'{self.abode}').value
+        purposeInitial = getattr(cntnrCharName.Purposes, f'{self.purpose}').value
 
         self.containerId = f"{modelInitial}{abodeInitial}{purposeInitial}-{self.unitNu}"
         return  self.containerId

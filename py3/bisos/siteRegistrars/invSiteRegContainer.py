@@ -380,7 +380,7 @@ class thisSys_findContainer(cs.Cmnd):
 
         
         if (boxNus := invSiteRegBox.thisBox_findNu().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
-        boxNus = ast.literal_eval(boxNus)
+        # boxNus = ast.literal_eval(boxNus)
         containers = []
         
         if len(boxNus) == 0:
@@ -444,11 +444,11 @@ class thisSys_assignContainer(cs.Cmnd):
 
 
         if (boxNus := invSiteRegBox.thisBox_findNu().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
-        boxNus = ast.literal_eval(boxNus)
+        # boxNus = ast.literal_eval(boxNus)
 
         if len(boxNus) == 0:
             if (boxNus := invSiteRegBox.thisBox_assign().pyWCmnd(cmndOutcome,).results) == None: return failed(cmndOutcome)
-            boxNus = ast.literal_eval(boxNus)
+            # boxNus = ast.literal_eval(boxNus)
 
 
         if len(boxNus) == 0: return failed(cmndOutcome)
@@ -521,11 +521,11 @@ class withContainerIdRead(cs.Cmnd):
         abodeInitial = cmndsArgs[1]
         purposeInitial = cmndsArgs[2]
 
-        thisModel = Models(modelInitial).name
-        thisAbode = Abodes(abodeInitial).name
-        thisPurpose = Purposes(purposeInitial).name
+        thisModel = cntnrCharName.Models(modelInitial).name
+        thisAbode = cntnrCharName.Abodes(abodeInitial).name
+        thisPurpose = cntnrCharName.Purposes(purposeInitial).name
 
-        #print(getattr(invSiteRegContainer.Models, f'{thisModel}').value)
+        #print(getattr(cntnrCharName.Models, f'{thisModel}').value)
 
         splited = cmndsArgs.split('-')
         containerNu = splited[1]
@@ -628,7 +628,7 @@ FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/
             confFps = invSiteRegContainerConf.RegContainerInvConf_FPs()
             ipAddrs_fp =  confFps.fps_getParam('regContainerPerfAddrs')
             ipAddrStr = ipAddrs_fp.parValueGet()
-            ipAddrs = ast.literal_eval(ipAddrStr)
+            ipAddrs = ast.literal_eval(ipAddrStr)  # Produces list of strings
             perfIpAddr = ipAddrs[0]
 
         if (perfPortList := bannaPortNu.bannaPortNuOf().pyWCmnd(cmndOutcome,

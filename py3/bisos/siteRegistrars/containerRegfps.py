@@ -387,9 +387,9 @@ class Container_RegFPs(regfps.RegFPs):
     ) -> typing.Optional[str]:
         """ """
 
-        modelInitial = getattr(invSiteRegContainer.Models, f'{self.model}').value
-        abodeInitial = getattr(invSiteRegContainer.Abodes, f'{self.abode}').value
-        purposeInitial = getattr(invSiteRegContainer.Purposes, f'{self.purpose}').value
+        modelInitial = getattr(cntnrCharName.Models, f'{self.model}').value
+        abodeInitial = getattr(cntnrCharName.Abodes, f'{self.abode}').value
+        purposeInitial = getattr(cntnrCharName.Purposes, f'{self.purpose}').value
 
         self.containerId = f"{modelInitial}{abodeInitial}{purposeInitial}-{self.unitNu}"
         return  self.containerId
