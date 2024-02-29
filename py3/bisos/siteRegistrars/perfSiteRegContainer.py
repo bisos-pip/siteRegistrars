@@ -184,6 +184,7 @@ def examples_csu(
 
     cmnd('config_siteContainersBaseObtain')
     cmnd('container_locateInAll', args=f"boxId {thisBoxNu}")
+    cmnd('container_unitsListAll',)
 
     cmnd('container_unitCreate', pars=createPars)
     cmnd('container_unitRead', pars=unitBasePars)
@@ -217,7 +218,6 @@ def examples_csu(
     cs.examples.menuSection('*Container ID Mapping Commands*')
 
     cmnd('withContainerIdGetBase', args=f"PML-1006", comment="# inverse of -i container_unitId")
-
 
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Configuration: Performer Only CmndSvcs" :anchor ""  :extraInfo "Command Services Section"
@@ -804,30 +804,56 @@ class container_locateInAll(cs.Cmnd):
 
         return cmndOutcome.set(opResults=foundCcNames,)
 
-####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
-    """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
-    #+end_org """
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_unitsListAll" :comment "" :extent "verify" :ro "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<container_unitsListAll>>  =verify=   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class container_unitsListAll(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmndArgsSpec(self, ):
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
+
+        failed = b_io.eh.badOutcome
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return failed(cmndOutcome)
 ####+END:
-        """
-***** Cmnd Args Specification  -- Each As Any.
-"""
-        cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
-        cmndArgsSpecDict.argsDictAdd(
-            argPosition="0",
-            argName="parName",
-            argChoices=[],
-            argDescription="Name of File Parameter to search for."
-        )
-        cmndArgsSpecDict.argsDictAdd(
-            argPosition="1",
-            argName="parValue",
-            argChoices=[],
-            argDescription="Value of File Parameter to search for."
-        )
-        return cmndArgsSpecDict
+        if self.cmndDocStr(""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  result: boxBaseDir corresponding to uniqBoxId
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_unitsFind boxId box1014
+#+end_src
+#+RESULTS:
+:
+: [PosixPath('/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1006'), PosixPath('/bxo/iso/pmc_clusterNeda-containers/assign/Pure/Mobile/LinuxU/1099')]
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        if (siteContainersBase := config_siteContainersBaseObtain().cmnd(
+                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
+        ).results) == None : return(b_io.eh.badOutcome(cmndOutcome))
+
+        allFiles = siteContainersBase.glob(f"**/containerNu")
+
+        results = []  # contaienr character names
+
+        for eachFile in allFiles:
+            fpsBase = eachFile.parent
+            regFps = containerRegfps.Container_RegFPs(fpBase=fpsBase)
+            dictOfFpsValue = regFps.unitRead()
+            results.append(dictOfFpsValue)
+
+        return cmndOutcome.set(opResults=results,)
 
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "container_repoPull" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
@@ -1097,11 +1123,12 @@ class ro_container_add(cs.Cmnd):
             nu=0,
         )
 
-        foundList = regUnits.unitsFind(parName='boxId', parValue=boxNu)
+        if boxNu != 'virt':
+            foundList = regUnits.unitsFind(parName='boxId', parValue=boxNu)
 
-        if foundList:
-            b_io.ann.note(f"{boxNu} has already been registered {foundList}")
-            return(cmndOutcome)
+            if foundList:
+                b_io.ann.note(f"{boxNu} has already been registered {foundList}")
+                return(cmndOutcome)
 
         if not containerNu:
             containerNu = regUnits.unitsNextNu()

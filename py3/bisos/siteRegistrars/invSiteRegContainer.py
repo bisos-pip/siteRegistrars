@@ -258,6 +258,7 @@ def examples_csu(
     cmnd('reg_container_find', pars=unitsPars, args=f"boxId {thisBoxNu}")
     cmnd('reg_container_locateInAll', args=f"boxId {thisBoxNu}")
     cmnd('reg_container_list', pars=unitsPars)
+    cmnd('reg_container_unitsListAll',)
 
     if sectionTitle == 'default': cs.examples.menuChapter('*ThisSys Facilities*')
 
@@ -267,6 +268,8 @@ def examples_csu(
     cmnd('thisSys_assignContainer', pars=thisSysPars,)
     cmnd('withContainerIdRead', args=f"HSS-1006",)
 
+    if sectionTitle == 'default': cs.examples.menuChapter('*Guest (Virtual) Facilities*')
+    cmnd('virt_assignContainer', pars=collections.OrderedDict([('model', 'Virt'), ('abode', 'Shield'), ('purpose', 'Server'),]))
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Invoker Only CmndSvc" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
@@ -474,6 +477,64 @@ class thisSys_assignContainer(cs.Cmnd):
             containerId = containerDict['containerId']
 
         return cmndOutcome.set(opResults=f"{containerId}",)
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "virt_assignContainer" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<virt_assignContainer>>  =verify= parsMand=model abode purpose ro=noCli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class virt_assignContainer(cs.Cmnd):
+    cmndParamsMandatory = [ 'model', 'abode', 'purpose', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             model: typing.Optional[str]=None,  # Cs Mandatory Param
+             abode: typing.Optional[str]=None,  # Cs Mandatory Param
+             purpose: typing.Optional[str]=None,  # Cs Mandatory Param
+    ) -> b.op.Outcome:
+
+        failed = b_io.eh.badOutcome
+        callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return failed(cmndOutcome)
+        model = csParam.mappedValue('model', model)
+        abode = csParam.mappedValue('abode', abode)
+        purpose = csParam.mappedValue('purpose', purpose)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Equivalent of: -i reg_box_find $( -i thisBoxUUID ). Result: boxNu
+       NOTYET csSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i container_unitsFind boxId box1014
+        #+end_org """): return(cmndOutcome)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  svcInvSiteRegContainer.cs --model=Pure --abode=Mobile --purpose=LinuxU -i thisSys_assignContainer
+#+end_src
+#+RESULTS:
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegBox/rpyc/default of box_unitsFind with {'argsList': ['uniqueBoxId', '4c4c4544-0043-3510-8052-b9c04f4c4e31'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f2e7ba72d90>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f2e7ba721d0>}
+: roOutcomeOf box_unitsFind::  ['1017']
+: roInvokeCmndAtSap at /bisos/var/cs/ro/sap/csInvSiteRegContainer.cs/csSiteRegContainer/rpyc/default of container_unitsFind with {'model': 'Pure', 'abode': 'Mobile', 'purpose': 'LinuxU', 'argsList': ['boxId', '1017'], 'rtInv': <bisos.b.cs.rtInvoker.RtInvoker object at 0x7f2e7ba70510>, 'cmndOutcome': <bisos.b.op.Outcome object at 0x7f2e7ba721d0>}
+: roOutcomeOf container_unitsFind::  ['1102']
+: ['1102'] has already been registered.
+: 0
+        #+end_org """)
+        if self.justCaptureP(): return cmndOutcome
+
+        if model != 'Virt':
+            return failed(cmndOutcome)
+
+        if (containerId := reg_container_add().pyWCmnd(
+                cmndOutcome,
+                pyKwArgs={'model': model, 'abode': abode, 'purpose': purpose, 'boxNu': 'virt'},
+        ).results) == None: return failed(cmndOutcome)
+
+        return cmndOutcome.set(opResults=f"{containerId}",)
+
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "withContainerIdRead" :comment "" :extent "verify" :ro "noCli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
 """ #+begin_org
@@ -939,6 +1000,48 @@ class reg_container_locateInAll(cs.Cmnd):
         #+end_org """): return(cmndOutcome)
 
         cmndClass = perfSiteRegContainer.container_locateInAll
+        if pyKwArgs:
+            cmndKwArgs = pyKwArgs
+        else:
+            cmndKwArgs = self.cmndCallTimeKwArgs()
+
+        rpycInvResult =  cs.ro.roInvokeCmndAtSap(
+            roSiteRegistrarSapPath,
+            rtInv,
+            cmndOutcome,
+            cmndClass,
+            ** cmndKwArgs,
+        )
+
+        return cmndOutcome
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_container_unitsListAll" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt ""  :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_container_unitsListAll>>  =verify= ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class reg_container_unitsListAll(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             pyKwArgs: typing.Any=None,   # pyInv Argument
+    ) -> b.op.Outcome:
+
+        failed = b_io.eh.badOutcome
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return failed(cmndOutcome)
+####+END:
+        if self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+        #+end_org """): return(cmndOutcome)
+
+        cmndClass = perfSiteRegContainer.container_unitsListAll
         if pyKwArgs:
             cmndKwArgs = pyKwArgs
         else:
