@@ -412,7 +412,7 @@ class box_unitUpdate(cs.Cmnd):
         if self.justCaptureP(): return cmndOutcome
 
         regfps = boxRegfps.Box_RegFPs(
-            nu=boxNu,
+            unitNu=boxNu,
         )
 
         boxId = regfps.unitUpdate(boxNu)

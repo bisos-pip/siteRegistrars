@@ -229,7 +229,7 @@ def examples_csu(
     cmnd('thisBoxUUID')
 
     cmnd('thisBox_findNu')
-    cmnd('thisBox_assign')
+    cmnd('thisBox_assign', comment=" # Assign a number to this box, if needed.")
 
     if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Box Invoker Management*')
 
@@ -726,7 +726,7 @@ class reg_box_read(cs.Cmnd):
         return cmndOutcome
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_update" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_box_update" :comment "" :extent "verify" :ro "cli" :parsMand "boxNu" :parsOpt "boxName" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_box_update>>  =verify= parsMand=boxNu ro=cli pyInv=pyKwArgs   [[elisp:(org-cycle)][| ]]
 #+end_org """
