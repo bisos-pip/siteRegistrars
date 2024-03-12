@@ -377,12 +377,12 @@ class box_unitRead(cs.Cmnd):
         return cmndOutcome.set(opResults=dictOfFpsValue,)
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "box_unitUpdate" :comment "" :extent "verify" :ro "" :parsMand "boxNu" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "box_unitUpdate" :comment "" :extent "verify" :ro "" :parsMand "boxNu boxName" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<box_unitUpdate>>  =verify= parsMand=boxNu   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<box_unitUpdate>>  =verify= parsMand=boxNu boxName   [[elisp:(org-cycle)][| ]]
 #+end_org """
 class box_unitUpdate(cs.Cmnd):
-    cmndParamsMandatory = [ 'boxNu', ]
+    cmndParamsMandatory = [ 'boxNu', 'boxName', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
@@ -391,12 +391,15 @@ class box_unitUpdate(cs.Cmnd):
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
              boxNu: typing.Optional[str]=None,  # Cs Mandatory Param
+             boxName: typing.Optional[str]=None,  # Cs Mandatory Param
     ) -> b.op.Outcome:
 
-        callParamsDict = {'boxNu': boxNu, }
+        failed = b_io.eh.badOutcome
+        callParamsDict = {'boxNu': boxNu, 'boxName': boxName, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
+            return failed(cmndOutcome)
         boxNu = csParam.mappedValue('boxNu', boxNu)
+        boxName = csParam.mappedValue('boxName', boxName)
 ####+END:
         if self.cmndDocStr(""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  NOTYET, Incomplete
@@ -415,7 +418,7 @@ class box_unitUpdate(cs.Cmnd):
             unitNu=boxNu,
         )
 
-        boxId = regfps.unitUpdate(boxNu)
+        boxId = regfps.unitUpdate(boxName)
 
         return cmndOutcome.set(opResults=boxId,)
 

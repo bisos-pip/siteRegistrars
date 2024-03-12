@@ -380,7 +380,7 @@ class Box_RegFPs(regfps.RegFPs):
         self.fps_setParam('uniqueBoxId', uniqueBoxId)
         self.fps_setParam('boxId', boxName)
 
-        return self.unitNu
+        return str(self.unitNu)
 
 ####+BEGIN: b:py3:cs:method/typing :methodName "unitUpdate" :deco "default"
     """ #+begin_org
@@ -389,10 +389,17 @@ class Box_RegFPs(regfps.RegFPs):
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def unitUpdate(
 ####+END:
-           self,
+            self,
+            boxName,
+    ) -> typing.Optional[str]:
+        unitBase = self.basePath_obtain()
+        if not unitBase.exists():
+            print(f"eh_problem does not exists: {unitBase}")
+            return None
 
-    ):
-        return typing.cast(str, self.basePath_obtain())
+        self.fps_setParam('boxId', boxName)
+
+        return str(self.unitNu)
 
 
 ####+BEGIN: bx:cs:py3:section :title "CS ro_sap Cmnds"
