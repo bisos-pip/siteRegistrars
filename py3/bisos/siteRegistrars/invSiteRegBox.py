@@ -164,8 +164,11 @@ def commonParamsSpecify(
 #+end_org """
 ####+END:
 
-svcName = "svcSiteRegBox"
-roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName, rosmu="svcInvSiteRegBox.cs")  # static method
+# svcName = "svcSiteRegBox"
+svcName = "svcSiteRegistrars"
+#roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName, rosmu="svcInvSiteRegBox.cs")  # static method
+
+roSiteRegistrarSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath("svcSiteRegistrars", rosmu="svcInvSiteRegContainer.cs")  # static method
 
 cs.invOutcomeReportControl(cmnd=True, ro=True)
 
@@ -236,10 +239,10 @@ def examples_csu(
     if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Box Invoker Management*')
 
     cmnd('reg_sapCreateBox', pars=od([('perfName', 'csSiteRegBox')]))
-    print(f"""csRo-manage.cs --svcName="svcSiteRegBox" --rosmu="svcSiteRegBox.cs"  -i ro_fps list""")
+    print(f"""csRo-manage.cs --svcName="svcSiteRegBox" --perfName="csSiteRegBox" --rosmu="svcSiteRegBox.cs"  -i ro_fps list""")
 
     cmnd('reg_sapCreateBox', pars=od([('perfName', 'svcSiteRegistrars')]))
-    print(f"""csRo-manage.cs --svcName="svcSiteRegBox" --rosmu="svcSiteRegistrars.cs"  -i ro_fps list""")
+    print(f"""csRo-manage.cs --svcName="svcSiteRegBox" --perfName='svcSiteRegistrars' --rosmu="svcSiteRegistrars.cs"  -i ro_fps list""")
 
     # print(f"""svcSiteRegBox.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
 

@@ -176,9 +176,11 @@ def commonParamsSpecify(
 #+end_org """
 ####+END:
 
-svcName = "svcSiteRegContainer"
+# svcName = "svcSiteRegContainer"
+svcName = "svcSiteRegistrars"
 
-roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName, rosmu="svcInvSiteRegContainer.cs")  # static method
+# roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName, rosmu="svcInvSiteRegContainer.cs")  # static method
+roSiteRegistrarSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath("svcSiteRegistrars")  # static method
 
 cs.invOutcomeReportControl(cmnd=True, ro=True)
 
@@ -213,6 +215,7 @@ def examples_csu(
     # def cpsInit(): return collections.OrderedDict()
     # def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
 
+    rosmu = cs.G.icmMyName()
     cmndOutcome = b.op.Outcome()
 
     od = collections.OrderedDict
@@ -242,10 +245,12 @@ def examples_csu(
     if sectionTitle == 'default': cs.examples.menuChapter('*Remote Operations -- Container Invoker Management*')
 
     cmnd('reg_sapCreateContainer', pars=od([('perfName', 'svcSiteRegContainer')]))
-    print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="svcSiteRegContainer.cs"  -i ro_fps list""")
+    # print(f"""csRo-manage.cs --svcName="svcSiteRegContainer" --perfName="svcSiteRegContainer"  --rosmu="svcSiteRegContainer.cs"  -i ro_fps list""")
+    print(f"""csRo-manage.cs --svcName="svcSiteRegContainer" --perfName="svcSiteRegContainer"  --rosmu="{rosmu}"  -i ro_fps list""")
 
     cmnd('reg_sapCreateContainer', pars=od([('perfName', 'svcSiteRegistrars')]))
-    print(f"""csRo-manage.cs --perfName="siteRegistrar" --rosmu="svcSiteRegistrars.cs"  -i ro_fps list""")
+    # print(f"""csRo-manage.cs --svcName="svcSiteRegistrars" --perfName="svcSiteRegistrars" --rosmu="svcSiteRegistrars.cs"  -i ro_fps list""")
+    print(f"""csRo-manage.cs --svcName="svcSiteRegistrars" --perfName="svcSiteRegistrars" --rosmu="{rosmu}"  -i ro_fps list""")
 
     # print(f"""csSiteRegContainer.cs --perfName="siteRegistrar" -i csPerformer  & # in background Start rpyc CS Service""")
 
