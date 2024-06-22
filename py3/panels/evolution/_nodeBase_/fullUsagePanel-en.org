@@ -26,7 +26,7 @@
 * [[elisp:(show-all)][(>]] [[elisp:(describe-function 'org-dblock-write:blee:bxPanel:terseTreeNavigator)][dbf]]
 * +
 *                                        *━━━━━━━━━━━━━━━━━━━━━━━━*
-*   *Siblings*   :: [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bootstrap/registrations/pip-bisos.siteRegistrars/evolution/_nodeBase_")][ =evolution= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bootstrap/registrations/pip-bisos.siteRegistrars/siteRegBox/_nodeBase_")][ =siteRegBox= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bootstrap/registrations/pip-bisos.siteRegistrars/siteRegContainer/_nodeBase_")][ =siteRegContainer= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bootstrap/registrations/pip-bisos.siteRegistrars/siteRegNets/_nodeBase_")][ =siteRegNets= ]] *|*
+*   *Siblings*   :: [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bootstrap/registrations/pip-bisos.siteRegistrars/README")][README]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bootstrap/registrations/pip-bisos.siteRegistrars/evolution/_nodeBase_")][ =evolution= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bootstrap/registrations/pip-bisos.siteRegistrars/siteRegBox/_nodeBase_")][ =siteRegBox= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bootstrap/registrations/pip-bisos.siteRegistrars/siteRegContainer/_nodeBase_")][ =siteRegContainer= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bootstrap/registrations/pip-bisos.siteRegistrars/siteRegNets/_nodeBase_")][ =siteRegNets= ]] *|*
 *   /Ancestors/  :: [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/bootstrap/registrations/pip-bisos.siteRegistrars/_nodeBase_")][ = /<pip-bisos.siteRegistrars>/ = ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/bootstrap/registrations/_nodeBase_")][ = /<registrations>/ = ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/bootstrap/_nodeBase_")][ =bootstrap= ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/_nodeBase_")][ =bisos-core= ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/_nodeBase_")][ = /<panels>/ = ]] *|*
 *   /Ancestors/  :: [[elisp:(dired "//bisos")][ ~bisos~ ]] *|*
 *                                   _━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━_                          [[elisp:(org-shifttab)][<)]] E|
@@ -35,7 +35,7 @@
 * [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_       [[elisp:(outline-show-subtree+toggle)][| *Overview:* |]] <<Panel>>   [[elisp:(org-shifttab)][<)]] E|
 ####+END
 ** +
-** Overview Comes Here.
+** siteRegistrars is one of the first BISOS remote operations. It will be developed along side remote-facter.
 ** B|
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "Current Revision  plans" :anchor "" :extraInfo ""
 * /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
@@ -43,28 +43,13 @@
 ####+END
 * +
 * =========== Github Repos Create  Begin } ==================
-* DONE bxGenesis/start/raw-bisos.sh          CREATED::bxGenesis/start
-* DONE Create bso-genesis-site  bso-genesis-siteRegBox  bso-genesis-siteRegContainer CREATED
-* DONE Build bisos.sites -- CREATED  Sets up /bisos/sites and ~/bpos//site /bisos/var/sites/xx
-* DONE Build bisos.usgAcct CREATED -- Obtains ~/bpos/sites/selected
 * =========== Github Repos Create  End }  ===================
 * TODO adoptingByStar doc also in startHere of github/mohsen
-* DONE For exampleRegistrar, use rosmuSel to specify /tmp/exampleRegistrar//roSap/. Seems to have been in design
 * TODO absorb previous engineering/genesis with adoptByStar
-* DONE Add support for siteRegBoxParams -- Where you read params from base like with reSapManager
 * TODO Locate sites from ~/bpos/sites/selected
 * TODO In siteBpos have a var link to /bisos/var/sites/siteName
 * TODO Figure and complete /bisos/sites/selected/
 * WAITING In bxGits/bisos Create bso-genesis-siteBoxes. Create //bxo/bso//genesis-siteBoxes with links
-* DONE Look at exisiting siteAssignContainer for tracking base of registrars bpos
-* DONE Replecate siteAssignContainer for tracking base of registrars in python.
-* DONE [#A] Complete box to equivalent of bash.
-DEADLINE: <2024-01-22 Mon> SCHEDULED: <2024-01-21 Sun>
-** DONE Create invSite.py and perfSite.py
-** DONE Create csSite.py and csInvSite.py
-** DONE Better menuItems library
-* WAITING [#A] Use exsisting code to register new machines.
-SCHEDULED: <2024-01-21 Sun>
 * TODO [#A] Rebuild raw-bisos with siteRegistrars. Setup site registrars
 SCHEDULED: <2024-01-21 Sun>
 * WAITING [#B] Convert from bash container assignments.
@@ -76,11 +61,9 @@ SCHEDULED: <2024-01-21 Sun>
 * [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _Next Revisions  plans_: |]]    [[elisp:(org-shifttab)][<)]] E|
 ####+END
 * +
+* TODO Cross developlong with remote facter.
 * TODO Daemonization under bisos
 * -B|
-####+BEGIN: blee:bxPanel:separator :outLevel 1
-* /[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]/
-####+END
 ####+BEGIN: blee:bxPanel:evolution
 * [[elisp:(show-all)][(>]] [[elisp:(describe-function 'org-dblock-write:blee:bxPanel:evolution)][dbf]]
 *                                   _━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━_
