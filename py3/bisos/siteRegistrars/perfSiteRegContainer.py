@@ -131,7 +131,7 @@ def commonParamsSpecify(
 
 svcName = "csSiteRegContainer"
 
-roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName)  # static method
+# roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName)  # static method
 
 cs.invOutcomeReportControl(cmnd=True, ro=True)
 

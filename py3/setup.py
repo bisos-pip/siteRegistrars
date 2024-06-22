@@ -21,7 +21,7 @@ def longDescription():
 
 ####+BEGIN: b:py3:pypi/nextVersion :increment 0.01
 
-def pkgVersion(): return '0.51'
+def pkgVersion(): return '0.54'
 ####+END:
 
 #__version__ = get_version('unisos/icm/__init__.py')
@@ -30,7 +30,7 @@ __version__ = '0.4'
 
 ####+BEGIN: b:py3:pypi/requires :extras ("bisos.transit")
 
-requires = [
+Newrequires = [
 "blee",
 "blee.csPlayer",
 "blee.icmPlayer",
@@ -66,7 +66,7 @@ scripts = [
 
 
 
-oldrequires = [
+requires = [
     'bisos.currents',
 ]
 

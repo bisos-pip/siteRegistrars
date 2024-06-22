@@ -168,7 +168,7 @@ def commonParamsSpecify(
 svcName = "svcSiteRegistrars"
 #roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName, rosmu="svcInvSiteRegBox.cs")  # static method
 
-roSiteRegistrarSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath("svcSiteRegistrars", rosmu="svcInvSiteRegContainer.cs")  # static method
+# roSiteRegistrarSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath("svcSiteRegistrars", rosmu="svcInvSiteRegContainer.cs")  # static method
 
 cs.invOutcomeReportControl(cmnd=True, ro=True)
 
@@ -276,6 +276,22 @@ def perfNameGet(
     #+end_org """
 
     return  'siteRegistrar'
+
+
+####+BEGIN: b:py3:cs:func/typing :funcName "roSiteRegistrarSapPath_obtain" :comment "~Either of exampleRegistrar or siteRegistrar~"  :funcType "eType" :deco "track"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-T-eType  [[elisp:(outline-show-subtree+toggle)][||]] /roSiteRegistrarSapPath_obtain/  ~Either of exampleRegistrar or siteRegistrar~ deco=track  [[elisp:(org-cycle)][| ]]
+#+end_org """
+@cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+def roSiteRegistrarSapPath_obtain(
+####+END:
+) -> str:
+    """ #+begin_org*
+*  [[elisp:(org-cycle)][| *DocStr | ]]
+    #+end_org """
+
+    return  cs.ro.SapBase_FPs.perfNameToRoSapPath("svcSiteRegistrars", rosmu="svcInvSiteRegContainer.cs")  # static method
+
 
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Invoker Only CmndSvc" :anchor ""  :extraInfo "Command Services Section"
@@ -728,7 +744,7 @@ class reg_box_add(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -780,7 +796,7 @@ class reg_box_read(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -826,7 +842,7 @@ class reg_box_update(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -869,7 +885,7 @@ class reg_box_delete(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -921,7 +937,7 @@ class reg_box_find(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -972,7 +988,7 @@ class reg_box_list(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,

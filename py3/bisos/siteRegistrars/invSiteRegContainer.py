@@ -180,7 +180,7 @@ def commonParamsSpecify(
 svcName = "svcSiteRegistrars"
 
 # roSiteRegistrarSapPath = cs.ro.SapBase_FPs.svcNameToRoSapPath(svcName, rosmu="svcInvSiteRegContainer.cs")  # static method
-roSiteRegistrarSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath("svcSiteRegistrars")  # static method
+# roSiteRegistrarSapPath = cs.ro.SapBase_FPs.perfNameToRoSapPath("svcSiteRegistrars")  # static method
 
 cs.invOutcomeReportControl(cmnd=True, ro=True)
 
@@ -767,7 +767,7 @@ class reg_container_add(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -816,7 +816,7 @@ class reg_container_read(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -868,7 +868,7 @@ class reg_container_update(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -917,7 +917,7 @@ class reg_container_delete(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -967,7 +967,7 @@ class reg_container_find(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -1011,7 +1011,7 @@ class reg_container_locateInAll(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -1053,7 +1053,7 @@ class reg_container_unitsListAll(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
@@ -1102,7 +1102,7 @@ class reg_container_list(cs.Cmnd):
             cmndKwArgs = self.cmndCallTimeKwArgs()
 
         rpycInvResult =  cs.ro.roInvokeCmndAtSap(
-            roSiteRegistrarSapPath,
+            roSiteRegistrarSapPath_obtain(),
             rtInv,
             cmndOutcome,
             cmndClass,
