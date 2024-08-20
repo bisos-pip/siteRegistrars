@@ -310,7 +310,7 @@ class RegBoxInvConf_FPs(b.fpCls.BaseDir):
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "invSiteRegBoxConf_set" :ro "noCli" :comment "" :parsMand "regBoxPerfAddrs" :parsOpt "" :argsMin 0 :argsMax 0
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "invSiteRegBoxConf_set" :ro "noCli" :noMapping "t" :comment "" :parsMand "regBoxPerfAddrs" :parsOpt "" :argsMin 0 :argsMax 0
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<invSiteRegBoxConf_set>>  =verify= parsMand=regBoxPerfAddrs ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
@@ -327,10 +327,10 @@ class invSiteRegBoxConf_set(cs.Cmnd):
              regBoxPerfAddrs: typing.Optional[str]=None,  # Cs Mandatory Param
     ) -> b.op.Outcome:
 
+        failed = b_io.eh.badOutcome
         callParamsDict = {'regBoxPerfAddrs': regBoxPerfAddrs, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        regBoxPerfAddrs = csParam.mappedValue('regBoxPerfAddrs', regBoxPerfAddrs)
+            return failed(cmndOutcome)
 ####+END:
         """\
 ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Creates path for ro_sap and updates FPs

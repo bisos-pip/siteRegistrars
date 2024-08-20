@@ -604,6 +604,8 @@ class thisBox_update(cs.Cmnd):
 #+end_org """
 ####+END:
 
+#BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_sapCreateBox" :ro "noCli" :noMapping "t" :comment "" :parsMand "perfName" :parsOpt "rosmuControl" :argsMin 0 :argsMax 0
+
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_sapCreateBox" :ro "noCli" :comment "" :parsMand "perfName" :parsOpt "rosmuControl" :argsMin 0 :argsMax 0
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_sapCreateBox>>  =verify= parsMand=perfName parsOpt=rosmuControl ro=noCli   [[elisp:(org-cycle)][| ]]

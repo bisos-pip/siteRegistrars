@@ -427,7 +427,7 @@ class thisSys_findContainer(cs.Cmnd):
 
         return cmndOutcome.set(opResults=f"{containers}",)
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisSys_assignContainer" :comment "" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "thisSys_assignContainer" :comment "" :noMapping "t" :extent "verify" :ro "noCli" :parsMand "model abode purpose" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<thisSys_assignContainer>>  =verify= parsMand=model abode purpose ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
@@ -450,9 +450,6 @@ class thisSys_assignContainer(cs.Cmnd):
         callParamsDict = {'model': model, 'abode': abode, 'purpose': purpose, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return failed(cmndOutcome)
-        model = csParam.mappedValue('model', model)
-        abode = csParam.mappedValue('abode', abode)
-        purpose = csParam.mappedValue('purpose', purpose)
 ####+END:
         if self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Equivalent of: -i reg_box_find $( -i thisBoxUUID ). Result: boxNu
@@ -653,7 +650,7 @@ class withContainerIdRead(cs.Cmnd):
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_sapCreateContainer" :ro "noCli" :comment "" :parsMand "perfName" :parsOpt "rosmuControl" :argsMin 0 :argsMax 0
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "reg_sapCreateContainer" :ro "noCli" :noMapping "t" :comment "" :parsMand "perfName" :parsOpt "rosmuControl" :argsMin 0 :argsMax 0
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<reg_sapCreateContainer>>  =verify= parsMand=perfName parsOpt=rosmuControl ro=noCli   [[elisp:(org-cycle)][| ]]
 #+end_org """
@@ -675,8 +672,6 @@ class reg_sapCreateContainer(cs.Cmnd):
         callParamsDict = {'perfName': perfName, 'rosmuControl': rosmuControl, }
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
             return failed(cmndOutcome)
-        perfName = csParam.mappedValue('perfName', perfName)
-        rosmuControl = csParam.mappedValue('rosmuControl', rosmuControl)
 ####+END:
         """\
 ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Creates path for ro_sap and updates FPs
