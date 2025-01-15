@@ -16,7 +16,7 @@ SEED="
 *  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedFtoCommon.sh]] |
 "
 FILE="
-*  /This File/ :: /bisos/git/auth/bxRepos/bisos-pip/facter/py3/panels/README/ftoProc.sh
+*  /This File/ :: /bisos/git/bxRepos/bisos-pip/siteRegistrars/py3/panels/bisos.siteRegistrars/README/ftoProc.sh
 "
 if [ "${loadFiles}" == "" ] ; then
     /bisos/core/bsip/bin/seedFtoCommon.sh -l $0 "$@"

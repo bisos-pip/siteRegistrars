@@ -1,7 +1,4 @@
 #+title: bisos.siteRegistrars:  CS Services for implementation of BISOS Site Regsitrars  -- box, cntnr and nets.
-#+DATE: <2024-02-19 Mon 16:27>
-#+AUTHOR: Mohsen BANAN
-#+OPTIONS: toc:4
 
 Panel Controls:: [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]] [[elisp:(save-buffer)][Save]] [[elisp:(kill-buffer)][Quit]] [[elisp:(bury-buffer)][Bury]]
 Links: [[file:./panels/_nodeBase_/fullUsagePanel-en.org]] (Package Panel)
@@ -198,6 +195,3 @@ author/maintainer\\
 [[http://mohsen.1.banan.byname.net/contact]]
 
 
-# Local Variables:
-# eval: (setq-local toc-org-max-depth 4)
-# End:
