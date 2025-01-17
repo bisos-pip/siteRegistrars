@@ -18,13 +18,23 @@ from bisos import b
 from bisos.debian import systemdSeed
 
 def sysdUnitFileFunc():
-    templateStr = """
+    """Produce the unit file as a string. execPath can be different for testing vs stationable."""
+
+    # Sometimes we may be running this script in the cwd -- shutil.which  does not do the equivalent of -a
+    cmndOutcome = b.subProc.WOpW(invedBy=None, log=0).bash(
+                f"""which -a svcPerfSiteRegistrars.cs | grep -v '\./svcPerfSiteRegistrars.cs' | head -1""",
+    )
+    if cmndOutcome.isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
+    execPath = cmndOutcome.stdout.strip()
+    # print(execPath)
+
+    templateStr = f"""
 [Unit]
 Description=Site Registrar Service
 Documentation=man:siteRegistrar(1)
 
 [Service]
-ExecStart=/bisos/git/auth/bxRepos/bisos-pip/siteRegistrars/py3/bin/svcPerfSiteRegistrars.cs -v 20 --svcName="svcSiteRegistrars"  -i csPerformer
+ExecStart={execPath} -v 20 --svcName="svcSiteRegistrars"  -i csPerformer
 Restart=always
 RestartSec=60
 
