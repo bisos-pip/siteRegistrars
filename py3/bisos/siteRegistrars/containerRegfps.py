@@ -89,7 +89,7 @@ import collections
 
 from bisos.siteRegistrars import perfSiteRegContainer
 from bisos.siteRegistrars import invSiteRegContainer
-from bisos.usgAcct import usgAcct
+# from bisos.usgAcct import usgAcct
 from bisos.regfps import regfps
 from bisos.cntnr import cntnrCharName
 

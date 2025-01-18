@@ -28,13 +28,15 @@ def sysdUnitFileFunc():
     execPath = cmndOutcome.stdout.strip()
     # print(execPath)
 
+    # ExecStart={execPath} -v 20 --svcName="svcSiteRegistrars"  -i csPerformer
+
     templateStr = f"""
 [Unit]
 Description=Site Registrar Service
 Documentation=man:siteRegistrar(1)
 
 [Service]
-ExecStart={execPath} -v 20 --svcName="svcSiteRegistrars"  -i csPerformer
+ExecStart={execPath} -v 1 --callTrackings monitor+ --callTrackings invoke+  --svcName="svcSiteRegistrars"  -i csPerformer
 Restart=always
 RestartSec=60
 

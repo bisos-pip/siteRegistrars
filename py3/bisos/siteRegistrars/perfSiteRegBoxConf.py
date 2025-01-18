@@ -92,7 +92,8 @@ import __main__
 import os
 # import abc
 
-from bisos.usgAcct import usgAcct
+# from bisos.usgAcct import usgAcct
+from bisos.platform import platformBases
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "CSU" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
@@ -258,7 +259,12 @@ class RegBoxPerfConf_FPs(b.fpCls.BaseDir):
            self,
     ) -> pathlib.Path:
 
-        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/perf.fps')
+        # siteBase = platformBases_csu.siteBase().pyCmnd(argsList=["obtain"]).results
+        # fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/perf.fps')
+
+        siteBase = platformBases.siteBasePath()
+        # /bisos/site/registrars/box/perf.fps
+        fpsBase = siteBase.joinpath('registrars/box/perf.fps')
         assert fpsBase.exists()
         return fpsBase
 

@@ -91,7 +91,9 @@ import __main__
 import os
 # import abc
 
-from bisos.usgAcct import usgAcct
+# from bisos.usgAcct import usgAcct
+from bisos.platform import platformBases
+
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "CSU" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
@@ -269,7 +271,12 @@ class RegBoxInvConf_FPs(b.fpCls.BaseDir):
            self,
     ) -> pathlib.Path:
 
-        fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/inv.fps')
+        # fpsBase = usgAcct.UsgAcctBposNamed.read('sites/selected').joinpath('registrars/box/inv.fps')
+
+        siteBase = platformBases.siteBasePath()
+        # /bisos/site/registrars/box/inv.fps
+        fpsBase = siteBase.joinpath('registrars/box/inv.fps')
+
         assert fpsBase.exists()
         return fpsBase
 
