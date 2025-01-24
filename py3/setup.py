@@ -73,8 +73,10 @@ requires = [
 ####+BEGIN: b:py3:pypi:setup/scripts :comment ""
 
 scripts = [
-'bin/siteRegistrarsDaemonSysd.cs',
-'bin/siteRegistrarsRuns.cs',
+'bin/siteRegistrars-assemble.cs',
+'bin/siteRegistrars-binsPrep.cs',
+'bin/siteRegistrars-cbs-is-d-sysd.cs',
+'bin/siteRegistrars-roPerf-sysd.cs',
 'bin/svcInvSiteRegBox.cs',
 'bin/svcInvSiteRegContainer.cs',
 'bin/svcPerfSiteRegistrars.cs',

@@ -26,8 +26,7 @@
 * [[elisp:(show-all)][(>]] [[elisp:(describe-function 'org-dblock-write:blee:bxPanel:terseTreeNavigator)][dbf]]
 * +
 *                                        *━━━━━━━━━━━━━━━━━━━━━━━━*
-*   *Siblings*   :: [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/README")][README]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/README.auto")][README.auto]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/evolution/_nodeBase_")][ =evolution= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/siteRegBox/_nodeBase_")][ =siteRegBox= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/siteRegContainer/_nodeBase_")][ =siteRegContainer= ]] *|*
-*   *Siblings*   :: [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/siteRegNets/_nodeBase_")][ =siteRegNets= ]] *|*
+*   *Siblings*   :: [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/README")][README]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/evolution/_nodeBase_")][ =evolution= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/siteRegBox/_nodeBase_")][ =siteRegBox= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/siteRegContainer/_nodeBase_")][ =siteRegContainer= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/siteRegNets/_nodeBase_")][ =siteRegNets= ]] *|*
 *   /Ancestors/  :: [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/bisos-pip/bisos.siteRegistrars/_nodeBase_")][ = /<bisos.siteRegistrars>/ = ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/bisos-pip/_nodeBase_")][ =bisos-pip= ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/_nodeBase_")][ =bisos-core= ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/_nodeBase_")][ = /<panels>/ = ]] *|* [[elisp:(dired "//bisos")][ ~bisos~ ]] *|*
 *                                   _━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━_                          [[elisp:(org-shifttab)][<)]] E|
 ####+END
@@ -37,6 +36,28 @@
 ** +
 ** siteRegistrars is one of the first BISOS remote operations. It will be developed along side remote-facter.
 ** B|
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "Model and Terminology Refactoring" :anchor "" :extraInfo ""
+* /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
+* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _Model and Terminology Refactoring_: |]]    [[elisp:(org-shifttab)][<)]] E|
+####+END
+
+|---------------------------------+---------------------------|
+| siteRegPlatform-ro.cs           | Uniof of roPerf and roInv |
+|---------------------------------+---------------------------|
+| siteRegistrars-roPerf.cs        | roPerformer.              |
+| siteRegistrars-binsPrep.cs      |                           |
+| siteRegistrars-assemble.cs      |                           |
+| siteRegistrars-roPerf-sysd.cs   |                           |
+| siteRegistrars-cbs-is-d-sysd.cs |                           |
+|---------------------------------+---------------------------|
+| siteRegBox-roInv.cs             |                           |
+| siteRegContainer-roInv.cs       |                           |
+|---------------------------------+---------------------------|
+
+
+** +
+** siteRegPlatform-ro
+** -B|
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "Current Revision  plans" :anchor "" :extraInfo ""
 * /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
 * [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _Current Revision  plans_: |]]    [[elisp:(org-shifttab)][<)]] E|
@@ -44,15 +65,7 @@
 * +
 * =========== Github Repos Create  Begin } ==================
 * =========== Github Repos Create  End }  ===================
-* TODO adoptingByStar doc also in startHere of github/mohsen
-* TODO absorb previous engineering/genesis with adoptByStar
-* TODO Locate sites from ~/bpos/sites/selected
-* TODO In siteBpos have a var link to /bisos/var/sites/siteName
-* TODO Figure and complete /bisos/sites/selected/
 * WAITING In bxGits/bisos Create bso-genesis-siteBoxes. Create //bxo/bso//genesis-siteBoxes with links
-* TODO [#A] Rebuild raw-bisos with siteRegistrars. Setup site registrars
-SCHEDULED: <2024-01-21 Sun>
-* WAITING [#B] Convert from bash container assignments.
 * TODO [#B] Convert from bash nets assignments.
 * TODO [#B] Build container with registrars
 * -B|
@@ -62,7 +75,6 @@ SCHEDULED: <2024-01-21 Sun>
 ####+END
 * +
 * TODO Cross developlong with remote facter.
-* TODO Daemonization under bisos
 * -B|
 ####+BEGIN: blee:bxPanel:evolution
 * [[elisp:(show-all)][(>]] [[elisp:(describe-function 'org-dblock-write:blee:bxPanel:evolution)][dbf]]

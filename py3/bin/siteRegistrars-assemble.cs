@@ -29,7 +29,7 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/bxRepos/bisos-pip/facter/py3/bin/facter-active.cs
+** This File: /l/pip/siteRegistrars/py3/bin/siteRegistrars-assemble.cs
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -95,26 +95,25 @@ cba_assemble.cbaAssemble.assemblerType = "roPerfCs+DataBpos"
   (list
    "bisos.b.cs.ro"
    "blee.csPlayer.bleep"
-   "bisos.facter.facter_csu"
+   ;; "bisos.facter.facter_csu"
    "bisos.banna.bannaPortNu"
  ))
 #+END_SRC
 #+RESULTS:
-| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.facter.facter_csu | bisos.banna.bannaPortNu |
+| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.banna.bannaPortNu |
 #+end_org """
 
 ####+BEGIN: b:py3:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t :csmuParams nil
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] =Process CSU List= with /4/ in csuList pyImports=t csuImports=t csuParams=t
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] =Process CSU List= with /3/ in csuList pyImports=t csuImports=t csuParams=t
 #+end_org """
 
 from bisos.b.cs import ro
 from blee.csPlayer import bleep
-from bisos.facter import facter_csu
 from bisos.banna import bannaPortNu
 
 
-csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.facter.facter_csu', 'bisos.banna.bannaPortNu', ]
+csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.banna.bannaPortNu', ]
 
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 
@@ -206,15 +205,16 @@ class fullUpdate(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  facter.cs -i factName networking.primary os.distro.id
+  siteRegistrars-assemble.cs -i fullUpdate
 #+end_src
 #+RESULTS:
-: [{'networking.primary': 'eno1'}, {'os.distro.id': 'Debian'}]
+#+begin_example
+#+end_example
         #+end_org """)
 
-        if b.subProc.WOpW(invedBy=self, log=1).bash(
-                f"""echo NOTYET, fullUpdate will create the Performer SAP""",
-        ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
+        # bposActivation().pyCmnd()
+
+        roPerfSapCreate().pyCmnd()
 
         return cmndOutcome
 
@@ -245,18 +245,16 @@ class bposActivation(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  facter.cs -i factName networking.primary os.distro.id
+  siteRegistrars-assemble.cs -i bposActivation
 #+end_src
 #+RESULTS:
-: [{'networking.primary': 'eno1'}, {'os.distro.id': 'Debian'}]
+: ** cmnd= echo facter does not require any bpoActivation.
+: facter does not require any bpoActivation.
+: Cmnd -- No Results
         #+end_org """)
 
         if b.subProc.WOpW(invedBy=self, log=1).bash(
-                f"""facter-binsPrep.cs  -i aptPkgs_update all """,
-        ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
-
-        if b.subProc.WOpW(invedBy=self, log=1).bash(
-                f"""facter-perfSysd.cs --cls="sysdUnitFacter"  -i sysdSysUnit ensure""",
+                f"""echo facter does not require any bpoActivation.""",
         ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
 
         return cmndOutcome
@@ -287,14 +285,27 @@ class roPerfSapCreate(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  facter.cs -i factName networking.primary os.distro.id
+  siteRegistrars-assemble.cs -i roPerfSapCreate
 #+end_src
 #+RESULTS:
-: [{'networking.primary': 'eno1'}, {'os.distro.id': 'Debian'}]
+#+begin_example
+,** cmnd= roPerf-facter.cs --svcName="svcFacter" --perfName="me" --rosmu="roPerf-facter.cs"  -i perf_sapCreate
+FileParam.writeTo path=/bisos/var/cs/ro/sap/roPerf-facter.cs/me/svcFacter/rpyc/perfIpAddr/value value=localhost
+FileParam.writeTo path=/bisos/var/cs/ro/sap/roPerf-facter.cs/me/svcFacter/rpyc/svcName/value value=svcFacter
+FileParam.writeTo path=/bisos/var/cs/ro/sap/roPerf-facter.cs/me/svcFacter/rpyc/perfPortNu/value value=22222004
+FileParam.writeTo path=/bisos/var/cs/ro/sap/roPerf-facter.cs/me/svcFacter/rpyc/accessControl/value value=placeholder
+FileParam.writeTo path=/bisos/var/cs/ro/sap/roPerf-facter.cs/me/svcFacter/rpyc/rosmuControl/value value=bisos
+FileParam.writeTo path=/bisos/var/cs/ro/sap/roPerf-facter.cs/me/svcFacter/rpyc/perfName/value value=me
+FileParam.writeTo path=/bisos/var/cs/ro/sap/roPerf-facter.cs/me/svcFacter/rpyc/perfModel/value value=rpyc
+FileParam.writeTo path=/bisos/var/cs/ro/sap/roPerf-facter.cs/me/svcFacter/rpyc/rosmu/value value=roPerf-facter.cs
+FileParam.writeTo path=/bisos/var/cs/ro/sap/roPerf-facter.cs/me/svcFacter/rpyc/rosmuSel/value value=default
+/bisos/var/cs/ro/sap/roPerf-facter.cs/me/svcFacter/rpyc
+Cmnd -- No Results
+#+end_example
         #+end_org """)
 
         if b.subProc.WOpW(invedBy=self, log=1).bash(
-                f"""echo DeActivation Provided Params and Args were: """,
+                f"""roPerf-facter.cs --svcName="svcFacter" --perfName="me" --rosmu="roPerf-facter.cs"  -i perf_sapCreate""",
         ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
 
         return cmndOutcome
