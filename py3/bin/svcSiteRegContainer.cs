@@ -96,7 +96,7 @@ import collections
 (setq  b:py:cs:csuList
   (list
    "bisos.b.cs.ro"
-   "blee.csPlayer.bleep"
+   "bisos.csPlayer.bleep"
    "bisos.b.fpCls"
    "bisos.b.clsMethod_csu"
    "bisos.banna.bannaPortNu"
@@ -108,7 +108,7 @@ import collections
  ))
 #+END_SRC
 #+RESULTS:
-| bisos.b.cs.ro | blee.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.banna.bannaPortNu | bisos.siteRegistrars.invSiteRegContainer | bisos.siteRegistrars.perfSiteRegContainer | bisos.siteRegistrars.invSiteRegContainerConf | bisos.siteRegistrars.perfSiteRegContainerConf | bisos.siteRegistrars.containerRegfps |
+| bisos.b.cs.ro | bisos.csPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.banna.bannaPortNu | bisos.siteRegistrars.invSiteRegContainer | bisos.siteRegistrars.perfSiteRegContainer | bisos.siteRegistrars.invSiteRegContainerConf | bisos.siteRegistrars.perfSiteRegContainerConf | bisos.siteRegistrars.containerRegfps |
 #+end_org """
 
 ####+BEGIN: b:py3:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t
@@ -117,7 +117,7 @@ import collections
 #+end_org """
 
 from bisos.b.cs import ro
-from blee.csPlayer import bleep
+from bisos.csPlayer import bleep
 from bisos.b import fpCls
 from bisos.b import clsMethod_csu
 from bisos.banna import bannaPortNu
@@ -128,7 +128,7 @@ from bisos.siteRegistrars import perfSiteRegContainerConf
 from bisos.siteRegistrars import containerRegfps
 
 
-csuList = [ 'bisos.b.cs.ro', 'blee.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.banna.bannaPortNu', 'bisos.siteRegistrars.invSiteRegContainer', 'bisos.siteRegistrars.perfSiteRegContainer', 'bisos.siteRegistrars.invSiteRegContainerConf', 'bisos.siteRegistrars.perfSiteRegContainerConf', 'bisos.siteRegistrars.containerRegfps', ]
+csuList = [ 'bisos.b.cs.ro', 'bisos.csPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.banna.bannaPortNu', 'bisos.siteRegistrars.invSiteRegContainer', 'bisos.siteRegistrars.perfSiteRegContainer', 'bisos.siteRegistrars.invSiteRegContainerConf', 'bisos.siteRegistrars.perfSiteRegContainerConf', 'bisos.siteRegistrars.containerRegfps', ]
 
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 
@@ -187,7 +187,7 @@ class examples(cs.Cmnd):
 
         cs.examples.commonBrief()
 
-        bleep.examples_icmBasic()
+        bleep.examples_csBasic()
 
         #cs.examples.menuChapter('=Misc=  *Facilities*')
 
