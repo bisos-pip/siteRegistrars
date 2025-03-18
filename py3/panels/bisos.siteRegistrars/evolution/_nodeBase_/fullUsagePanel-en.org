@@ -42,7 +42,7 @@
 ####+END
 
 |---------------------------------+---------------------------|
-| siteRegPlatform-ro.cs           | Uniof of roPerf and roInv |
+| siteRegPlatform-ro.cs           | Union of roPerf and roInv |
 |---------------------------------+---------------------------|
 | siteRegistrars-roPerf.cs        | roPerformer.              |
 | siteRegistrars-binsPrep.cs      |                           |

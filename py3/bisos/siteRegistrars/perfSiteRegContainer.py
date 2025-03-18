@@ -172,6 +172,7 @@ def examples_csu(
     createPars = collections.OrderedDict([('model', thisModel), ('abode', thisAbode), ('purpose', thisPurpose), ('containerNu', thisContainerNu), ('boxNu', thisBoxNu)])
     addPars = collections.OrderedDict([('model', thisModel), ('abode', thisAbode), ('purpose', thisPurpose), ('boxNu', thisBoxNu)])
 
+    ro_perfName = collections.OrderedDict([('perfName', perfName),])
     ro_unitsPars = cs.examples.perfNameParsInsert(unitsPars, perfName)
     ro_unitBasePars = cs.examples.perfNameParsInsert(unitBasePars, perfName)
     ro_createPars = cs.examples.perfNameParsInsert(createPars, perfName)
@@ -206,14 +207,32 @@ def examples_csu(
     cmnd('container_repoLock', pars=unitsPars)
     cmnd('container_repoUnlock', pars=unitsPars)
 
-    cs.examples.menuSection('*RO Service Commands*')
+    cs.examples.menuSection(f'*RO Service Commands -- {perfName}*')
 
     cmnd('ro_container_add', pars=ro_addPars)
     cmnd('container_unitRead', pars=ro_unitBasePars)
     cmnd('container_unitUpdate', pars=ro_createPars)
     cmnd('container_unitDelete', pars=ro_unitBasePars)
     cmnd('container_unitsFind', pars=ro_unitsPars, args=f"boxId {thisBoxNu}")
-    cmnd('container_unitsList', pars=ro_unitsPars)
+    cmnd('container_unitsList', pars=ro_unitsPars, comment="| pyLiteralTo.cs -i stdinToBlack")
+
+    perfName = 'svcSiteRegistrars'
+
+    cs.examples.menuSection(f'*RO Service Commands -- {perfName}*')
+
+    ro_perfName = collections.OrderedDict([('perfName', perfName),])
+    ro_unitsPars = cs.examples.perfNameParsInsert(unitsPars, perfName)
+    ro_unitBasePars = cs.examples.perfNameParsInsert(unitBasePars, perfName)
+    ro_createPars = cs.examples.perfNameParsInsert(createPars, perfName)
+    ro_addPars = cs.examples.perfNameParsInsert(addPars, perfName)
+
+    cmnd('ro_container_add', pars=ro_addPars)
+    cmnd('container_unitRead', pars=ro_unitBasePars)
+    cmnd('container_unitUpdate', pars=ro_createPars)
+    cmnd('container_unitDelete', pars=ro_unitBasePars)
+    cmnd('container_unitsFind', pars=ro_unitsPars, args=f"boxId {thisBoxNu}")
+    cmnd('container_unitsList', pars=ro_unitsPars, comment="| pyLiteralTo.cs -i stdinToBlack")
+    cmnd('container_unitsListAll', pars=ro_perfName, comment="| pyLiteralTo.cs -i stdinToBlack")
 
     cs.examples.menuSection('*Container ID Mapping Commands*')
 

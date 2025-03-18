@@ -43,7 +43,7 @@ def longDescription():
 # b:py3:pypi:setup/version Arguments  :forSys t :forPyPi t :constant "666"
 ####+BEGIN: b:py3:pypi:setup/version :comment "Auto Detected"
 
-# ./pypiUploadVer DID NOT exist -- forPypiVersion=0.65 -- forLocalVersion=0.54 -- constant=NA
+# ./pypiUploadVer DID NOT exist -- forPypiVersion=0.66 -- forLocalVersion=0.54 -- constant=NA
 def pkgVersion():
         return '0.54'
 
@@ -56,16 +56,19 @@ requires = [
 "bisos",
 "bisos.b",
 "bisos.banna",
-"bisos.binsprep",
+"bisos.basics",
 "bisos.bpo",
 "bisos.capability",
 "bisos.cntnr",
 "bisos.common",
 "bisos.csPlayer",
+"bisos.currents",
 "bisos.debian",
 "bisos.marmee",
 "bisos.platform",
 "bisos.regfps",
+"bisos.sbom",
+"bisos.sites",
 ]
 ####+END:
 
@@ -74,9 +77,10 @@ requires = [
 
 scripts = [
 'bin/siteRegistrars-assemble.cs',
-'bin/siteRegistrars-binsPrep.cs',
-'bin/siteRegistrars-cbs-is-d-sysd.cs',
+'bin/siteRegistrars-cbs-is-ds-sysd.cs',
 'bin/siteRegistrars-roPerf-sysd.cs',
+'bin/siteRegistrars-sbom.cs',
+'bin/siteRegistrars-site-fps.cs',
 'bin/svcInvSiteRegBox.cs',
 'bin/svcInvSiteRegContainer.cs',
 'bin/svcPerfSiteRegistrars.cs',

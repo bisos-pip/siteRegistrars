@@ -678,20 +678,28 @@ class reg_sapCreateContainer(cs.Cmnd):
         """
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  csSInviteRegContainer.cs -i reg_sapCreateContainer
+svcInvSiteRegContainer.cs --perfName=svcSiteRegistrars -i reg_sapCreateContainer
 #+end_src
 #+RESULTS:
 #+begin_example
-
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/perfIpAddr/value value=192.168.0.90
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/perfPortNu/value value=22222001
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/accessControl/value value=placeholder
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/perfName/value value=siteRegistrar
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/perfModel/value value=rpyc
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/rosmu/value value=csSiteRegContainer.cs
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/rosmuSel/value value=default
-FileParam.writeTo path=/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default/rosmuControl/value value=bisos
-/bisos/var/cs/ro/sap/csSiteRegContainer.cs/siteRegistrar/rpyc/default
+None
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/perfIpAddr/value value=192.168.0.153
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/perfPortNu/value value=22222003
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/accessControl/value value=placeholder
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/perfName/value value=svcSiteRegistrars
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/perfModel/value value=rpyc
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/rosmu/value value=svcInvSiteRegContainer.cs
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/rosmuSel/value value=default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/rosmuControl/value value=bisos
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/perfIpAddr/value value=192.168.0.90
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/perfPortNu/value value=22222003
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/accessControl/value value=placeholder
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/perfName/value value=svcSiteRegistrars
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/perfModel/value value=rpyc
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/rosmu/value value=svcInvSiteRegContainer.cs
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/rosmuSel/value value=default
+FileParam.writeTo path=/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc/rosmuControl/value value=bisos
+/bisos/var/cs/ro/sap/svcInvSiteRegContainer.cs/svcSiteRegistrars/svcSiteRegistrars/rpyc
 #+end_example
         #+end_org """)
         if self.justCaptureP(): return cmndOutcome
